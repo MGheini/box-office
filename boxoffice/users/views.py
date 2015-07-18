@@ -1,10 +1,10 @@
  
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 
 def register(request):
-	return HttpResponse('register')
+	return render(request, 'register.html', {})
 
 def our_logout(request):
-	return HttpResponse('logout')
+	return HttpResponseRedirect('/')

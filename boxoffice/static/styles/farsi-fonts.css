@@ -1,0 +1,6 @@
+@font-face{font-family:'droidnaskh_ttf';font-style:normal;font-weight:700;src:url("fonts/droidnaskh/droidnaskhbold.ttf")}
+@font-face{font-family:'droidnaskh';font-style:normal;font-weight:700;src:url("fonts/droidnaskh/droidnaskhbold.eot");src:local('Droid Arabic Naskh'),url("fonts/droidnaskh/droidnaskhbold.eot") format('embedded-opentype'),url("fonts/droidnaskh/droidnaskhbold.woff") format('woff'),url("fonts/droidnaskh/droidnaskhbold.ttf") format('truetype')}
+@font-face{font-family:'droidnaskh_ttf';font-style:normal;font-weight:400;src:url("fonts/droidnaskh/droidnaskh.ttf")}
+@font-face{font-family:'droidnaskh';font-style:normal;font-weight:400;src:url("fonts/droidnaskh/droidnaskh.eot");src:local('Droid Arabic Naskh'),url("fonts/droidnaskh/droidnaskh.eot") format('embedded-opentype'),url("fonts/droidnaskh/droidnaskh.woff") format('woff'),url("fonts/droidnaskh/droidnaskh.ttf") format('truetype')}
+
+body, p, h1, h2, h3, h4, h5, h6, a {font-family:'Droid Arabic Naskh',droidnaskh,Verdana,Geneva,sans-serif;-webkit-font-smoothing:antialiased}
