@@ -45,17 +45,17 @@
 		<div class="row">
 			<div class="col-md-12 well" style="margin: 0px;">
 				<p style="font-size: 28px;">ورود</p>
-				<!-- Nav tabs -->
-				<ul class="nav nav-tabs" role="tablist">
-					<li role="presentation" class="active"><a href="#user" aria-controls="user" role="tab" data-toggle="tab">کاربر</a></li>
-					<li role="presentation"><a href="#organizer" aria-controls="organizer" role="tab" data-toggle="tab">برگزارکننده</a></li>
-				</ul>
-
-				<!-- Tab panes -->
-				<div class="tab-content">
-					<div role="tabpanel" class="tab-pane active" id="user">کاربر</div>
-					<div role="tabpanel" class="tab-pane" id="organizer">برگزارکننده</div>
-				</div>
+				<form action="" method="post" onsubmit="return validateLoginForm()">
+					{% csrf_token %}
+					{% for field in form %}
+					<div class="row" style="background-color: #ecf0f1; margin: 0px;">
+						<div class="col-md-3" style="padding: 0px;">{{ field.label }}</div>
+						<div class="col-md-9" style="padding: 0px;">{{ field }}</div>
+					</div>
+					{% endfor %}
+					<button id="login-btn" class="btn btn-primary btn-block" type="submit" style="width: 200px; margin-bottom: 10px;">ثبت</button>
+				</form>
+				<a href="/register">ثبت نام</a>
 			</div>
 		</div>
 		<div class="row">
@@ -184,6 +184,7 @@
 	<script type="text/javascript" src="{% static "scripts/jquery-1.9.1.min.js" %}"></script>
 	<script type="text/javascript" src="{% static "scripts/bootstrap.min.js" %}"></script>
 	<script type="text/javascript" src="{% static "scripts/slick.min.js" %}"></script>
+	<script type="text/javascript" src="{% static "scripts/mcustom.js" %}"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$('.carousel').slick({

@@ -21,12 +21,41 @@
 
 			<!-- Tab panes -->
 			<div class="tab-content">
-				<div role="tabpanel" class="tab-pane active" id="user">کاربر</div>
-				<div role="tabpanel" class="tab-pane" id="organizer">برگزارکننده</div>
+				<div role="tabpanel" class="tab-pane active" id="user">
+					<div>
+						<form name="memberRegForm" action="" method="post" onsubmit="return validateMemberRegForm()">
+							{% csrf_token %}
+							{% for field in member_form %}
+							<div class="row" style="background-color: #ecf0f1; margin: 0px;">
+								<div class="col-md-2">{{ field.label }}</div>
+								<div class="col-md-5">{{ field }}</div>
+								<div class="col-md-5 error">{{ field.errors }}</div>
+							</div>
+							{% endfor %}
+							<button id="member-reg-btn" class="btn btn-primary btn-block" type="submit" style="width: 200px;">ثبت</button>
+						</form>
+					</div>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="organizer">
+					<div>
+						<form name="organizerRegForm" action="" method="post" onsubmit="return validateOrganizerRegForm()">
+							{% csrf_token %}
+							{% for field in organizer_form %}
+							<div class="row" style="background-color: #ecf0f1; margin: 0px;">
+								<div class="col-md-2">{{ field.label }}</div>
+								<div class="col-md-5">{{ field }}</div>
+								<div class="col-md-5 error">{{ field.errors }}</div>
+							</div>
+							{% endfor %}
+							<button id="organizer-reg-btn" class="btn btn-primary btn-block" type="submit" style="width: 200px;">ثبت</button>
+						</form>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 	<script type="text/javascript" src="{% static "scripts/jquery-1.9.1.min.js" %}"></script>
 	<script type="text/javascript" src="{% static "scripts/bootstrap.min.js" %}"></script>
+	<script type="text/javascript" src="{% static "scripts/mcustom.js" %}"></script>
 </body>
 </html>

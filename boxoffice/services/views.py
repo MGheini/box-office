@@ -2,9 +2,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
+from users.forms import LoginForm
 
 def home(request):
-	return render(request, 'home.html', {})
+	form = LoginForm()
+	return render(request, 'home.html', {'form': form})
 
 def answer(request):
 	return HttpResponse('FAQ')
