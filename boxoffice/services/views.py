@@ -6,7 +6,7 @@ from users.forms import LoginForm
 
 def home(request):
 	form = LoginForm()
-	return render(request, 'home.html', {'form': form})
+	return render(request, 'home.html', {'form': form, 'home': True, 'visitor': True, 'member': False, 'organizer': False})
 
 def answer(request):
 	return HttpResponse('FAQ')
@@ -39,4 +39,4 @@ def receipt(request, order_id):
 	return render(request, 'view-receipt.html', {})
 
 def history(request):
-	return render(request, 'purchase-history.html', {})
+	return render(request, 'purchase-history.html', {'member': True})

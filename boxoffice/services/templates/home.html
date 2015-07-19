@@ -1,199 +1,33 @@
-<!DOCTYPE html>
-<html dir="rtl">
-<head>
-	<meta charset="UTF-8">
-	<title>گیشه</title>
-	{% load staticfiles %}
-	<link rel="stylesheet" href="{% static "styles/bootstrap.min.css" %}" />
-	<link rel="stylesheet" href="{% static "styles/bootstrap-rtl.min.css" %}" />
-	<link rel="stylesheet" href="{% static "styles/farsi-fonts.css" %}">
-	<link rel="stylesheet" href="{% static "styles/mcustom.css" %}" />
-	<link rel="stylesheet" href="{% static "styles/slick.css" %}" />
-	<link rel="stylesheet" href="{% static "styles/slick-theme.css" %}" />
-</head>
-<body>
-	<header class="col-md-10 col-md-offset-1">
-		<h1 class="col-md-10 col-md-offset-1 hidden-xs" style="color: #ffffff;">به گیشه خوش آمدید!</h1>
-		<h2 class="col-md-10 col-md-offset-1 visible-xs" style="color: #ffffff;">به گیشه خوش آمدید!</h2>
+{% extends "layout.html" %}
+{% load static %}
 
-		<h3 class="col-md-8 pull-right hidden-xs" style="color: #ffffff;">بلیت رویدادهای فرهنگی، هنری و ورزشی مورد علاقه ی خود را، هم اینک از گیشه تهیّه کنید.</h3>
-		<h4 class="col-md-8 pull-right visible-xs" style="color: #ffffff;">بلیت رویدادهای فرهنگی، هنری و ورزشی مورد علاقه ی خود را، هم اینک از گیشه تهیّه کنید.</h4>
-		
-		<img class="hidden-sm hidden-xs" id="ticket-img" src="{% static "images/Ticket.png" %}" style="width: 210px; height=210px" />
-	</header>
-	<nav class="navbar navbar-default col-md-10 col-md-offset-1">
-		<!-- Brand and toggle get grouped for better mobile display -->
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="/"><span class="glyphicon glyphicon-home" style="margin-left: 10px;"></span>گیشه</a>
-		</div>
+{% block title %}
+	گیشه
+{% endblock %}
 
-		<!-- Collect the nav links, forms, and other content for toggling -->
-		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-			<ul class="nav navbar-nav">
-				<li><a href="/FAQ/">سؤالات متداول</a></li>
-				<li><a href="/Gisheh/">درباره ما</a></li>
-			</ul>
-		</div><!-- /.navbar-collapse -->
-	</nav>
-	<aside id="sidebar-1" class="col-md-2 col-md-offset-1">
-		<div class="row">
-			<div class="col-md-12 well" style="margin: 0px;">
-				<p style="font-size: 28px;">ورود</p>
-				<form action="" method="post" onsubmit="return validateLoginForm()">
-					{% csrf_token %}
-					{% for field in form %}
-					<div class="row" style="background-color: #ecf0f1; margin: 0px;">
-						<div class="col-md-3" style="padding: 0px;">{{ field.label }}</div>
-						<div class="col-md-9" style="padding: 0px;">{{ field }}</div>
-					</div>
-					{% endfor %}
-					<button id="login-btn" class="btn btn-primary btn-block" type="submit" style="width: 200px; margin-bottom: 10px;">ثبت</button>
-				</form>
-				<a href="/register">ثبت نام</a>
+{% block content %}
+	<div id="main">
+		<div class="carousel">
+			<div>
+				<img src="{% static "images/img1.jpg" %}" />
+				<h3 style="color: #ffffff;">فیلم سینمایی نهنگ عنبر</h3>
+			</div>
+			<div>
+				<img src="{% static "images/img2.jpg" %}" />
+				<h3 style="color: #ffffff;">نمایش هامون بازها</h3>
+			</div>
+			<div>
+				<img src="{% static "images/img3.jpg" %}" />
+				<h3 style="color: #ffffff;">نمایشگاه نقّاشی پاولیون</h3>
+			</div>
+			<div>
+				<img src="{% static "images/img4.jpg" %}" />
+				<h3 style="color: #ffffff;">مسابقه والیبال: ایران - آمریکا</h3>
+			</div>
+			<div>
+				<img src="{% static "images/img5.jpg" %}" />
+				<h3 style="color: #ffffff;">دوئت فلوت و گيتار ( فيروزه نوايي، ليلي افشار )</h3>
 			</div>
 		</div>
-		<div class="row">
-			<div id="sidebar" class="well" style="margin: 0px;">
-				<p style="font-size: 28px;">رویدادها</p>
-				<details><summary><i class="glyphicon glyphicon-film"></i>
-					<b>سینما</b>
-				</summary>
-				<ul class="nav nav-pills nav-stacked">
-					<li><a href="events/cinema/">تمامی رویدادها</a></li>
-					<li><a href="events/cinema/action/">اکشن</a></li>
-					<li><a href="events/cinema/comedy/">کمدی</a></li>
-					<li><a href="events/cinema/documentary/">مستند</a></li>
-					<li><a href="events/ciname/drama/">درام</a></li>
-					<li><a href="events/cinama/thriller/">ترسناک</a></li>
-					<li><a href="events/cinema/mystery/">معمّایی</a></li>
-					<li><a href="events/cinema/scifi/">علمی-تخیّلی</a></li>
-				</ul></details>
-				<details><summary><i class="glyphicon glyphicon-eye-open"></i>
-					<b>تئاتر</b>
-				</summary>
-				<ul class="nav nav-pills nav-stacked">
-					<li><a href="events/theater/">تمامی رویدادها</a></li>
-					<li><a href="events/theater/drama/">درام</a></li>
-					<li><a href="events/theater/musical/">موزیکال</a></li>
-					<li><a href="events/theater/comedy/">کمدی</a></li>
-					<li><a href="events/theater/tragedy/">تراژدی</a></li>
-				</ul></details>
-				<details><summary><i class="glyphicon glyphicon-picture"></i>
-					<b>نمایشگاه</b>
-				</summary>
-				<ul class="nav nav-pills nav-stacked">
-					<li><a href="events/exhibition/">تمامی رویدادها</a></li>
-					<li><a href="events/exhibition/painting/">نقّاشی</a></li>
-					<li><a href="events/exhibition/photography/">عکّاسی</a></li>
-					<li><a href="events/exhibition/sculpture/">مجسّمه سازی</a></li>
-				</ul></details>
-				<details><summary><i class="glyphicon glyphicon-knight"></i>
-					<b>ورزش</b>
-				</summary>
-				<ul class="nav nav-pills nav-stacked">
-					<li><a href="events/sports/">تمامی رویدادها</a></li>
-					<li><a href="events/sports/football/">فوتبال</a></li>
-					<li><a href="events/sports/volleyball/">والیبال</a></li>
-					<li><a href="events/sports/basketball/">بسکتبال</a></li>
-					<li><a href="events/sports/tennis/">تنیس</a></li>
-				</ul></details>
-				<details><summary><i class="glyphicon glyphicon-music"></i>
-					<b>موسیقی</b>
-				</summary>
-				<ul class="nav nav-pills nav-stacked">
-					<li><a href="events/music/">تمامی رویدادها</a></li>
-					<li><a href="events/music/classic/">سنّتی</a></li>
-					<li><a href="events/music/pop/">پاپ</a></li>
-					<li><a href="events/music/rock/">راک</a></li>
-				</ul></details>
-			</div>
-		</div>
-	</aside>
-	<section class="col-md-6 main">
-		<div id="main">
-			<div class="carousel">
-				<div>
-					<img src="{% static "images/img1.jpg" %}" />
-					<h3 style="color: #ffffff;">فیلم سینمایی نهنگ عنبر</h3>
-				</div>
-				<div>
-					<img src="{% static "images/img2.jpg" %}" />
-					<h3 style="color: #ffffff;">نمایش هامون بازها</h3>
-				</div>
-				<div>
-					<img src="{% static "images/img3.jpg" %}" />
-					<h3 style="color: #ffffff;">نمایشگاه نقّاشی پاولیون</h3>
-				</div>
-				<div>
-					<img src="{% static "images/img4.jpg" %}" />
-					<h3 style="color: #ffffff;">مسابقه والیبال: ایران - آمریکا</h3>
-				</div>
-				<div>
-					<img src="{% static "images/img5.jpg" %}" />
-					<h3 style="color: #ffffff;">دوئت فلوت و گيتار ( فيروزه نوايي، ليلي افشار )</h3>
-				</div>
-			</div>
-		</div>
-	</section>
-	<aside id="sidebar-2" class="col-md-2">
-		<div class="row">
-			<div class="col-md-12 well" style="margin: 0px;">
-				<p style="font-size: 28px;">جدیدترین ها</p>
-				<ul class="list-group" style="margin: 0;">
-					<a href="events/1/"><li class="list-group-item">
-						عنوان اصلی رویداد ۱
-					</li></a>
-					<li class="list-group-item">
-						<a href="events/1/">عنوان اصلی رویداد ۲</a>
-					</li>
-					<li class="list-group-item">
-						<a href="events/1/">عنوان اصلی رویداد ۳</a>
-					</li>
-					<li class="list-group-item">
-						<a href="events/1/">عنوان اصلی رویداد ۴</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-12 well" style="margin: 0px;">
-				<p style="font-size: 28px;">پرطرفدارترین ها</p>
-				<ul class="list-group" style="margin: 0;">
-					<a href="events/1/"><li class="list-group-item">
-						عنوان اصلی رویداد ۱
-					</li></a>
-					<li class="list-group-item">
-						<a href="events/1/">عنوان اصلی رویداد ۲</a>
-					</li>
-					<li class="list-group-item">
-						<a href="events/1/">عنوان اصلی رویداد ۳</a>
-					</li>
-					<li class="list-group-item">
-						<a href="events/1/">عنوان اصلی رویداد ۴</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</aside>
-	<script type="text/javascript" src="{% static "scripts/jquery-1.9.1.min.js" %}"></script>
-	<script type="text/javascript" src="{% static "scripts/bootstrap.min.js" %}"></script>
-	<script type="text/javascript" src="{% static "scripts/slick.min.js" %}"></script>
-	<script type="text/javascript" src="{% static "scripts/mcustom.js" %}"></script>
-	<script type="text/javascript">
-		$(document).ready(function(){
-			$('.carousel').slick({
-				dots: true,
-				rtl: true,
-				autoplay: true
-			});
-		});
-	</script>
-	<script rel="stylesheet" href="{% static "scripts/convert-to-persian.js" %}"></script>
-</body>
-</html>
+	</div>
+{% endblock %}

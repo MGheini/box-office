@@ -2,7 +2,10 @@
 <html dir="rtl">
 <head>
 	<meta charset="UTF-8">
-	<title>گیشه</title>
+	<title>
+	{% block title %}
+	{% endblock %}
+	</title>
 	{% load staticfiles %}
 	<link rel="stylesheet" href="{% static "styles/bootstrap.min.css" %}" />
 	<link rel="stylesheet" href="{% static "styles/bootstrap-rtl.min.css" %}" />
@@ -12,6 +15,7 @@
 	<link rel="stylesheet" href="{% static "styles/slick-theme.css" %}" />
 </head>
 <body>
+	{% if home %}
 	<header class="col-md-10 col-md-offset-1">
 		<h1 class="col-md-10 col-md-offset-1 hidden-xs" style="color: #ffffff;">به گیشه خوش آمدید!</h1>
 		<h2 class="col-md-10 col-md-offset-1 visible-xs" style="color: #ffffff;">به گیشه خوش آمدید!</h2>
@@ -21,6 +25,7 @@
 		
 		<img class="hidden-sm hidden-xs" id="ticket-img" src="{% static "images/Ticket.png" %}" style="width: 210px; height=210px" />
 	</header>
+	{% endif %}
 	<nav class="navbar navbar-default col-md-10 col-md-offset-1">
 		<!-- Brand and toggle get grouped for better mobile display -->
 		<div class="navbar-header">
@@ -42,6 +47,24 @@
 		</div><!-- /.navbar-collapse -->
 	</nav>
 	<aside id="sidebar-1" class="col-md-2 col-md-offset-1">
+		{% if visitor %}
+		<div class="row">
+			<div class="col-md-12 well" style="margin: 0px;">
+				<p style="font-size: 28px;">ورود</p>
+				<form action="" method="post" onsubmit="return validateLoginForm()">
+					{% csrf_token %}
+					{% for field in form %}
+					<div class="row" style="background-color: #ecf0f1; margin: 0px;">
+						<div class="col-md-3" style="padding: 0px;">{{ field.label }}</div>
+						<div class="col-md-9" style="padding: 0px;">{{ field }}</div>
+					</div>
+					{% endfor %}
+					<button id="login-btn" class="btn btn-primary btn-block" type="submit" style="width: 200px; margin-bottom: 10px;">ثبت</button>
+				</form>
+				<a href="/register">ثبت نام</a>
+			</div>
+		</div>
+		{% elif member %}
 		<div class="row">
 			<div class="col-md-12 well" style="margin: 0px;">
 				<p style="font-size: 28px;">کاربر عزیز، خوش آمدید</p>
@@ -59,6 +82,25 @@
 				</ul>
 			</div>
 		</div>
+		{% elif organizer %}
+		<div class="row">
+			<div class="col-md-12 well" style="margin: 0px;">
+				<p style="font-size: 28px;">برگزارکننده عزیز، خوش آمدید</p>
+				<ul class="list-group" style="margin: 0;">
+					<a href=""><li class="list-group-item">
+						<span class="glyphicon glyphicon-plus"></span>
+						افزودن رویداد جدید
+					</li></a>
+					<li class="list-group-item">
+						<a href="#">
+							<span class="glyphicon glyphicon-log-out"></span>
+							خروج
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		{% endif %}
 		<div class="row">
 			<div id="sidebar" class="well" style="margin: 0px;">
 				<p style="font-size: 28px;">رویدادها</p>
@@ -117,30 +159,8 @@
 		</div>
 	</aside>
 	<section class="col-md-6 main">
-		<div id="main">
-			<div class="carousel">
-				<div>
-					<img src="{% static "images/img1.jpg" %}" />
-					<h3 style="color: #ffffff;">فیلم سینمایی نهنگ عنبر</h3>
-				</div>
-				<div>
-					<img src="{% static "images/img2.jpg" %}" />
-					<h3 style="color: #ffffff;">نمایش هامون بازها</h3>
-				</div>
-				<div>
-					<img src="{% static "images/img3.jpg" %}" />
-					<h3 style="color: #ffffff;">نمایشگاه نقّاشی پاولیون</h3>
-				</div>
-				<div>
-					<img src="{% static "images/img4.jpg" %}" />
-					<h3 style="color: #ffffff;">مسابقه والیبال: ایران - آمریکا</h3>
-				</div>
-				<div>
-					<img src="{% static "images/img5.jpg" %}" />
-					<h3 style="color: #ffffff;">دوئت فلوت و گيتار ( فيروزه نوايي، ليلي افشار )</h3>
-				</div>
-			</div>
-		</div>
+	{% block content %}
+	{% endblock %}
 	</section>
 	<aside id="sidebar-2" class="col-md-2">
 		<div class="row">
@@ -185,12 +205,23 @@
 	<script type="text/javascript" src="{% static "scripts/jquery-1.9.1.min.js" %}"></script>
 	<script type="text/javascript" src="{% static "scripts/bootstrap.min.js" %}"></script>
 	<script type="text/javascript" src="{% static "scripts/slick.min.js" %}"></script>
+	<script type="text/javascript" src="{% static "scripts/mcustom.js" %}"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$('.carousel').slick({
 				dots: true,
 				rtl: true,
 				autoplay: true
+			});
+		});
+		$('details summary').each(function(){
+			$(this).nextAll().wrapAll('<div id="wrap"></div>');
+		});
+		$('details').attr('open','').find('#wrap').css('display','none');
+		$('details summary').click(function(e) {
+			e.preventDefault();
+			$(this).siblings('div#wrap').slideToggle(function(){
+				$(this).parent('details').toggleClass('open');
 			});
 		});
 	</script>
