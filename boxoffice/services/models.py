@@ -17,6 +17,34 @@ class SubCategory(models.Model):
 	def __str__(self):
 		return self.subcategory_name
 
+# All categories we have
+# سینما
+# 	اکشن
+# 	کمدی
+# 	مستند
+# 	درام
+# 	ترسناک
+# 	معمایی
+# 	علمی-تخیلی
+# تئاتر
+# 	درام
+# 	موزیکال
+# 	کمدی
+# 	تراژدی
+# نمایشگاه
+# 	نقاشی
+# 	عکاسی
+# 	مجسمه سازی
+# ورزش
+# 	فوتبال
+# 	والیبال
+# 	بسکتبال
+# 	تنیس
+# موسیقی
+# 	سنتی
+# 	پاپ
+# 	راک
+
 class Event(models.Model):
 	event_category = models.ForeignKey(Category)
 	event_subcategory  = ChainedForeignKey(SubCategory,
