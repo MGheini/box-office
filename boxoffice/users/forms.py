@@ -25,6 +25,10 @@ class MemberRegModelForm(forms.ModelForm):
 			'pre_phone_number': 'پیش شماره',
 			'phone_number': 'شماره تلفن',
 		}
+		widgets = {
+			'pre_phone_number': forms.TextInput(attrs={'placeholder': ' مثلا: 021'}),
+			'phone_number': forms.TextInput(attrs={'placeholder': ' مثلا: 2200112277'}),
+		}
 
 class OrganizerRegModelForm(forms.ModelForm):
 	organizer_first_name = forms.CharField(required=True, label='نام', widget=forms.TextInput(attrs={'placeholder': ' مثلا: مژده'}))
