@@ -1,8 +1,14 @@
 from django import forms
-from .models import Event
+from .models import Event, Ticket
+
+class TicketModelForm(forms.ModelForm):
+
+	class Meta:
+		model = Ticket
+		fields = ['ticket_type', 'ticket_price', 'total_capacity']
 
 class EventModelForm(forms.ModelForm):
-	
+	# ticket = forms.CharField(required=True, label='ربلیت‌ها', widget=forms.Select)
 	class Meta:
 		model = Event
 		exclude = ['submit_date', 'organizer']
@@ -16,4 +22,8 @@ class EventModelForm(forms.ModelForm):
 			'event_description': 'توضیحات تکمیلی',
 			'event_deadline': 'آخرین مهلت خرید بلیت',
 			'event_date': 'زمان برگزاری',
+			'ticket': 'بلیت‌ها',
 		}
+		widgets = {
+          'event_description': forms.Textarea(attrs={'rows':4, 'maxlength': 255}),
+        }
