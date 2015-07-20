@@ -9,8 +9,8 @@ GENDER_CHOICES = (
 )
 
 class MemberRegModelForm(forms.ModelForm):
-	member_first_name = forms.CharField(required=True, label='نام')
-	member_last_name = forms.CharField(required=True, label='نام خانوادگی')
+	member_first_name = forms.CharField(required=True, label='نام', widget=forms.TextInput(attrs={'placeholder': ' مثلا: پردیس'}))
+	member_last_name = forms.CharField(required=True, label='نام خانوادگی', widget=forms.TextInput(attrs={'placeholder': ' Ù…Ø«Ù„Ø§: Ù…Ú˜Ø¯Ù‡'}))
 	member_username = forms.CharField(required=True, label='نام کاربری')
 	member_password = forms.CharField(required=True, label='رمز عبور', widget=forms.PasswordInput)
 	member_password2 = forms.CharField(required=True, label='تکرار رمز عبور', widget=forms.PasswordInput)
