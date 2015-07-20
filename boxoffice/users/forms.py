@@ -11,7 +11,7 @@ GENDER_CHOICES = (
 class MemberRegModelForm(forms.ModelForm):
 	member_first_name = forms.CharField(required=True, label='نام', widget=forms.TextInput(attrs={'placeholder': ' مثلا: پردیس'}))
 	member_last_name = forms.CharField(required=True, label='نام خانوادگی', widget=forms.TextInput(attrs={'placeholder': ' مثلا: قینی'}))
-	member_username = forms.CharField(required=True, label='نام کاربری', , widget=forms.TextInput(attrs={'placeholder': ' مثلا: mozhpar'}))
+	member_username = forms.CharField(required=True, label='نام کاربری', widget=forms.TextInput(attrs={'placeholder': ' مثلا: mozhpar'}))
 	member_password = forms.CharField(required=True, label='رمز عبور', widget=forms.PasswordInput(attrs={'placeholder': ' هیچگاه گذرواژتان را فاش نکنید.'}))
 	member_password2 = forms.CharField(required=True, label='تکرار رمز عبور', widget=forms.PasswordInput(attrs={'placeholder': ' تکرار گذرواژه'}))
 	member_email = forms.EmailField(required=True, label='رایانامه', widget=forms.TextInput(attrs={'placeholder': ' مثلا: mozhpar@gisheh.ir'}))
