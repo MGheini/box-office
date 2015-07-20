@@ -14,9 +14,13 @@
 </head>
 <body>
 	<header class="col-md-10 col-md-offset-1">
-		<h1 style="color: #ffffff;">به گیشه خوش آمدید!</h1>
-		<h3 style="color: #ffffff;">بلیت رویدادهای فرهنگی، هنری و ورزشی مورد علاقه ی خود را، هم اینک از گیشه تهیّه کنید.</h3>
-		<img id="ticket-img" src="{% static "images/Ticket.gif" %}" />
+		<h1 class="col-md-10 col-md-offset-1 hidden-xs" style="color: #ffffff;">به گیشه خوش آمدید!</h1>
+		<h2 class="col-md-10 col-md-offset-1 visible-xs" style="color: #ffffff;">به گیشه خوش آمدید!</h2>
+
+		<h3 class="col-md-8 pull-right hidden-xs" style="color: #ffffff;">بلیت رویدادهای فرهنگی، هنری و ورزشی مورد علاقه ی خود را، هم اینک از گیشه تهیّه کنید.</h3>
+		<h4 class="col-md-8 pull-right visible-xs" style="color: #ffffff;">بلیت رویدادهای فرهنگی، هنری و ورزشی مورد علاقه ی خود را، هم اینک از گیشه تهیّه کنید.</h4>
+		
+		<img class="hidden-sm hidden-xs" id="ticket-img" src="{% static "images/Ticket.png" %}" style="width: 210px; height=210px" />
 	</header>
 	<nav class="navbar navbar-default col-md-10 col-md-offset-1">
 		<!-- Brand and toggle get grouped for better mobile display -->
