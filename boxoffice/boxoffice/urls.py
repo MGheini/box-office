@@ -25,4 +25,5 @@ urlpatterns = [
     url(r'^history/$', 'services.views.history'),
     url(r'^logout/$', 'users.views.our_logout'),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^chaining/', include('smart_selects.urls')),
 ]

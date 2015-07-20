@@ -1,18 +1,36 @@
-
 from django.db import models
+from datetime import datetime
+from smart_selects.db_fields import ChainedForeignKey
 
 from users.models import Member, Organizer
 
+class Category(models.Model):
+	category_name = models.CharField(max_length=100)
+
+	def __str__(self):
+		return self.category_name
+
+class SubCategory(models.Model):
+	category = models.ForeignKey(Category)
+	subcategory_name = models.CharField(max_length=100)
+
+	def __str__(self):
+		return self.subcategory_name
+
 class Event(models.Model):
-	event_title = models.CharField(max_length=255)
-	event_category = models.CharField(max_length=255)
-	event_subcategory = models.CharField(max_length=255)
+	event_category = models.ForeignKey(Category)
+	event_subcategory  = ChainedForeignKey(SubCategory,
+		chained_field="category",
+		chained_model_field="category",
+		show_all=False,
+        auto_choose=True)
+	event_title = models.CharField(max_length=255, blank="True")
 	event_image = models.ImageField(upload_to='media/', blank="True")
-	event_place = models.CharField(max_length=255)
-	event_date = models.DateField()
-	event_description = models.TextField()
-	event_deadline = models.DateField()
-	submit_date = models.DateField()
+	event_place = models.CharField(max_length=255, blank="True")
+	event_description = models.TextField(blank="True")
+	event_date = models.DateTimeField(default=datetime.now, blank=True)
+	event_deadline = models.DateTimeField(default=datetime.now, blank=True)
+	submit_date = models.DateTimeField(default=datetime.now, blank=True)
 	organizer = models.ForeignKey(Organizer)
 
 	def __str__(self):
@@ -33,9 +51,9 @@ class Feedback(models.Model):
 class Ticket(models.Model):
 	event = models.ForeignKey(Event)
 	ticket_type = models.CharField(max_length=255)
-	total_num = models.PositiveSmallIntegerField()
-	purchased_num = models.PositiveSmallIntegerField()
 	ticket_price = models.PositiveIntegerField()
+	total_capacity = models.PositiveSmallIntegerField()
+	purchased_num = models.PositiveSmallIntegerField()
 
 	class Meta:
 		unique_together = ("event", "ticket_type")
