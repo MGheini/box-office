@@ -18,10 +18,11 @@ def about_us(request):
 	return render(request, 'Gisheh.html', {'form': form, 'visitor': True})
 
 def event_details(request, event_id):
-	return render(request, 'view-event-details.html', {})
+	form = LoginForm()
+	return render(request, 'view-event-details.html', {'form': form, 'visitor': True})
 
 def purchase(request, event_id):
-	return render(request, 'buy-ticket.html', {})
+	return render(request, 'buy-ticket.html', {'member': True})
 
 def rate(request, event_id):
 	return HttpResponse('rate')
@@ -30,21 +31,20 @@ def post(request, event_id):
 	return HttpResponse('post')
 
 def category(request, category):
-	return render(request, 'view-category-events.html', {})
+	form = LoginForm()
+	return render(request, 'view-category-events.html', {'form': form, 'visitor': True})
 
 def subcategory(request, category, subcategory):
-	return render(request, 'view-sub-category-events.html', {})
-
-# def submit(request):
-# 	return render(request, 'submit-new-event.html', {})
+	form = LoginForm()
+	return render(request, 'view-sub-category-events.html', {'form': form, 'visitor': True})
 
 def submit(request):
 	event_form = EventModelForm()
-	return render(request, 'submit-new-event.html', {'event_form': event_form})
+	return render(request, 'submit-new-event.html', {'event_form': event_form, 'organizer': True})
 
 
 def receipt(request, order_id):
-	return render(request, 'view-receipt.html', {})
+	return render(request, 'view-receipt.html', {'member': True})
 
 def history(request):
 	return render(request, 'purchase-history.html', {'member': True})

@@ -21,7 +21,6 @@ class MemberRegModelForm(forms.ModelForm):
 		model = Member
 		fields = ['member_first_name', 'member_last_name', 'gender', 'member_username', 'member_password', 'member_password2', 'member_email', 'pre_phone_number', 'phone_number']
 		labels = {
-			'gender': 'جنسیت',
 			'pre_phone_number': 'پیش شماره',
 			'phone_number': 'شماره تلفن',
 		}
