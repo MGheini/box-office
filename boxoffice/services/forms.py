@@ -26,8 +26,8 @@ class EventModelForm(forms.ModelForm):
 		}
 		widgets = {
           		'event_description': forms.Textarea(attrs={'rows':4, 'maxlength': 255, 'placeholder': ' مثلا: نیم ساعت قبل از شروع برنامه در سالن حضور داشته باشید.'}),
-			'event_deadline': forms.TextInput(attrs={'id':'date_input', 'placeholder': '2015-07-06 22:54'}),
-			'event_date': forms.TextInput(attrs={'id':'date_input_2', 'placeholder': '2015-07-06 22:54'}),
+			'event_deadline': forms.TextInput(attrs={'id':'date_input', 'placeholder': '1394-04-05 20:14'}),
+			'event_date': forms.TextInput(attrs={'id':'date_input_2', 'placeholder': '1394-04-05 20:14'}),
 			'event_place': forms.TextInput(attrs={'placeholder': ' استادیوم آزادی'}),
 			'event_title': forms.TextInput(attrs={'placeholder': ' مسابقه والیبال ایران-آمریکا'}),
         	}
