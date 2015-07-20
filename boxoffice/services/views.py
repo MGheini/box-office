@@ -9,10 +9,12 @@ def home(request):
 	return render(request, 'home.html', {'form': form, 'home': True, 'visitor': True, 'member': False, 'organizer': False})
 
 def answer(request):
-	return HttpResponse('FAQ')
+	form = LoginForm()
+	return render(request, 'FAQ.html', {'form': form, 'visitor': True})
 
 def about_us(request):
-	return HttpResponse('Gisheh')
+	form = LoginForm()
+	return render(request, 'Gisheh.html', {'form': form, 'visitor': True})
 
 def event_details(request, event_id):
 	return render(request, 'view-event-details.html', {})

@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block title %}
+	سؤالات متداول
+{% endblock %}
+
+{% block content %}
+	<div style="background-color: #2c3e50; padding: 7px; border-radius: 4px;">
+		<div class="well" style="margin-bottom: 7px;">
+			<h2 style="text-align: center;">به صفحه‌ی پرسش‌های متداول گیشه خوش آمدید!</h2>
+			<br />
+			هدف از این صفحه پاسخ به پرسش های شما کاربران محترم است. از این رو بهبود آن برای ما بسیار اهمیّت دارد. بنابراین خواهشمندیم سؤالات خود را به <a href="mailto:questions@gisheh.com">questions@gisheh.com</a> ارسال کنید. سؤالات ارسال شده، پس از بررسی به این صفحه اضافه خواهند شد. پیشاپیش از شما متشکّریم.
+		</div>
+		<div class="panel-group" id="accordion" role="tablist" style="border-radius: 4px; margin: 0px;" aria-multiselectable="true">
+			<div class="panel panel-default">
+				<div class="panel-heading" role="tab" id="headingOne">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+							<span class="glyphicon glyphicon-question-sign"></span> چگونه از گیشه استفاده کنم؟
+						</a>
+					</h4>
+				</div>
+				<div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+					<div class="panel-body">
+						در صورتی که قصد جست و جو بین رویدادها را دارید، نیاز به حساب کاربری نیست. تنها با استفاده از لینک های سمت راست می توانید بین رویدادها جست و جو کنید و صفحات مربوط به آن ها را مشاهده کنید. جهت خرید و نظردهی راجع به رویدادها نیاز به حساب نوع کاربر دارید و جهت افزودن رویداد نیاز به حساب نوع برگزار کننده دارید. پس از ثبت نام و ورود به حسابتان، می توانید از خدمات مذکور استفاده کنید.
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
