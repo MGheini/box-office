@@ -42,7 +42,7 @@ var __slice = [].slice;
 
       _results = [];
       for (_i = 1, _ref = this.options.numStars; 1 <= _ref ? _i <= _ref : _i >= _ref; 1 <= _ref ? _i++ : _i--) {
-        _results.push(this.$el.append("<span style='color: #FFD700; font-size: 50px;' class='glyphicon .glyphicon-star-empty'></span>"));
+        _results.push(this.$el.append("<span style='color: #FFD700; font-size: 25px;' class='glyphicon .glyphicon-star-empty'></span>"));
       }
       return _results;
     };

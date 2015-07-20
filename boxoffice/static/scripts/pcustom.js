@@ -59,7 +59,7 @@ $(document).ready(function() {
             // ticketType = document.getElementById('type1').innerHTML;
             // ticketPrice = document.getElementById('price1').innerHTML;
             // ticketNum = document.getElementById('num1').value;
-            // flag = true;
+            flag = true;
         }
         else if (document.getElementById('radio2').checked) {
             $('ul.setup-panel li:eq(0)').addClass('disabled');
@@ -68,7 +68,7 @@ $(document).ready(function() {
             // ticketType = document.getElementById('type2').innerHTML;
             // ticketPrice = document.getElementById('price2').innerHTML;
             // ticketNum = document.getElementById('num2').value;
-            // flag = true;
+            flag = true;
         }
         else if (document.getElementById('radio3').checked) {
             $('ul.setup-panel li:eq(0)').addClass('disabled');
@@ -77,14 +77,18 @@ $(document).ready(function() {
             // ticketType = document.getElementById('type3').innerHTML;
             // ticketPrice = document.getElementById('price3').innerHTML;
             // ticketNum = document.getElementById('num3').value;
-            // flag = true;
+            flag = true;
         }
         else { // none is chosen
+            $('ul.setup-panel li a[href="#step-1"]').trigger('click');
+            $('ul.setup-panel li:eq(1)').addClass('disabled');
+            $('ul.setup-panel li:eq(2)').addClass('disabled');
             var error = document.getElementById('error-msg1');
             error.style.visibility = 'visible';
             setTimeout(function() {
                 error.style.visibility = 'hidden';
             }, 3000);
+            return false;
         }
         // if(flag) {
         //     document.getElementById('factorBody').innerHTML = "";

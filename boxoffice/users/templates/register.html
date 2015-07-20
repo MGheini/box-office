@@ -4,6 +4,21 @@
 	ثبت نام
 {% endblock %}
 
+{% block style %}
+<style type="text/css">
+	ul {
+		list-style-type: none;
+	}
+	li {
+		display: inline;
+	}
+	li input {
+		width: 26px;
+		height: 26px;
+	}
+</style>
+{% endblock %}
+
 {% block content %}
 	<div id="reg-form">
 		<div class="well" style="margin: 0px;">
@@ -22,7 +37,7 @@
 							{% csrf_token %}
 							{% for field in member_form %}
 							<div class="row" style="background-color: #ecf0f1; margin: 0px;">
-								<div class="col-md-2">{{ field.label }}</div>
+								<div class="col-md-2" style="padding: 5px">{{ field.label }}</div>
 								<div class="col-md-5">{{ field }}</div>
 								<div class="col-md-5 error">{{ field.errors }}</div>
 							</div>
@@ -37,7 +52,7 @@
 							{% csrf_token %}
 							{% for field in organizer_form %}
 							<div class="row" style="background-color: #ecf0f1; margin: 0px;">
-								<div class="col-md-2">{{ field.label }}</div>
+								<div class="col-md-2" style="padding: 5px">{{ field.label }}</div>
 								<div class="col-md-5">{{ field }}</div>
 								<div class="col-md-5 error">{{ field.errors }}</div>
 							</div>

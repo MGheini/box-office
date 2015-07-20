@@ -47,12 +47,13 @@ class SubCategory(models.Model):
 # 	راک
 
 class Event(models.Model):
-	event_category = models.ForeignKey(Category)
-	event_subcategory  = ChainedForeignKey(SubCategory,
+	category = models.ForeignKey(Category)
+	subcategory = ChainedForeignKey(SubCategory,
 		chained_field="category",
 		chained_model_field="category",
 		show_all=False,
-        auto_choose=True)
+        auto_choose=True,
+        null=True)
 	event_title = models.CharField(max_length=255, blank="True")
 	event_image = models.ImageField(upload_to='media/', blank="True")
 	event_place = models.CharField(max_length=255, blank="True")
