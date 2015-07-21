@@ -4,15 +4,15 @@ from .models import Member, Organizer
 
 class MemberAdmin(admin.ModelAdmin):
 
-	list_display = ['username', 'gender_fa', 'email', 'date_joined', 'pre_phone_number', 'phone_number']
+	list_display = ['username', 'gender_fa', 'email', 'date_joined', 'pre_phone_number_fa', 'phone_number_fa']
 
-	def pre_phone_number(self, obj):
+	def pre_phone_number_fa(self, obj):
 		return obj.pre_phone_number
-	pre_phone_number.short_description = 'پیش‌شماره'
+	pre_phone_number_fa.short_description = 'پیش‌شماره'
 
-	def phone_number(self, obj):
+	def phone_number_fa(self, obj):
 		return obj.phone_number
-	phone_number.short_description = 'شماره تلفن'
+	phone_number_fa.short_description = 'شماره تلفن'
 
 	def gender_fa(self, obj):
 		return obj.gender
