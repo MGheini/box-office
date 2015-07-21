@@ -46,9 +46,6 @@ class EventAdmin(admin.ModelAdmin):
 
 
 class OrderAdmin(admin.ModelAdmin):
-<<<<<<< HEAD
-	list_filter = ('order_date', ('order_date', DateRangeFilter))
-=======
 	list_filter = ['order_date', ('order_date', DateRangeFilter)]
 	list_display = ('member_fa', 'ticket_fa', 'num_fa', 'total_price_fa', 'order_date_fa')
 
@@ -111,7 +108,6 @@ class FeedbackAdmin(admin.ModelAdmin):
 	def post_fa(Self, obj):
 		return obj.post
 	post_fa.short_description = 'نظر داده شده'
->>>>>>> 4f63006114c49313fb4481080a1b7adf1e055b1d
 
 admin.site.register(Event, EventAdmin)
 admin.site.register(Feedback, FeedbackAdmin)
