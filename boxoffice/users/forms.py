@@ -3,6 +3,11 @@ from django import forms
 
 from .models import Member, Organizer
 
+GENDER_CHOICES = (
+    ('M', 'مرد'),
+    ('F', 'زن'),
+)
+
 class MemberRegModelForm(forms.ModelForm):
 	member_first_name = forms.CharField(required=True, label='نام')
 	member_last_name = forms.CharField(required=True, label='نام خانوادگی')
@@ -10,6 +15,7 @@ class MemberRegModelForm(forms.ModelForm):
 	member_password = forms.CharField(required=True, label='رمز عبور', widget=forms.PasswordInput)
 	member_password2 = forms.CharField(required=True, label='تکرار رمز عبور', widget=forms.PasswordInput)
 	member_email = forms.EmailField(required=True, label='رایانامه')
+	gender = forms.ChoiceField(required=True, label='جنسیت', widget=forms.RadioSelect, choices=GENDER_CHOICES)
 
 	class Meta:
 		model = Member

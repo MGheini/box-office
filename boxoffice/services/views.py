@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 from users.forms import LoginForm
+from services.forms import EventModelForm
 
 def home(request):
 	form = LoginForm()
@@ -32,8 +33,13 @@ def category(request, category):
 def subcategory(request, category, subcategory):
 	return render(request, 'view-sub-category-events.html', {})
 
+# def submit(request):
+# 	return render(request, 'submit-new-event.html', {})
+
 def submit(request):
-	return render(request, 'submit-new-event.html', {})
+	event_form = EventModelForm()
+	return render(request, 'submit-new-event.html', {'event_form': event_form})
+
 
 def receipt(request, order_id):
 	return render(request, 'view-receipt.html', {})
