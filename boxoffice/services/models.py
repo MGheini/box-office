@@ -71,9 +71,9 @@ class Event(models.Model):
 	event_title = models.CharField(max_length=255, blank="True")
 	event_image = models.ImageField(upload_to='media/', blank="True")
 	event_place = models.CharField(max_length=255, blank="True")
-	event_description = models.TextField(blank="True")
-	event_date = models.DateTimeField(default=datetime.now, blank=True)
-	event_deadline = models.DateTimeField(default=datetime.now, blank=True)
+	event_description = models.TextField(blank=True)
+	event_date = models.DateTimeField(blank=True)
+	event_deadline = models.DateTimeField(blank=True)
 	submit_date = models.DateTimeField(default=datetime.now, blank=True)
 	organizer = models.ForeignKey(Organizer)
 

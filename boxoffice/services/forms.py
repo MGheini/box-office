@@ -25,5 +25,9 @@ class EventModelForm(forms.ModelForm):
 			'ticket': 'بلیت‌ها',
 		}
 		widgets = {
-          'event_description': forms.Textarea(attrs={'rows':4, 'maxlength': 255}),
+			'event_description': forms.Textarea(attrs={'rows':4, 'maxlength': 255, 'placeholder': ' مثلا: نیم ساعت قبل از شروع برنامه در سالن حضور داشته باشید.'}),
+			'event_deadline': forms.TextInput(attrs={'id':'date_input', 'placeholder': '2015-07-06 22:54'}),
+			'event_date': forms.TextInput(attrs={'id':'date_input_2', 'placeholder': '2015-07-06 22:54'}),
+			'event_place': forms.TextInput(attrs={'placeholder': ' مثلا: استادیودم آزادی'}),
+			'event_title': forms.TextInput(attrs={'placeholder': ' مثلا: مسابقه والیبال ایران-آمریکا'}),
         }
