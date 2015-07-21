@@ -54,14 +54,14 @@ class Event(models.Model):
 		show_all=False,
         auto_choose=True,
         null=True)
-	ticket = models.ForeignKey(Ticket, null=True)
-	event_title = models.CharField(max_length=255, blank="True")
-	event_image = models.ImageField(upload_to='media/', blank="True")
-	event_place = models.CharField(max_length=255, blank="True")
-	event_description = models.TextField(blank="True")
-	event_date = models.DateTimeField(blank=True)
-	event_deadline = models.DateTimeField(blank=True)
-	submit_date = models.DateTimeField(default=datetime.now, blank=True)
+	
+	event_title = models.CharField(max_length=255, blank=False)
+	event_image = models.ImageField(upload_to='media/', blank=True)
+	event_place = models.CharField(max_length=255, blank=False)
+	event_description = models.TextField(blank=True)
+	event_date = models.DateTimeField(blank=False)
+	event_deadline = models.DateTimeField(blank=False)
+	submit_date = models.DateTimeField(default=datetime.now, blank=False)
 	organizer = models.ForeignKey(Organizer)
 
 	def __str__(self):
@@ -95,9 +95,9 @@ class Feedback(models.Model):
 class Order(models.Model):
 	member = models.ForeignKey(Member)
 	ticket = models.ForeignKey(Ticket)
-	num = models.PositiveSmallIntegerField()
-	total_price = models.PositiveIntegerField()
-	order_date = models.DateField()
+	num = models.PositiveSmallIntegerField(blank=False)
+	total_price = models.PositiveIntegerField(blank=False)
+	order_date = models.DateField(blank=False)
 
 	def __str__(self):
 		return self.member.user.username + " purchased tickets of " + self.ticket.event.event_title
