@@ -5,7 +5,11 @@ from .models import Event, Feedback, Ticket, Order, Category, SubCategory
 
 class EventAdmin(admin.ModelAdmin):
 	list_filter = ['submit_date', ('submit_date', DateRangeFilter)]
-	list_display = ('event_title_fa', 'event_place_fa', 'event_date_fa', 'event_deadline_fa', 'event_description_fa', 'submit_date_fa', 'category_fa', 'subcategory_fa')
+	list_display = ('organizer_fa', 'event_title_fa', 'event_place_fa', 'event_date_fa', 'event_deadline_fa', 'event_description_fa', 'submit_date_fa', 'category_fa', 'subcategory_fa')
+
+	def organizer_fa(self, obj):
+		return obj.organizer
+	organizer_fa.short_description = 'برگزارکننده'
 
 	def event_title_fa(self, obj):
 		return obj.event_title
