@@ -59,7 +59,8 @@ $(document).ready(function() {
             // ticketType = document.getElementById('type1').innerHTML;
             // ticketPrice = document.getElementById('price1').innerHTML;
             // ticketNum = document.getElementById('num1').value;
-            flag = true;
+            // if ()
+                flag = true;
         }
         else if (document.getElementById('radio2').checked) {
             $('ul.setup-panel li:eq(0)').addClass('disabled');
@@ -68,7 +69,8 @@ $(document).ready(function() {
             // ticketType = document.getElementById('type2').innerHTML;
             // ticketPrice = document.getElementById('price2').innerHTML;
             // ticketNum = document.getElementById('num2').value;
-            flag = true;
+            // if ()
+                flag = true;
         }
         else if (document.getElementById('radio3').checked) {
             $('ul.setup-panel li:eq(0)').addClass('disabled');
