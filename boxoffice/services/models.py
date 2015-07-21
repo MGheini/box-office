@@ -16,7 +16,7 @@ class SubCategory(models.Model):
 	subcategory_name = models.CharField(max_length=100)
 
 	def __str__(self):
-		return self.subcategory_name
+		return self.subcategory_name + " (" + self.category.category_name + ")"
 
 # All categories we have
 # سینما
@@ -78,7 +78,7 @@ class Ticket(models.Model):
 		unique_together = ("event", "ticket_type")
 
 	def __str__(self):
-		return self.ticket_type + " ticket for " + self.event.event_title
+		return self.ticket_type + " (" + self.event.event_title +")"
 
 class Feedback(models.Model):
 	member = models.ForeignKey(Member)
@@ -90,7 +90,7 @@ class Feedback(models.Model):
 		unique_together = ("member", "event")
 
 	def __str__(self):
-		return self.member.user.username + " on " + self.event.event_title
+		return self.event.event_title + " (" + self.member.user.username + ")"
 
 class Order(models.Model):
 	member = models.ForeignKey(Member)
@@ -100,4 +100,4 @@ class Order(models.Model):
 	order_date = models.DateField(blank=False)
 
 	def __str__(self):
-		return self.member.user.username + " purchased tickets of " + self.ticket.event.event_title
+		return self.member.user.username + " (" + self.ticket.event.event_title + ")"
