@@ -4,7 +4,7 @@ from daterange_filter.filter import DateRangeFilter
 from .models import Event, Feedback, Ticket, Order, Category, SubCategory
 
 class EventAdmin(admin.ModelAdmin):
-	list_filter = ('category', 'subcategory', 'organizer')
+	list_filter = ('submit_date', ('submit_date', DateRangeFilter))
 
 class OrderAdmin(admin.ModelAdmin):
 	list_filter = ('order_date', ('order_date', DateRangeFilter))
