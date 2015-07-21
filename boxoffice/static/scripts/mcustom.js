@@ -127,9 +127,16 @@ function validatePassword(password, secondPassword, inputName1, inputName2) {
 }
 
 function react(name, message) {
-	var element = document.getElementsByName(name);
-    target = element[0].parentElement.nextSibling.nextSibling;
-	target.innerHTML = message.fontcolor("red");
+    if (name === "gender") {
+       var element = document.getElementsByName(name);
+       target = element[0].parentElement.parentElement.parentElement.parentElement.nextSibling.nextSibling;
+       target.innerHTML = message.fontcolor("red");
+    }
+    else {
+	   var element = document.getElementsByName(name);
+       target = element[0].parentElement.nextSibling.nextSibling;
+	   target.innerHTML = message.fontcolor("red");
+    }
 }
 
 function validateLoginForm() {
