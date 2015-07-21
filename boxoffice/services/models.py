@@ -46,6 +46,19 @@ class SubCategory(models.Model):
 # 	پاپ
 # 	راک
 
+class Ticket(models.Model):
+	# event = models.ForeignKey(Event)
+	ticket_type = models.CharField(max_length=255)
+	ticket_price = models.PositiveIntegerField()
+	total_capacity = models.PositiveSmallIntegerField()
+	purchased_num = models.PositiveSmallIntegerField()
+
+	# class Meta:
+	# 	unique_together = ("event", "ticket_type")
+
+	def __str__(self):
+		return self.ticket_type + " ticket for " + self.event.event_title
+
 class Event(models.Model):
 	category = models.ForeignKey(Category)
 	subcategory = ChainedForeignKey(SubCategory,
@@ -54,6 +67,7 @@ class Event(models.Model):
 		show_all=False,
         auto_choose=True,
         null=True)
+	ticket = models.ForeignKey(Ticket, null=True)
 	event_title = models.CharField(max_length=255, blank="True")
 	event_image = models.ImageField(upload_to='media/', blank="True")
 	event_place = models.CharField(max_length=255, blank="True")
@@ -77,19 +91,6 @@ class Feedback(models.Model):
 
 	def __str__(self):
 		return self.member.user.username + " on " + self.event.event_title
-
-class Ticket(models.Model):
-	event = models.ForeignKey(Event)
-	ticket_type = models.CharField(max_length=255)
-	ticket_price = models.PositiveIntegerField()
-	total_capacity = models.PositiveSmallIntegerField()
-	purchased_num = models.PositiveSmallIntegerField()
-
-	class Meta:
-		unique_together = ("event", "ticket_type")
-
-	def __str__(self):
-		return self.ticket_type + " ticket for " + self.event.event_title
 
 class Order(models.Model):
 	member = models.ForeignKey(Member)
