@@ -1,5 +1,6 @@
 
 from django.contrib import admin
+
 from .models import Member, Organizer
 
 class MemberAdmin(admin.ModelAdmin):

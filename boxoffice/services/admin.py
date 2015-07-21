@@ -1,6 +1,7 @@
  
 from django.contrib import admin
 from daterange_filter.filter import DateRangeFilter
+
 from .models import Event, Feedback, Ticket, Order, Category, SubCategory
 
 class EventAdmin(admin.ModelAdmin):
@@ -8,7 +9,6 @@ class EventAdmin(admin.ModelAdmin):
 
 class OrderAdmin(admin.ModelAdmin):
 	list_filter = ('order_date', ('order_date', DateRangeFilter))
-	
 
 admin.site.register(Event, EventAdmin)
 admin.site.register(Feedback)
