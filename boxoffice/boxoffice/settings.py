@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'users',
     'services',
     'smart_selects',
+    'daterange_filter',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -92,7 +93,7 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fa-ir'
 
 TIME_ZONE = 'UTC'
 
