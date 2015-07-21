@@ -1,184 +1,181 @@
-<!DOCTYPE html>
-<html dir="rtl">
-<meta charset="UTF-8">
-<head>
-  <title>ثبت رویداد جدید</title>
-  {% load staticfiles %}
-  <link rel="stylesheet" href="{% static "styles/bootstrap.min.css" %}" />
-  <link rel="stylesheet" href="{% static "styles/bootstrap-rtl.min.css" %}" />
-  <link rel="stylesheet" href="{% static "styles/skins/aqua/theme.css" %}">
-  <link rel="stylesheet" href="{% static "styles/farsi-fonts.css" %}">
-  <link rel="stylesheet" href="{% static "styles/pcustom.css" %}" />
-</head>
-<body>
-  <div class="container-fluid">
-    <!-- Middle part -->
-    <div class="col-md-6 col-md-offset-3">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <!-- start of submit-new-event -->
-          <div class="row">
-            <div class="col-md-12">
-              <form method="post" class="form-horizontal">
-                <fieldset class="flip">
-                  <legend>ثبت رویداد جدید</legend>
+{% extends "layout.html" %}
 
-                  <div class="form-group">
-                    <label for="inputTitle" class="col-lg-2 control-label">عنوان</label>
-                    <div class="col-lg-10">
-                      <input type="text" class="form-control" id="inputTitle" placeholder="مثلا: مسابقه والیبال ایران و آمریکا" />
-                    </div>
+{% block title %}
+ثبت رویداد جدید
+{% endblock %}
+
+{% load staticfiles %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static "styles/skins/aqua/theme.css" %}">
+<link rel="stylesheet" href="{% static "styles/pcustom.css" %}" />
+<style type="text/css">
+.row-event {
+background-color: white;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <!-- start of submit-new-event -->
+        <div class="row-event">
+          <div class="col-md-12">
+            <form method="post" class="form-horizontal">
+              <fieldset class="flip">
+                <legend>ثبت رویداد جدید</legend>
+
+                <div class="form-group">
+                  <label for="inputTitle" class="col-lg-2 control-label">عنوان</label>
+                  <div class="col-lg-10">
+                    <input type="text" class="form-control" id="inputTitle" placeholder="مثلا: مسابقه والیبال ایران و آمریکا" />
                   </div>
-
-                  <div class="form-group">
-                    <label for="selectCategory" class="col-lg-2 control-label">دسته</label>
-                    <div class="col-lg-4">
-                      <select class="form-control selectCategory">
-                        <option>فیلم</option>
-                        <option>مسابقه ورزشی</option>
-                        <option>تئاتر</option>
-                      </select>
-                    </div>
-
-                    <label for="selectSubCategory" class="col-lg-2 control-label">زیردسته</label>
-                    <div class="col-lg-4 selectSubCategory">
-                      <select class="form-control">
-                        <option>کمدی</option>
-                        <option>اکشن</option>
-                        <option>تراژدیک</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="inputImage" class="col-lg-2 control-label">انتخاب تصویر</label>
-                    <div class="col-lg-10">
-                      <input type="file" class="form-control" id="inputImage" />
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="inputPlace" class="col-lg-2 control-label">محل برگزاری</label>
-                    <div class="col-lg-10">
-                      <input type="text" class="form-control" id="inputPlace" placeholder="مثلا: سالن میلاد نمایشگاه" />
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="textareaDetails" class="col-lg-2 control-label">جزییات بیشتر</label>
-                    <div class="col-lg-10">
-                      <textarea class="form-control textareaDetails" rows="5" placeholder="با افزودن جزییات برای رویدادی که اضافه می‌کنید کاربران را از ابهام نجات می‌دهید."></textarea>
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="inputDate" class="col-lg-2 control-label">مهلت خرید</label>
-                    <div class="col-lg-10">
-                      <div class="input-group">
-                        <input id="date_input" type="text" class="form-control" placeholder="آخرین مهلتی را که کاربر می‌تواند اقدام به خرید بلیت کند مشخص کنید." style="z-index: 1; position: absolute" />
-                        <span class="input-group-btn" style="z-index: 1;"><button class="btn btn-default" id="date_btn"><span class="glyphicon glyphicon-calendar"></span></button></span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="inputDateOccur" class="col-lg-2 control-label">زمان برگزاری</label>
-                    <div class="col-lg-10">
-                      <div class="input-group">
-                        <input id="date_input_2" type="text" class="form-control" placeholder="زمان برگزاری رویداد را مشخص فرمایید."  style="z-index: 1;"/>
-                        <span class="input-group-btn" ><button class="btn btn-default" id="date_btn_2"><span class="glyphicon glyphicon-calendar"></span></button></span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div  id="ticketDiv">
-                    <div class="form-group">
-                      <label for="inputTicket" class="col-lg-2 control-label">تعیین بلیت‌ها</label>
-                      <div class="col-lg-3">
-                        <input type="text" class="form-control inputTicketType" placeholder="نوع بلیت" />
-                      </div>
-
-                      <div class="col-lg-3">
-                        <div class="input-group">
-                          <input type="text" class="form-control inputTicketPrice" placeholder="قیمت" />
-                          <span class="input-group-addon" style="color: #D6E0EA"><span class="text-primary">تومان</span></span>
-                        </div>
-                      </div>
-
-                      <div class="col-lg-2">
-                        <input type="text" class="form-control inputTicketCapacity" placeholder="ظرفیت" />
-                      </div>
-
-                      <div class="col-lg-1">
-                        <button id="addTicketRow" class="btn btn-default btn-circle"><span class="glyphicon glyphicon-plus"></span></button>
-                      </div>
-                    </div>
-                  </div>
-                  <script>
-                      //var tickets = 0;
-                      var write = document.getElementById('ticketDiv');
-                      function addTicket(e) {
-                        e.preventDefault();
-                        write.innerHTML +=
-                        '<div class="form-group"><label for="inputTicket" class="col-lg-2 control-label"></label><div class="col-lg-3"><input type="text" class="form-control inputTicketType" placeholder="نوع بلیت" /></div>'
-                        + '<div class="col-lg-3"><div class="input-group"><input type="text" class="form-control inputTicketPrice" placeholder="قیمت" /><span class="input-group-addon" style="color: #D6E0EA"><span class="text-primary">تومان</span></span></div></div>'
-                        + '<div class="col-lg-2"><input type="text" class="form-control inputTicketCapacity" placeholder="ظرفیت" /></div>'
-                        + '<br />';
-                        document.getElementById('addTicketRow').addEventListener('click', addTicket);                        
-                      //  tickets++;
-                    }
-
-                    document.getElementById('addTicketRow').addEventListener('click', addTicket);
-                  </script>
                 </div>
 
                 <div class="form-group">
-                  <div class="col-lg-10 col-lg-offset-2">
-                    <button type="submit" class="btn btn-primary">ثبت</button>
-                    <button type="reset" class="btn btn-default">انصراف</button>
+                  <label for="selectCategory" class="col-lg-2 control-label">دسته</label>
+                  <div class="col-lg-4 selectCategory">
+                    <select class="form-control" style="padding: 5px">
+                      <option>فیلم</option>
+                      <option>مسابقه ورزشی</option>
+                      <option>تئاتر</option>
+                    </select>
+                  </div>
+
+                  <label for="selectSubCategory" class="col-lg-2 control-label">زیردسته</label>
+                  <div class="col-lg-4 selectSubCategory">
+                    <select class="form-control" style="padding: 5px">
+                      <option>کمدی</option>
+                      <option>اکشن</option>
+                      <option>تراژدیک</option>
+                    </select>
                   </div>
                 </div>
 
-              </fieldset>
-            </form>
-          </div>
+                <div class="form-group">
+                  <label for="inputImage" class="col-lg-2 control-label">انتخاب تصویر</label>
+                  <div class="col-lg-10">
+                    <input type="file" class="form-control" id="inputImage" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="inputPlace" class="col-lg-2 control-label">محل برگزاری</label>
+                  <div class="col-lg-10">
+                    <input type="text" class="form-control" id="inputPlace" placeholder="مثلا: سالن میلاد نمایشگاه" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="textareaDetails" class="col-lg-2 control-label">جزییات بیشتر</label>
+                  <div class="col-lg-10">
+                    <textarea class="form-control textareaDetails" rows="5" placeholder="با افزودن جزییات برای رویدادی که اضافه می‌کنید کاربران را از ابهام نجات می‌دهید."></textarea>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="inputDate" class="col-lg-2 control-label">مهلت خرید</label>
+                  <div class="col-lg-10">
+                    <div class="input-group">
+                      <input id="date_input" type="text" class="form-control" placeholder="آخرین مهلتی را که کاربر می‌تواند اقدام به خرید بلیت کند مشخص کنید." style="z-index: 1; position: absolute" />
+                      <span class="input-group-btn" style="z-index: 1;"><button class="btn btn-default" id="date_btn"><span class="glyphicon glyphicon-calendar"></span></button></span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="inputDateOccur" class="col-lg-2 control-label">زمان برگزاری</label>
+                  <div class="col-lg-10">
+                    <div class="input-group">
+                      <input id="date_input_2" type="text" class="form-control" placeholder="زمان برگزاری رویداد را مشخص فرمایید."  style="z-index: 1;"/>
+                      <span class="input-group-btn" ><button class="btn btn-default" id="date_btn_2"><span class="glyphicon glyphicon-calendar"></span></button></span>
+                    </div>
+                  </div>
+                </div>
+
+                <div  id="ticketDiv">
+                  <div class="form-group">
+                    <label for="inputTicket" class="col-lg-2 control-label">تعیین بلیت‌ها</label>
+                    <div class="col-lg-3">
+                      <input type="text" class="form-control inputTicketType" placeholder="نوع بلیت" />
+                    </div>
+
+                    <div class="col-lg-3">
+                      <div class="input-group">
+                        <input type="text" class="form-control inputTicketPrice" placeholder="قیمت" />
+                        <span class="input-group-addon" style="color: #D6E0EA"><span class="text-primary">تومان</span></span>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                      <input type="text" class="form-control inputTicketCapacity" placeholder="ظرفیت" />
+                    </div>
+
+                    <div class="col-lg-1">
+                      <button id="addTicketRow" class="btn btn-default btn-circle"><span class="glyphicon glyphicon-plus"></span></button>
+                    </div>
+                  </div>
+                </div>
+                <script>
+                    //var tickets = 0;
+                    var write = document.getElementById('ticketDiv');
+                    function addTicket(e) {
+                      e.preventDefault();
+                      write.innerHTML +=
+                      '<div class="form-group"><label for="inputTicket" class="col-lg-2 control-label"></label><div class="col-lg-3"><input type="text" class="form-control inputTicketType" placeholder="نوع بلیت" /></div>'
+                      + '<div class="col-lg-3"><div class="input-group"><input type="text" class="form-control inputTicketPrice" placeholder="قیمت" /><span class="input-group-addon" style="color: #D6E0EA"><span class="text-primary">تومان</span></span></div></div>'
+                      + '<div class="col-lg-2"><input type="text" class="form-control inputTicketCapacity" placeholder="ظرفیت" /></div>'
+                      + '<br />';
+                      document.getElementById('addTicketRow').addEventListener('click', addTicket);                        
+                    //  tickets++;
+                  }
+
+                  document.getElementById('addTicketRow').addEventListener('click', addTicket);
+                </script>
+              </div>
+
+              <div class="form-group">
+                <div class="col-lg-10 col-lg-offset-2">
+                  <button type="submit" class="btn btn-primary">ثبت</button>
+                  <button type="reset" class="btn btn-default">انصراف</button>
+                </div>
+              </div>
+
+            </fieldset>
+          </form>
         </div>
-        <!-- End of submit-new-event -->
       </div>
+      <!-- End of submit-new-event -->
     </div>
   </div>
-  <!-- End of middle part -->
+{% endblock %}
 
-</div>
-<!-- End of main template -->
-<script type="text/javascript" src="{% static "scripts/jquery-1.9.1.min.js" %}"></script>
-<script type="text/javascript" src="{% static "scripts/bootstrap.min.js" %}"></script>
 
+{% block script %}
 <script src="{% static "scripts/jalali.js" %}"></script>
 <script src="{% static "scripts/calendar.js" %}"></script>
 <script src="{% static "scripts/calendar-setup.js" %}"></script>
 <script src="{% static "scripts/lang/calendar-fa.js" %}"></script>
 <script>
-  Calendar.setup({
-          inputField     :    "date_input",   // id of the input field
-          button         :    "date_btn",   // trigger for the calendar (button ID)
-              ifFormat       :    "%Y-%m-%d %H:%M",       // format of the input field
-              showsTime      :    true,
-              dateType     :  'jalali',
-              timeFormat     :    "24",
-              weekNumbers    : false
-            });
+Calendar.setup({
+        inputField     :    "date_input",   // id of the input field
+        button         :    "date_btn",   // trigger for the calendar (button ID)
+            ifFormat       :    "%Y-%m-%d %H:%M",       // format of the input field
+            showsTime      :    true,
+            dateType     :  'jalali',
+            timeFormat     :    "24",
+            weekNumbers    : false
+          });
 
-  Calendar.setup({
-          inputField     :    "date_input_2",   // id of the input field
-          button         :    "date_btn_2",   // trigger for the calendar (button ID)
-              ifFormat       :    "%Y-%m-%d %H:%M",       // format of the input field
-              showsTime      :    true,
-              dateType     :  'jalali',
-              timeFormat     :    "24",
-              weekNumbers    : false
-            });
+Calendar.setup({
+        inputField     :    "date_input_2",   // id of the input field
+        button         :    "date_btn_2",   // trigger for the calendar (button ID)
+            ifFormat       :    "%Y-%m-%d %H:%M",       // format of the input field
+            showsTime      :    true,
+            dateType     :  'jalali',
+            timeFormat     :    "24",
+            weekNumbers    : false
+          });
 </script>
-a<script rel="stylesheet" href="{% static "scripts/convert-to-persian.js" %}"></script>
-</body>
-</html>
+{% endblock %}

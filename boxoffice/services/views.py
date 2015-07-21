@@ -30,7 +30,7 @@ def category(request, category):
 	return render(request, 'view-category-events.html', {})
 
 def subcategory(request, category, subcategory):
-	return render(request, 'view-category-events.html', {})
+	return render(request, 'view-sub-category-events.html', {})
 
 def submit(request):
 	return render(request, 'submit-new-event.html', {})
