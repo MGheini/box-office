@@ -23,7 +23,7 @@ class Member(models.Model):
 	gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank="False")
 
 	def __str__(self):
-		return self.user.first_name + " (" + self.user.username + ")"
+		return self.user.username
 
 class Organizer(models.Model):
 	user = models.OneToOneField(User)
@@ -35,4 +35,4 @@ class Organizer(models.Model):
 	organization_reg_num = models.CharField(max_length=255)
 
 	def __str__(self):
-		return self.user.first_name + " from " + self.organization_name + " (" + self.user.username + ")"
+		return self.user.username + " (" + self.organization_name + ")"
