@@ -8,26 +8,12 @@
 {% block content %}
 	<div id="main">
 		<div class="carousel">
-			<div>
-				<img src="{% static "images/img1.jpg" %}" />
-				<h3 style="color: #ffffff;">فیلم سینمایی نهنگ عنبر</h3>
+			{% for event in available_events %}
+			<div style="outline: none;">
+				<img style="width: 700px; height: 500px; margin: 0 auto" src="{{ event.event_image.url }}" />
+				<h3 style="color: #ffffff;">{{ event.event_title }}</h3>
 			</div>
-			<div>
-				<img src="{% static "images/img2.jpg" %}" />
-				<h3 style="color: #ffffff;">نمایش هامون بازها</h3>
-			</div>
-			<div>
-				<img src="{% static "images/img3.jpg" %}" />
-				<h3 style="color: #ffffff;">نمایشگاه نقّاشی پاولیون</h3>
-			</div>
-			<div>
-				<img src="{% static "images/img4.jpg" %}" />
-				<h3 style="color: #ffffff;">مسابقه والیبال: ایران - آمریکا</h3>
-			</div>
-			<div>
-				<img src="{% static "images/img5.jpg" %}" />
-				<h3 style="color: #ffffff;">دوئت فلوت و گيتار ( فيروزه نوايي، ليلي افشار )</h3>
-			</div>
+			{% endfor %}
 		</div>
 	</div>
 {% endblock %}

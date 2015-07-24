@@ -7,6 +7,7 @@ from users.models import Member, Organizer
 
 class Category(models.Model):
 	category_name = models.CharField(max_length=100)
+	category_glyphicon = models.CharField(max_length=30, null=True)
 
 	def __str__(self):
 		return self.category_name
@@ -18,34 +19,6 @@ class SubCategory(models.Model):
 	def __str__(self):
 		return self.subcategory_name + " (" + self.category.category_name + ")"
 
-# All categories we have
-# سینما
-# 	اکشن
-# 	کمدی
-# 	مستند
-# 	درام
-# 	ترسناک
-# 	معمایی
-# 	علمی-تخیلی
-# تئاتر
-# 	درام
-# 	موزیکال
-# 	کمدی
-# 	تراژدی
-# نمایشگاه
-# 	نقاشی
-# 	عکاسی
-# 	مجسمه سازی
-# ورزش
-# 	فوتبال
-# 	والیبال
-# 	بسکتبال
-# 	تنیس
-# موسیقی
-# 	سنتی
-# 	پاپ
-# 	راک
-
 class Event(models.Model):
 	category = models.ForeignKey(Category)
 	subcategory = ChainedForeignKey(SubCategory,
@@ -54,15 +27,16 @@ class Event(models.Model):
 		show_all=False,
         auto_choose=True,
         null=True)
-	
+
 	event_title = models.CharField(max_length=255, blank=False)
-	event_image = models.ImageField(upload_to='media/', blank=True)
+	event_image = models.ImageField(upload_to='media/', blank=True, default="media/noimage.png")
 	event_place = models.CharField(max_length=255, blank=False)
 	event_description = models.TextField(blank=True)
 	event_date = models.DateTimeField(blank=False)
 	event_deadline = models.DateTimeField(blank=False)
-	submit_date = models.DateTimeField(default=datetime.now, blank=False)
+	submit_date = models.DateTimeField(default=datetime.now)
 	organizer = models.ForeignKey(Organizer)
+	event_avg_rate = models.FloatField(default=0.0)
 
 	def __str__(self):
 		return self.event_title
@@ -80,17 +54,24 @@ class Ticket(models.Model):
 	def __str__(self):
 		return self.ticket_type + " (" + self.event.event_title +")"
 
-class Feedback(models.Model):
+class Comment(models.Model):
+	member = models.ForeignKey(Member)
+	event = models.ForeignKey(Event)
+	comment_text = models.CharField(max_length=200)
+
+	def __str__(self):
+		return self.comment_text
+
+class Rate(models.Model):
 	member = models.ForeignKey(Member)
 	event = models.ForeignKey(Event)
 	rate = models.PositiveSmallIntegerField()
-	post = models.TextField()
 
 	class Meta:
 		unique_together = ("member", "event")
 
 	def __str__(self):
-		return self.event.event_title + " (" + self.member.user.username + ")"
+		return self.rate
 
 class Order(models.Model):
 	member = models.ForeignKey(Member)

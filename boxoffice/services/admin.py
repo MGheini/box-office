@@ -2,11 +2,20 @@
 from django.contrib import admin
 from daterange_filter.filter import DateRangeFilter
 
-from .models import Event, Feedback, Ticket, Order, Category, SubCategory
+from .models import Event, Ticket, Order, Category, SubCategory, Comment, Rate
 
 class EventAdmin(admin.ModelAdmin):
 	list_filter = ['submit_date', ('submit_date', DateRangeFilter)]
-	list_display = ('organizer_fa', 'event_title_fa', 'event_place_fa', 'event_date_fa', 'event_deadline_fa', 'event_description_fa', 'submit_date_fa', 'category_fa', 'subcategory_fa')
+	list_display = ('organizer_fa',
+		'event_title_fa',
+		'event_place_fa',
+		'event_date_fa',
+		'event_deadline_fa',
+		'event_description_fa',
+		'submit_date_fa',
+		'category_fa',
+		'subcategory_fa',
+		'event_avg_rate_fa')
 
 	def organizer_fa(self, obj):
 		return obj.organizer
@@ -44,10 +53,17 @@ class EventAdmin(admin.ModelAdmin):
 		return obj.subcategory
 	subcategory_fa.short_description = 'زیردسته'
 
+	def event_avg_rate_fa(Self, obj):
+		return obj.event_avg_rate
+	event_avg_rate_fa.short_description = 'میانگین امتیاز'
 
 class OrderAdmin(admin.ModelAdmin):
 	list_filter = ['order_date', ('order_date', DateRangeFilter)]
-	list_display = ('member_fa', 'ticket_fa', 'num_fa', 'total_price_fa', 'order_date_fa')
+	list_display = ('member_fa',
+		'ticket_fa',
+		'num_fa',
+		'total_price_fa',
+		'order_date_fa')
 
 	def member_fa(self, obj):
 		return obj.member
@@ -71,7 +87,10 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 class TicketAdmin(admin.ModelAdmin):
-	list_display = ('event_fa', 'ticket_type_fa', 'total_capacity_fa', 'purchased_num_fa')
+	list_display = ('event_fa',
+		'ticket_type_fa',
+		'total_capacity_fa',
+		'purchased_num_fa')
 
 	def event_fa(self, obj):
 		return obj.event
@@ -89,9 +108,10 @@ class TicketAdmin(admin.ModelAdmin):
 		return obj.purchased_num
 	purchased_num_fa.short_description = 'تعداد سفارش داده شده'
 
-
-class FeedbackAdmin(admin.ModelAdmin):
-	list_display = ('member_fa', 'event_fa', 'rate_fa', 'post_fa')
+class CommentAdmin(admin.ModelAdmin):
+	list_display = ('member_fa',
+		'event_fa',
+		'comment_text_fa')
 
 	def member_fa(Self, obj):
 		return obj.member
@@ -99,18 +119,32 @@ class FeedbackAdmin(admin.ModelAdmin):
 
 	def event_fa(Self, obj):
 		return obj.event
-	event_fa.short_description = 'رویداد'
+	member_fa.short_description = 'رویداد'
+
+	def comment_text_fa(Self, obj):
+		return obj.comment_text
+	comment_text_fa.short_description = 'متن نظر'
+
+class RateAdmin(admin.ModelAdmin):
+	list_display = ('member_fa',
+		'event_fa',
+		'rate_fa')
+
+	def member_fa(Self, obj):
+		return obj.member
+	member_fa.short_description = 'کاربر'
+
+	def event_fa(Self, obj):
+		return obj.event
+	member_fa.short_description = 'رویداد'
 
 	def rate_fa(Self, obj):
 		return obj.rate
-	rate_fa.short_description = 'امتیاز داده شده'
-
-	def post_fa(Self, obj):
-		return obj.post
-	post_fa.short_description = 'نظر داده شده'
+	rate_fa.short_description = 'امتیاز'
 
 admin.site.register(Event, EventAdmin)
-admin.site.register(Feedback, FeedbackAdmin)
+admin.site.register(Comment, CommentAdmin)
+admin.site.register(Rate, RateAdmin)
 admin.site.register(Ticket, TicketAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Category)

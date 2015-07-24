@@ -1,6 +1,8 @@
 
+from django.conf import settings
 from django.contrib import admin
 from django.conf.urls import include, url
+from django.conf.urls.static import static
 from django.views.generic import RedirectView
 
 urlpatterns = [
@@ -13,11 +15,11 @@ urlpatterns = [
     		url(r'^$', 'services.views.event_details'),
 			url(r'^purchase/$', 'services.views.purchase'),
 			url(r'^rate/$', 'services.views.rate'),
-			url(r'^post/$', 'services.views.post'),    		
+			url(r'^comment/$', 'services.views.comment'),    		
     	])),
-    	url(r'^(?P<category>[\w]+)/', include([
+    	url(r'^(?P<category>[\w ]+)/', include([
     		url(r'^$', 'services.views.category'),
-    		url(r'^(?P<subcategory>[\w]+)/$', 'services.views.subcategory'),
+    		url(r'^(?P<subcategory>[\w ]+)/$', 'services.views.subcategory'),
     	])),
     ])),
     url(r'^submit/$', 'services.views.submit'),
@@ -27,4 +29,4 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^chaining/', include('smart_selects.urls')),
     url(r'^favicon\.ico$', RedirectView.as_view(url='/static/images/favicon.ico')),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
