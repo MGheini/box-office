@@ -1,13 +1,24 @@
  
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 from users.forms import LoginForm
+from users.views import our_login
 from services.forms import EventModelForm
 
 def home(request):
-	form = LoginForm()
-	return render(request, 'home.html', {'form': form, 'home': True, 'visitor': True, 'member': False, 'organizer': False})
+	if request.method == 'POST':
+		return our_login(request) # don't forget to return!
+	elif request.user.is_authenticated():
+		if request.session['user_type'] == 'member':
+			return render(request, 'home.html', {'home': True, 'member': True})
+		elif request.session['user_type'] == 'organizer':
+			return render(request, 'home.html', {'home': True, 'organizer': True})
+		else:
+			return HttpResponseRedirect('/admin')
+	else:
+		form = LoginForm()
+		return render(request, 'home.html', {'form': form, 'home': True, 'visitor': True})
 
 def answer(request):
 	form = LoginForm()

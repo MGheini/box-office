@@ -139,13 +139,13 @@ function react(name, message) {
     }
 }
 
-function validateLoginForm() {
-	var r = Math.random();
+// function validateLoginForm() {
+// 	var r = Math.random();
 
-	if (r < 0.5) {
-		var element = document.getElementById("login-btn");
-    	element.setAttribute("class", "btn btn-danger btn-block");
-    	element.innerHTML = "ورود ناموفّق";
-        return false;
-	}
-}
+// 	if (r < 0.5) {
+// 		var element = document.getElementById("login-btn");
+//     	element.setAttribute("class", "btn btn-danger btn-block");
+//     	element.innerHTML = "ورود ناموفّق";
+//         return false;
+// 	}
+// }

@@ -53,7 +53,7 @@
 		<div class="row">
 			<div class="col-md-12 well" style="margin: 0px;">
 				<p style="font-size: 28px;">ورود</p>
-				<form action="" method="post" onsubmit="return validateLoginForm()">
+				<form action="/" method="post">
 					{% csrf_token %}
 					{% for field in form %}
 					<div class="row" style="background-color: #ecf0f1; margin: 0px;">
