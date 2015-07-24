@@ -9,22 +9,22 @@ admin-dashboard
 --------------
 in right sidebar:
 
-  Manage users
+Manage users
 * delete users (both types) --> can be done easily
 * edit users (both types) --> disable or enable, become special user
 * make a user special
 * search in users (both types) --> can be done easily
 
-  Manage Events
+Manage Events
 * add events
 * delete events
 * search in events
 
-  Manage Categories
+Manage Categories
 * add category and subcategory
 * delete category and subcategory
 
-  Reports
+Reports
 * search in orders (from time to time)
 * generate a table: all events (each: title, num_sold, total_money_earned)
 
