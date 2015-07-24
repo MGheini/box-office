@@ -46,7 +46,7 @@ def home(request):
 	else:
 		form = LoginForm()
 		return render(request, 'home.html',
-			{'from': form,
+			{'form': form,
 			'home': True,
 			'visitor': True,
 			'categories': layout['categories'],
