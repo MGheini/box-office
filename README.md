@@ -3,7 +3,8 @@ Created for the project of systems analysis and design course
 
 @mozhdeh: if you remember more admin (manfatory) functionalities, please add below.
 
-== PhaseTwo ==
+PhaseTwo
+===============
 admin-dashboard
 --------------
 * delete users (both types) --> can be done easily
@@ -12,7 +13,8 @@ admin-dashboard
 * search in orders, events and users (both types) --> can be easily done
 
 
-== Phase One ==
+Phase One
+===============
 Templates are designed by:
 * HomePage    --> Mozhdeh Gheini
 * Login       --> Mozhdeh Gheini
