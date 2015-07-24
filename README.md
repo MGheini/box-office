@@ -1,7 +1,7 @@
 # box-office
 Created for the project of systems analysis and design course
 
-@mozhdeh: if you remember more admin (manfatory) functionalities, please add below.
+@mozhdeh: if you remember more admin (mandatory) functionalities, please add below.
 
 PhaseTwo
 ===============
@@ -11,6 +11,7 @@ in right sidebar:
   Manage users
     * delete users (both types) --> can be done easily
     * edit users (both types) --> disable or enable, become special user
+    * make a user special
     * search in users (both types) --> can be done easily
   Manage Events
     * add events
