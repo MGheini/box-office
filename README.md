@@ -2,6 +2,8 @@
 Created for the project of systems analysis and design course
 
 @mozhdeh: if you remember more admin (mandatory) functionalities, please add below.
+AND I think we better have a new app for it: 'admin'
+------------------------------------------------------------------------------------
 
 PhaseTwo
 ===============
