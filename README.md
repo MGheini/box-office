@@ -7,11 +7,21 @@ PhaseTwo
 ===============
 admin-dashboard
 --------------
-* delete users (both types) --> can be done easily
-* edit users (both types) --> disable or enable, become special user
-* get report (of events) --> (?) what to include in the report
-* search in orders, events and users (both types) --> can be easily done
-
+in right sidebar:
+  Manage users
+    * delete users (both types) --> can be done easily
+    * edit users (both types) --> disable or enable, become special user
+    * search in users (both types) --> can be done easily
+  Manage Events
+    * add events
+    * delete events
+    * search in events
+  Manage Categories
+    * add category and subcategory
+    * delete category and subcategory
+  Reports
+    * search in orders (from time to time)
+    * generate a table: all events (each: title, num_sold, total_money_earned)
 
 Phase One
 ===============
