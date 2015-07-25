@@ -15,9 +15,9 @@ urlpatterns = [
 			url(r'^rate/$', 'services.views.rate'),
 			url(r'^post/$', 'services.views.post'),    		
     	])),
-    	url(r'^(?P<category>[\w]+)/', include([
+    	url(r'^(?P<category>[\w ]+)/', include([
     		url(r'^$', 'services.views.category'),
-    		url(r'^(?P<subcategory>[\w]+)/$', 'services.views.subcategory'),
+    		url(r'^(?P<subcategory>[\w ]+)/$', 'services.views.subcategory'),
     	])),
     ])),
     url(r'^submit/$', 'services.views.submit'),

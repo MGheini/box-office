@@ -7,6 +7,7 @@ from users.models import Member, Organizer
 
 class Category(models.Model):
 	category_name = models.CharField(max_length=100)
+	category_glyphicon = models.CharField(max_length=30, null=True)
 
 	def __str__(self):
 		return self.category_name
