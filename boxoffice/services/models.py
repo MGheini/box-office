@@ -9,12 +9,18 @@ class Category(models.Model):
 	category_name = models.CharField(max_length=100)
 	category_glyphicon = models.CharField(max_length=30, null=True)
 
+	class Meta:
+		verbose_name_plural = "categories"
+
 	def __str__(self):
 		return self.category_name
 
 class SubCategory(models.Model):
 	category = models.ForeignKey(Category)
 	subcategory_name = models.CharField(max_length=100)
+
+	class Meta:
+		verbose_name_plural = "sub categories"
 
 	def __str__(self):
 		return self.subcategory_name + " (" + self.category.category_name + ")"
