@@ -18,12 +18,12 @@ Manage users --> Mozhdeh Gheini
 
 Manage Events
 * add events --> Pardis Pashakhanloo
-* delete events --> Pardis Pashakhanloo
+* delete events --> Pardis Pashakhanloo [DONE]
 * edit events --> Mozhdeh Gheini
 
 Manage Categories
 * add category and subcategory --> Pardis Pashakhanloo
-* delete category and subcategory --> Pardis Pashakhanloo
+* delete category and subcategory --> Pardis Pashakhanloo [DONE]
 * edit category and subcategory --> Mozhdeh Gheini
 
 Reports
