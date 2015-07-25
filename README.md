@@ -2,6 +2,7 @@
 Created for the project of systems analysis and design course
 
 @mozhdeh: if you remember more admin (mandatory) functionalities, please add below.
+در ضمن، اسامی ای که باید در لیوت باشد را برای اینکه فراموش نکنیم در زیر نوشته‌ام. به فارسی !!
 ------------------------------------------------------------------------------------
 
 PhaseTwo
@@ -11,22 +12,22 @@ admin-dashboard
 admin layout  --> Mozhdeh Gheini
 make admin app --> Pardis Pashakhanloo [DONE]
 
-Manage users
+Manage users مدیریت کاربران
 * delete users (both types) --> Mozhdeh Gheini
 * grant special permissions to some users --> Mozhdeh Gheini
 * search in users (both types) --> Mozhdeh Gheini
 
-Manage Events
+Manage Events مدیریت رویدادها
 * add events --> Pardis Pashakhanloo [DONE, BUT I DO NOT KNOW ABOUT TICKETS YET :(( ]
 * delete events --> Pardis Pashakhanloo [DONE]
 * edit events --> Mozhdeh Gheini
 
-Manage Categories
+Manage Categories مدیریت دسته‌ها و زیردسته‌ها
 * add category and subcategory --> Pardis Pashakhanloo [DONE]
 * delete category and subcategory --> Pardis Pashakhanloo [DONE]
 * edit category and subcategory --> Mozhdeh Gheini
 
-Reports
+Reports گزارش‌ها
 * search in orders (particular time interval) --> Pardis Pashakhanloo
 * generate a table: all events (each: title, num_sold, total_money_earned) --> Pardis Pashakhanloo
 * show all orders --> Pardis Pashakhanloo
