@@ -6,7 +6,16 @@ from .models import Event, Ticket, Order, Category, SubCategory, Comment, Rate
 
 class EventAdmin(admin.ModelAdmin):
 	list_filter = ['submit_date', ('submit_date', DateRangeFilter)]
-	list_display = ('organizer_fa', 'event_title_fa', 'event_place_fa', 'event_date_fa', 'event_deadline_fa', 'event_description_fa', 'submit_date_fa', 'category_fa', 'subcategory_fa', 'event_avg_rate_fa')
+	list_display = ('organizer_fa',
+		'event_title_fa',
+		'event_place_fa',
+		'event_date_fa',
+		'event_deadline_fa',
+		'event_description_fa',
+		'submit_date_fa',
+		'category_fa',
+		'subcategory_fa',
+		'event_avg_rate_fa')
 
 	def organizer_fa(self, obj):
 		return obj.organizer
@@ -50,7 +59,11 @@ class EventAdmin(admin.ModelAdmin):
 
 class OrderAdmin(admin.ModelAdmin):
 	list_filter = ['order_date', ('order_date', DateRangeFilter)]
-	list_display = ('member_fa', 'ticket_fa', 'num_fa', 'total_price_fa', 'order_date_fa')
+	list_display = ('member_fa',
+		'ticket_fa',
+		'num_fa',
+		'total_price_fa',
+		'order_date_fa')
 
 	def member_fa(self, obj):
 		return obj.member
@@ -74,7 +87,10 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 class TicketAdmin(admin.ModelAdmin):
-	list_display = ('event_fa', 'ticket_type_fa', 'total_capacity_fa', 'purchased_num_fa')
+	list_display = ('event_fa',
+		'ticket_type_fa',
+		'total_capacity_fa',
+		'purchased_num_fa')
 
 	def event_fa(self, obj):
 		return obj.event
@@ -93,7 +109,9 @@ class TicketAdmin(admin.ModelAdmin):
 	purchased_num_fa.short_description = 'تعداد سفارش داده شده'
 
 class CommentAdmin(admin.ModelAdmin):
-	list_display = ('member_fa', 'event_fa', 'comment_text_fa')
+	list_display = ('member_fa',
+		'event_fa',
+		'comment_text_fa')
 
 	def member_fa(Self, obj):
 		return obj.member
@@ -108,7 +126,9 @@ class CommentAdmin(admin.ModelAdmin):
 	comment_text_fa.short_description = 'متن نظر'
 
 class RateAdmin(admin.ModelAdmin):
-	list_display = ('member_fa', 'event_fa', 'rate_fa')
+	list_display = ('member_fa',
+		'event_fa',
+		'rate_fa')
 
 	def member_fa(Self, obj):
 		return obj.member
