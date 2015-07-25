@@ -22,7 +22,7 @@ Manage Events
 * edit events --> Mozhdeh Gheini
 
 Manage Categories
-* add category and subcategory --> Pardis Pashakhanloo
+* add category and subcategory --> Pardis Pashakhanloo [TODO]
 * delete category and subcategory --> Pardis Pashakhanloo [DONE]
 * edit category and subcategory --> Mozhdeh Gheini
 
