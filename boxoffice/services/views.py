@@ -10,8 +10,9 @@ from services.forms import EventModelForm
 
 def get_layout():
 	categories = models.Category.objects.all()
-
-	return {'categories': categories}
+	# most_populars = 
+	newest = models.Event.objects.order_by('submit_date')[:5]
+	return {'categories': categories, 'newest': newest}
 
 def home(request):
 	layout = get_layout()
@@ -22,7 +23,8 @@ def home(request):
 		'visitor': True,
 		'member': False,
 		'organizer': False,
-		'categories': layout['categories']})
+		'categories': layout['categories'],
+		'newest': layout['newest']})
 
 def answer(request):
 	layout = get_layout()
@@ -30,7 +32,8 @@ def answer(request):
 	return render(request, 'FAQ.html',
 		{'form': form,
 		'visitor': True,
-		'categories': layout['categories']})
+		'categories': layout['categories'],
+		'newest': layout['newest']})
 
 def about_us(request):
 	layout = get_layout()
@@ -38,7 +41,8 @@ def about_us(request):
 	return render(request, 'Gisheh.html',
 		{'form': form,
 		'visitor': True,
-		'categories': layout['categories']})
+		'categories': layout['categories'],
+		'newest': layout['newest']})
 
 def event_details(request, event_id):
 	layout = get_layout()
@@ -46,13 +50,15 @@ def event_details(request, event_id):
 	return render(request, 'view-event-details.html',
 		{'form': form,
 		'visitor': True,
-		'categories': layout['categories']})
+		'categories': layout['categories'],
+		'newest': layout['newest']})
 
 def purchase(request, event_id):
 	layout = get_layout()
 	return render(request, 'buy-ticket.html',
 		{'member': True,
-		'categories': layout['categories']})
+		'categories': layout['categories'],
+		'newest': layout['newest']})
 
 def rate(request, event_id):
 	return HttpResponse('rate')
@@ -66,7 +72,8 @@ def category(request, category):
 	return render(request, 'view-category-events.html',
 		{'form': form,
 		'visitor': True,
-		'categories': layout['categories']})
+		'categories': layout['categories'],
+		'newest': layout['newest']})
 
 def subcategory(request, category, subcategory):
 	layout = get_layout()
@@ -74,7 +81,8 @@ def subcategory(request, category, subcategory):
 	return render(request, 'view-sub-category-events.html',
 		{'form': form,
 		'visitor': True,
-		'categories': layout['categories']})
+		'categories': layout['categories'],
+		'newest': layout['newest']})
 
 def submit(request):
 	layout = get_layout()
@@ -82,17 +90,20 @@ def submit(request):
 	return render(request, 'submit-new-event.html',
 		{'event_form': event_form,
 		'organizer': True,
-		'categories': layout['categories']})
+		'categories': layout['categories'],
+		'newest': layout['newest']})
 
 
 def receipt(request, order_id):
 	layout = get_layout()
 	return render(request, 'view-receipt.html',
 		{'member': True,
-		'categories': layout['categories']})
+		'categories': layout['categories'],
+		'newest': layout['newest']})
 
 def history(request):
 	layout = get_layout()
 	return render(request, 'purchase-history.html',
 		{'member': True,
-		'categories': layout['categories']})
+		'categories': layout['categories'],
+		'newest': layout['newest']})
