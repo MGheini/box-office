@@ -2,7 +2,6 @@
 Created for the project of systems analysis and design course
 
 @mozhdeh: if you remember more admin (mandatory) functionalities, please add below.
-AND I think we better have a new app for it: 'admin'
 ------------------------------------------------------------------------------------
 
 PhaseTwo
@@ -10,19 +9,20 @@ PhaseTwo
 admin-dashboard
 --------------
 admin layout  --> Mozhdeh Gheini
+make admin app --> Pardis Pashakhanloo [DONE]
 
-Manage users --> Mozhdeh Gheini
-* delete users (both types)
-* grant special permissions to some users
-* search in users (both types)
+Manage users
+* delete users (both types) --> Mozhdeh Gheini
+* grant special permissions to some users --> Mozhdeh Gheini
+* search in users (both types) --> Mozhdeh Gheini
 
 Manage Events
-* add events --> Pardis Pashakhanloo
+* add events --> Pardis Pashakhanloo [DONE, BUT I DO NOT KNOW ABOUT TICKETS YET :(( ]
 * delete events --> Pardis Pashakhanloo [DONE]
 * edit events --> Mozhdeh Gheini
 
 Manage Categories
-* add category and subcategory --> Pardis Pashakhanloo [TODO]
+* add category and subcategory --> Pardis Pashakhanloo [DONE]
 * delete category and subcategory --> Pardis Pashakhanloo [DONE]
 * edit category and subcategory --> Mozhdeh Gheini
 
