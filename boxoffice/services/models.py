@@ -57,7 +57,7 @@ class Event(models.Model):
         null=True)
 	
 	event_title = models.CharField(max_length=255, blank=False)
-	event_image = models.ImageField(upload_to='media/', blank=True)
+	event_image = models.ImageField(upload_to='media/', blank=True, default="media/noimage.png")
 	event_place = models.CharField(max_length=255, blank=False)
 	event_description = models.TextField(blank=True)
 	event_date = models.DateTimeField(blank=False)

@@ -161,7 +161,10 @@
 				<ul class="list-group" style="margin: 0;">
 					{% for event in newest %}
 					<li class="list-group-item">
-						<a href="/events/{{ event.id }}/">{{ event.event_title }}</a>
+						<a href="/events/{{ event.id }}/">
+							<img class="img img-thumbnail img-responsive" src="{{ event.event_image.url }}" style="width: 180px; height: 120px; display: block; margin: 0 auto" />
+							<p style="text-align: center; margin-top: 10px">{{ event.event_title }}</p>
+						</a>
 					</li>
 					{% endfor %}
 				</ul>
