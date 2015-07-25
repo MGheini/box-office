@@ -15,7 +15,7 @@ urlpatterns = [
     		url(r'^$', 'services.views.event_details'),
 			url(r'^purchase/$', 'services.views.purchase'),
 			url(r'^rate/$', 'services.views.rate'),
-			url(r'^post/$', 'services.views.post'),    		
+			url(r'^comment/$', 'services.views.comment'),    		
     	])),
     	url(r'^(?P<category>[\w ]+)/', include([
     		url(r'^$', 'services.views.category'),

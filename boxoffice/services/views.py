@@ -10,13 +10,18 @@ from services.forms import EventModelForm
 
 def get_layout():
 	categories = models.Category.objects.all()
-	# most_populars = 
+	most_populars = models.Event.objects.order_by('event_avg_rate')[:5]
 	newest = models.Event.objects.order_by('submit_date')[:5]
-	return {'categories': categories, 'newest': newest}
+
+	return {'categories': categories, 'newest': newest, 'most_populars': most_populars}
 
 def home(request):
 	layout = get_layout()
 	form = LoginForm()
+
+	# felan hameye event ha ra dar nazar darim, ba'dan bayad available haa neshun dade beshe
+	available_events = models.Event.objects.all()
+
 	return render(request, 'home.html',
 		{'form': form,
 		'home': True,
@@ -24,7 +29,9 @@ def home(request):
 		'member': False,
 		'organizer': False,
 		'categories': layout['categories'],
-		'newest': layout['newest']})
+		'available_events': available_events,
+		'newest': layout['newest'],
+		'most_populars': layout['most_populars']})
 
 def answer(request):
 	layout = get_layout()
@@ -33,7 +40,8 @@ def answer(request):
 		{'form': form,
 		'visitor': True,
 		'categories': layout['categories'],
-		'newest': layout['newest']})
+		'newest': layout['newest'],
+		'most_populars': layout['most_populars']})
 
 def about_us(request):
 	layout = get_layout()
@@ -42,7 +50,8 @@ def about_us(request):
 		{'form': form,
 		'visitor': True,
 		'categories': layout['categories'],
-		'newest': layout['newest']})
+		'newest': layout['newest'],
+		'most_populars': layout['most_populars']})
 
 def event_details(request, event_id):
 	layout = get_layout()
@@ -51,19 +60,21 @@ def event_details(request, event_id):
 		{'form': form,
 		'visitor': True,
 		'categories': layout['categories'],
-		'newest': layout['newest']})
+		'newest': layout['newest'],
+		'most_populars': layout['most_populars']})
 
 def purchase(request, event_id):
 	layout = get_layout()
 	return render(request, 'buy-ticket.html',
 		{'member': True,
 		'categories': layout['categories'],
-		'newest': layout['newest']})
+		'newest': layout['newest'],
+		'most_populars': layout['most_populars']})
 
 def rate(request, event_id):
 	return HttpResponse('rate')
 
-def post(request, event_id):
+def comment(request, event_id):
 	return HttpResponse('post')
 
 def category(request, category):
@@ -73,7 +84,8 @@ def category(request, category):
 		{'form': form,
 		'visitor': True,
 		'categories': layout['categories'],
-		'newest': layout['newest']})
+		'newest': layout['newest'],
+		'most_populars': layout['most_populars']})
 
 def subcategory(request, category, subcategory):
 	layout = get_layout()
@@ -82,7 +94,8 @@ def subcategory(request, category, subcategory):
 		{'form': form,
 		'visitor': True,
 		'categories': layout['categories'],
-		'newest': layout['newest']})
+		'newest': layout['newest'],
+		'most_populars': layout['most_populars']})
 
 def submit(request):
 	layout = get_layout()
@@ -91,7 +104,8 @@ def submit(request):
 		{'event_form': event_form,
 		'organizer': True,
 		'categories': layout['categories'],
-		'newest': layout['newest']})
+		'newest': layout['newest'],
+		'most_populars': layout['most_populars']})
 
 
 def receipt(request, order_id):
@@ -99,11 +113,13 @@ def receipt(request, order_id):
 	return render(request, 'view-receipt.html',
 		{'member': True,
 		'categories': layout['categories'],
-		'newest': layout['newest']})
+		'newest': layout['newest'],
+		'most_populars': layout['most_populars']})
 
 def history(request):
 	layout = get_layout()
 	return render(request, 'purchase-history.html',
 		{'member': True,
 		'categories': layout['categories'],
-		'newest': layout['newest']})
+		'newest': layout['newest'],
+		'most_populars': layout['most_populars']})
