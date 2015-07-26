@@ -1,71 +1,79 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>مدیریت رویدادها</title>
-{% load humanize %}
-{% load staticfiles %}
-<link rel="stylesheet" href="{% static "styles/bootstrap.min.css" %}" />
-<link rel="stylesheet" href="{% static "styles/bootstrap-rtl.min.css" %}" />
-<link rel="stylesheet" href="{% static "styles/farsi-fonts.css" %}">
-<link rel="stylesheet" href="{% static "styles/mcustom.css" %}" />
-<link rel="stylesheet" href="{% static "styles/slick.css" %}" />
-<link rel="stylesheet" href="{% static "styles/slick-theme.css" %}" />
-<link rel="stylesheet" href="{% static "styles/pcustom.css" %}" />
-{% block style %}
-<style type="text/css">
-row-admin {
-	background-color: #ffffff;
-}
-</style>
-{% endblock %}
+	<title>مدیریت رویدادها</title>
+	{% load humanize %}
+	{% load staticfiles %}
+	<link rel="stylesheet" href="{% static "styles/bootstrap.min.css" %}" />
+	<link rel="stylesheet" href="{% static "styles/bootstrap-rtl.min.css" %}" />
+	<link rel="stylesheet" href="{% static "styles/farsi-fonts.css" %}">
+	<link rel="stylesheet" href="{% static "styles/mcustom.css" %}" />
+	<link rel="stylesheet" href="{% static "styles/slick.css" %}" />
+	<link rel="stylesheet" href="{% static "styles/slick-theme.css" %}" />
+	<link rel="stylesheet" href="{% static "styles/pcustom.css" %}" />
+	{% block style %}
+	<style type="text/css">
+		row-admin {
+			background-color: #ffffff;
+		}
+	</style>
+	{% endblock %}
 </head>
 <body>
-<!-- start -->
-<div class="panel panel-default">
-<div class="panel-heading">
-	<h1 class="panel-title" style="font-size: 30px">مدیریت رویدادها</h1>
-</div>
-<div class="panel-body">
-	<form method="POST">
-		{% csrf_token %}
-		<table class="table" style="border-collapse: collapse">
-			<thead style="font-size: 20px">
-				<th class="text-right"> </th>
-				<th class="text-right">عنوان رویداد</th>
-				<th class="text-right">دسته</th>
-				<th class="text-right">زیردسته</th>
-				<th class="text-right">محل برگزاری</th>
-				<th class="text-right">میانگین امتیاز</th>
-				<th class="text-right">زمان برگزاری</th>
-				<th class="text-right">مهلت خرید</th>
-				<th class="text-right">زمان ثبت</th>
-			</thead>
-			<tbody style="text-align: right">
-				{% for event in events %}
-				<tr style="font-size: 15px;">
-					<td class="text-right">
-						<input type="checkbox" name="todelete" value="{{ event.id }}" class="col-md-1 col-sm-3 col-xs-4" style="margin: 0 auto; width: 15px; height: 15px" />
-					</td>
-					<td class="text-right" style="padding-top: 10px; ">
-						<a href="/bo-admin/events/{{ event.id }}/delete/"><span class="glyphicon glyphicon-trash text-danger" style="margin-left: 6px" data-toggle="tooltip" title="حذف"></span></a><a href="/bo-admin/events/{{ event.id }}/edit/"><span class="glyphicon glyphicon-pencil text-info" style="margin-left: 6px" data-toggle="tooltip" title="ویرایش"></span></a>{{ event.event_title }}
-					</td>
-					<td class="text-right" style="padding-top: 10px">{{ event.category }}</td>
-					<td class="text-right" style="padding-top: 10px">{{ event.subcategory }}</td>
-					<td class="text-right" style="padding-top: 10px">{{ event.event_place }}</td>
-					<td class="text-right" style="padding-top: 10px">{{ event.event_avg_rate }}</td>
-					<td class="text-right" style="padding-top: 10px">{{ event.event_date }}</td>
-					<td class="text-right" style="padding-top: 10px">{{ event.event_deadline|naturaltime }}</td>
-					<td class="text-right" style="padding-top: 10px">{{ event.submit_date|naturaltime }}</td>
-				</tr>
-				{% endfor %}
-			</tbody></table>
-			<input type="submit" value="حذف انتخاب شده‌ها" class="btn btn-danger" />
-		</form>
-	</div>
-</div>
-<!-- end -->
-<script type="text/javascript" src="{% static "scripts/jquery-1.9.1.min.js" %}"></script>
-<script type="text/javascript" src="{% static "scripts/bootstrap.min.js" %}"></script>
-<script type="text/javascript" src="{% static "scripts/slick.min.js" %}"></script>
-</body>
-</html>
+	<!-- start -->
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h1 class="panel-title" style="font-size: 30px">مدیریت رویدادها</h1>
+			<ul class="list-group" style="margin: 5px;">
+				<li class="list-group-item" style="width: 200px; margin-top: 6px; padding: 0 auto">
+					<a href="add/">
+						<span class="glyphicon glyphicon-plus-sign" style="position: relative; top: 4px"></span>
+						افزودن رویداد جدید
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div class="panel-body">
+			<form method="POST">
+				{% csrf_token %}
+				<table class="table" style="border-collapse: collapse">
+					<thead style="font-size: 20px">
+						<th class="text-right"> </th>
+						<th class="text-right">عنوان رویداد</th>
+						<th class="text-right">دسته</th>
+						<th class="text-right">زیردسته</th>
+						<th class="text-right">محل برگزاری</th>
+						<th class="text-right">میانگین امتیاز</th>
+						<th class="text-right">زمان برگزاری</th>
+						<th class="text-right">مهلت خرید</th>
+						<th class="text-right">زمان ثبت</th>
+					</thead>
+					<tbody style="text-align: right">
+						{% for event in events %}
+						<tr style="font-size: 15px;">
+							<td class="text-right">
+								<input type="checkbox" name="todelete" value="{{ event.id }}" class="col-md-1 col-sm-3 col-xs-4" style="margin: 0 auto; width: 15px; height: 15px" />
+							</td>
+							<td class="text-right" style="padding-top: 10px; ">
+								<a href="/bo-admin/events/{{ event.id }}/delete/"><span class="glyphicon glyphicon-trash text-danger" style="margin-left: 6px" data-toggle="tooltip" title="حذف"></span></a><a href="/bo-admin/events/{{ event.id }}/edit/"><span class="glyphicon glyphicon-pencil text-info" style="margin-left: 6px" data-toggle="tooltip" title="ویرایش"></span></a>{{ event.event_title }}
+							</td>
+							<td class="text-right" style="padding-top: 10px">{{ event.category }}</td>
+							<td class="text-right" style="padding-top: 10px">{{ event.subcategory }}</td>
+							<td class="text-right" style="padding-top: 10px">{{ event.event_place }}</td>
+							<td class="text-right" style="padding-top: 10px">{{ event.event_avg_rate }}</td>
+							<td class="text-right" style="padding-top: 10px">{{ event.event_date }}</td>
+							<td class="text-right" style="padding-top: 10px">{{ event.event_deadline|naturaltime }}</td>
+							<td class="text-right" style="padding-top: 10px">{{ event.submit_date|naturaltime }}</td>
+						</tr>
+						{% endfor %}
+					</tbody></table>
+					<input type="submit" value="حذف انتخاب شده‌ها" class="btn btn-danger" />
+				</form>
+			</div>
+		</div>
+		<!-- end -->
+		<script type="text/javascript" src="{% static "scripts/jquery-1.9.1.min.js" %}"></script>
+		<script type="text/javascript" src="{% static "scripts/bootstrap.min.js" %}"></script>
+		<script type="text/javascript" src="{% static "scripts/slick.min.js" %}"></script>
+	</body>
+	</html>

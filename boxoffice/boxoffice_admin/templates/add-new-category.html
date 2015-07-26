@@ -1,0 +1,56 @@
+	<!DOCTYPE html>
+	<html>
+	<head>
+		<title>افزودن دسته جدید</title>
+		{% load humanize %}
+		{% load staticfiles %}
+		<link rel="stylesheet" href="{% static "styles/bootstrap.min.css" %}" />
+		<link rel="stylesheet" href="{% static "styles/bootstrap-rtl.min.css" %}" />
+		<link rel="stylesheet" href="{% static "styles/farsi-fonts.css" %}">
+		<link rel="stylesheet" href="{% static "styles/mcustom.css" %}" />
+		<link rel="stylesheet" href="{% static "styles/slick.css" %}" />
+		<link rel="stylesheet" href="{% static "styles/slick-theme.css" %}" />
+		<link rel="stylesheet" href="{% static "styles/pcustom.css" %}" />
+		{% block style %}
+		<style type="text/css">
+			row-admin {
+				background-color: #ffffff;
+			}
+		</style>
+		{% endblock %}
+	</head>
+	<body>
+		<!-- start -->
+		<script type="text/javascript" src="{% static "scripts/jquery-1.9.1.min.js" %}"></script>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h1 class="panel-title" style="font-size: 30px">افزودن دسته جدید</h1>
+			</div>
+			<div class="panel-body">
+				{% if success %}
+					<p class="text-success">دسته با موفقیت افزوده شد.</p>
+				{% endif %}
+				<form name="" action="" method="POST">
+				{% csrf_token %}
+				{{ category_form.non_field_errors }}
+				{% for field in category_form %}
+					<div class="row" style="background-color: #ffffff; margin: 0px;">
+						<div class="col-md-2" style="padding: 5px">{{ field.label }}</div>
+						<div class="col-md-5">{{ field }}</div>
+						<div class="col-md-5 error">{{ field.errors }}</div>
+					</div>
+			      {% endfor %}
+			      {% if success %}
+			      	<a href="/bo-admin/categories/" class="btn btn-primary btn-block" type="submit" style="width: 200px;">بازگشت</a>
+			      {% else %}
+			      	<button id="submit-new-category" class="btn btn-primary btn-block" type="submit" style="width: 200px;">ثبت</button>
+			      {% endif %}
+			    </form>
+			</div>
+		</div>
+		<!-- end -->
+	<script type="text/javascript" src="{% static "scripts/jquery-1.9.1.min.js" %}"></script>
+	<script type="text/javascript" src="{% static "scripts/bootstrap.min.js" %}"></script>
+	<script type="text/javascript" src="{% static "scripts/slick.min.js" %}"></script>
+	</body>
+</html>

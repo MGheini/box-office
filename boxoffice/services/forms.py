@@ -1,5 +1,5 @@
 from django import forms
-from .models import Event, Ticket
+from .models import Event, Ticket, Category, SubCategory
 
 class TicketModelForm(forms.ModelForm):
 
@@ -8,7 +8,6 @@ class TicketModelForm(forms.ModelForm):
 		fields = ['ticket_type', 'ticket_price', 'total_capacity']
 
 class EventModelForm(forms.ModelForm):
-	# ticket = forms.CharField(required=True, label='ربلیت‌ها', widget=forms.Select)
 	class Meta:
 		model = Event
 		exclude = ['submit_date', 'organizer']
@@ -30,4 +29,32 @@ class EventModelForm(forms.ModelForm):
 			'event_date': forms.TextInput(attrs={'id':'date_input_2', 'placeholder': '1394-04-05 20:14'}),
 			'event_place': forms.TextInput(attrs={'placeholder': ' استادیوم آزادی'}),
 			'event_title': forms.TextInput(attrs={'placeholder': ' مسابقه والیبال ایران-آمریکا'}),
+        	}
+
+class CategoryModelForm(forms.ModelForm):
+	class Meta:
+		model = Category
+		# exclude = ['---']
+		fields = ['category_name', 'category_glyphicon']
+		labels = {
+			'category_name': 'عنوان دسته',
+			'category_glyphicon': 'آیکن دسته - توجه داشته باشید که باید یکی از آیکن‌های موجود در بوت استرپ ۳ باشد.',
+		}
+		widgets = {
+			'category_name': forms.TextInput(attrs={'placeholder': ' مثلا: نمایشگاه'}),
+			'category_glyphicon': forms.TextInput(attrs={'placeholder': ' مثلا: eye-close'}),
+        	}
+
+class SubCategoryModelForm(forms.ModelForm):
+	class Meta:
+		model = SubCategory
+		# exclude = ['---']
+		fields = ['subcategory_name', 'category']
+		labels = {
+			'subcategory_name': 'عنوان زیردسته',
+			'category': 'زیردسته',
+		}
+		widgets = {
+			'subcategory_name': forms.TextInput(attrs={'placeholder': ' مثلا: مجسمه سازی'}),
+			# 'category': forms.TextInput(attrs={'placeholder': ' مثلا: نمایشگاه'}),
         	}
