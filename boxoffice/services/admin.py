@@ -1,11 +1,11 @@
  
 from django.contrib import admin
-from daterange_filter.filter import DateRangeFilter
+# from daterange_filter.filter import DateRangeFilter
 
 from .models import Event, Ticket, Order, Category, SubCategory, Comment, Rate
 
 class EventAdmin(admin.ModelAdmin):
-	list_filter = ['submit_date', ('submit_date', DateRangeFilter)]
+	list_filter = ['submit_date']
 	list_display = ('organizer_fa',
 		'event_title_fa',
 		'event_place_fa',
@@ -58,7 +58,7 @@ class EventAdmin(admin.ModelAdmin):
 	event_avg_rate_fa.short_description = 'میانگین امتیاز'
 
 class OrderAdmin(admin.ModelAdmin):
-	list_filter = ['order_date', ('order_date', DateRangeFilter)]
+	list_filter = ['order_date']
 	list_display = ('member_fa',
 		'ticket_fa',
 		'num_fa',

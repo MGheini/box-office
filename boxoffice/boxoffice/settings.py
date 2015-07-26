@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'services',
     'smart_selects',
     'boxoffice_admin',
+    'django.contrib.humanize',
 )
 
 MIDDLEWARE_CLASSES = (
