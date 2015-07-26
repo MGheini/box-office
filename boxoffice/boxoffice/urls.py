@@ -36,11 +36,13 @@ urlpatterns = [
     # url(r'^bo-admin/events/(?P<event_id>[\d]+)/edit/$', 'boxoffice_admin.views.edit_event'),
     # url(r'^bo-admin/events/add/$', 'boxoffice_admin.views.add_event'),
 
-    # url(r'^bo-admin/categories/delete/$', 'boxoffice_admin.views.delete_multiple_categories'),
+    url(r'^bo-admin/categories/$', 'boxoffice_admin.views.delete_multiple_categories'),
+    url(r'^bo-admin/categories/(?P<category_id>[\d]+)/delete/$', 'boxoffice_admin.views.delete_category'),
     # url(r'^bo-admin/categories/(?P<category_id>[\d]+)/edit/$', 'boxoffice_admin.views.edit_category'),
     # url(r'^bo-admin/categories/add/$', 'boxoffice_admin.views.add_category'),
 
-    # url(r'^bo-admin/subcategories/delete/$', 'boxoffice_admin.views.delete_multiple_subcategories'),
+    url(r'^bo-admin/subcategories/$', 'boxoffice_admin.views.delete_multiple_subcategories'),
+    url(r'^bo-admin/subcategories/(?P<sub_category_id>[\d]+)/delete/$', 'boxoffice_admin.views.delete_subcategory'),
     # url(r'^bo-admin/subcategories/(?P<subcategory_id>[\d]+)/edit/$', 'boxoffice_admin.views.edit_subcategory'),
     # url(r'^bo-admin/subcategories/add/$', 'boxoffice_admin.views.add_subcategory'),
 
