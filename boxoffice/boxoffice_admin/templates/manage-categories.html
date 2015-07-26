@@ -46,7 +46,7 @@ row-admin {
 					
 					<td class="text-right" style="padding-top: 10px">
 						{% for subcat in cat.subcategory_set.all %}
-							{{ subcat }} {% if not forloop.last %},{% endif %}
+							{{ subcat.subcategory_name }}{% if not forloop.last %}،{% endif %}
 						{% endfor %}
 					</td>
 
