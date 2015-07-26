@@ -40,7 +40,7 @@ INSTALLED_APPS = (
     'users',
     'services',
     'smart_selects',
-    'daterange_filter',
+    'boxoffice_admin',
 )
 
 MIDDLEWARE_CLASSES = (
