@@ -9,27 +9,27 @@ PhaseTwo
 ===============
 admin-dashboard
 --------------
-in right sidebar:
+admin layout  --> Mozhdeh Gheini
 
-Manage users
+Manage users --> Mozhdeh Gheini
 * delete users (both types)
 * grant special permissions to some users
 * search in users (both types)
 
 Manage Events
-* add events
-* delete events
-* edit events
+* add events --> Pardis Pashakhanloo
+* delete events --> Pardis Pashakhanloo
+* edit events --> Mozhdeh Gheini
 
 Manage Categories
-* add category and subcategory
-* delete category and subcategory
-* edit category and subcategory
+* add category and subcategory --> Pardis Pashakhanloo
+* delete category and subcategory --> Pardis Pashakhanloo
+* edit category and subcategory --> Mozhdeh Gheini
 
 Reports
-* search in orders (particular time interval)
-* generate a table: all events (each: title, num_sold, total_money_earned)
-* show all orders
+* search in orders (particular time interval) --> Pardis Pashakhanloo
+* generate a table: all events (each: title, num_sold, total_money_earned) --> Pardis Pashakhanloo
+* show all orders --> Pardis Pashakhanloo
 
 Phase One
 ===============
