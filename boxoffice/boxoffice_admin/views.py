@@ -11,4 +11,8 @@ def delete_multiple_events(request):
 		Event.objects.filter(id__in=todel).delete()
 		return HttpResponseRedirect('')
 
-	return render(request, 'delete-multiple-events.html', {'events': events})
+	return render(request, 'manage-events.html', {'events': events})
+
+def delete_event(request, event_id):
+	todel = Event.objects.get(id=event_id).delete()
+	return HttpResponseRedirect('/bo-admin/events/')

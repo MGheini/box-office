@@ -31,7 +31,7 @@ urlpatterns = [
     url(r'^favicon\.ico$', RedirectView.as_view(url='/static/images/favicon.ico')),
 
     # admin related urls
-    url(r'^bo-admin/events/delete/$', 'boxoffice_admin.views.delete_multiple_events'),
+    url(r'^bo-admin/events/$', 'boxoffice_admin.views.delete_multiple_events'),
     url(r'^bo-admin/events/(?P<event_id>[\d]+)/delete/$', 'boxoffice_admin.views.delete_event'),
     # url(r'^bo-admin/events/(?P<event_id>[\d]+)/edit/$', 'boxoffice_admin.views.edit_event'),
     # url(r'^bo-admin/events/add/$', 'boxoffice_admin.views.add_event'),
