@@ -32,18 +32,36 @@
 				{% endif %}
 				<form name="" action="" method="POST">
 				{% csrf_token %}
-				{% for field in event_form %}
+
+				{% for field in form %}
 					<div class="row" style="background-color: #ffffff; margin: 0px;">
 						<div class="col-md-2" style="padding: 5px">{{ field.label }}</div>
 						<div class="col-md-5">{{ field }}</div>
 						<div class="col-md-5 error">{{ field.errors }}</div>
 					</div>
 			      {% endfor %}
-			      {% if success %}
+			      
+
+			    
+			      {{ formset.management_form }}
+			      
+
+			      {% for f in formset %}
+			      	{% for fld in f%}
+			      		<div class="row" style="background-color: #ffffff; margin: 0px;">
+						<div class="col-md-2" style="padding: 5px">{{ fld.label }}</div>
+						<div class="col-md-5">{{ fld }}</div>
+						<div class="col-md-5 error">{{ fld.errors }}</div>
+					</div>
+			      	{% endfor %}
+			      {% endfor %}
+
+				  {% if success %}
 			      	<a href="/bo-admin/events/" class="btn btn-primary btn-block" type="submit" style="width: 200px;">بازگشت</a>
 			      {% else %}
 			      	<button id="submit-new-event" class="btn btn-primary btn-block" type="submit" style="width: 200px;">ثبت</button>
 			      {% endif %}
+
 			    </form>
 			</div>
 		</div>

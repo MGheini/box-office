@@ -3,6 +3,9 @@ from boxoffice_admin.models import MyAdmin
 from services.models import Event, Category, SubCategory
 from users.models import Organizer
 from services.forms import EventModelForm, CategoryModelForm , SubCategoryModelForm
+from django.views.generic import CreateView
+from services.forms import EventModelForm, TicketFormSet
+from django.contrib.auth.models import User
 
 # Create your views here.
 def delete_multiple_events(request):
@@ -19,25 +22,32 @@ def delete_event(request, event_id):
 	todel = Event.objects.get(id=event_id).delete()
 	return HttpResponseRedirect('/bo-admin/events/')
 
-# MUST ADD TICKETS to this
-def add_event(request):
-	event_form = EventModelForm()
-	if(request.method == 'POST'):
-		event_form = EventModelForm(request.POST)
+class AddEventView(CreateView):
+    template_name = 'add-new-event.html'
+    form_class = EventModelForm
 
-		if event_form.is_valid():
-			event = event_form.save(commit=False)
-			organizer = Organizer.objects.get(user=request.user)
-			event.organizer = organizer
-			event.save()
-			success = True
-			return render(request, 'add-new-event.html', {'success': success})
+    def get_context_data(self, **kwargs):
+        context = super(AddEventView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            context['formset'] = TicketFormSet(self.request.POST)
+        else:
+            context['formset'] = TicketFormSet()
+        return context
 
-		return render(request, 'add-new-event.html', {'event_form': event_form})
+    def form_valid(self, form):
+        context = self.get_context_data()
+        formset = context['formset']
+        if formset.is_valid():
+            self.object = form.save(commit=False)
+            self.object.organizer = Organizer.objects.get(user=self.request.user)
+            self.object.save()
+            formset.instance = self.object
+            formset.save()
+            success = True
+            return render(self.request, 'add-new-event.html', {'success': success})
+        else:
+            return render(self.request, 'add-new-event.html', {'form': form})
 
-	else:
-		event_form = EventModelForm()
-		return render(request, 'add-new-event.html', {'event_form': event_form})
 
 def delete_multiple_categories(request):
 	categories = Category.objects.all()

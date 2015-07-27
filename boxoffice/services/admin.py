@@ -89,6 +89,7 @@ class OrderAdmin(admin.ModelAdmin):
 class TicketAdmin(admin.ModelAdmin):
 	list_display = ('event_fa',
 		'ticket_type_fa',
+		'ticket_price_fa',
 		'total_capacity_fa',
 		'purchased_num_fa')
 
@@ -99,6 +100,10 @@ class TicketAdmin(admin.ModelAdmin):
 	def ticket_type_fa(Self, obj):
 		return obj.ticket_type
 	ticket_type_fa.short_description = 'نوع بلیت'
+
+	def ticket_price_fa(Self, obj):
+		return obj.ticket_price
+	ticket_price_fa.short_description = 'قیمت بلیت به تومان'
 
 	def total_capacity_fa(Self, obj):
 		return obj.total_capacity

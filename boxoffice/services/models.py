@@ -55,10 +55,10 @@ class Event(models.Model):
 
 class Ticket(models.Model):
 	event = models.ForeignKey(Event, null=True)
-	ticket_type = models.CharField(max_length=255)
-	ticket_price = models.PositiveIntegerField()
-	total_capacity = models.PositiveSmallIntegerField()
-	purchased_num = models.PositiveSmallIntegerField()
+	ticket_type = models.CharField(verbose_name='نوع بلیت', max_length=255)
+	ticket_price = models.PositiveIntegerField(verbose_name='قیمت بلیت')
+	total_capacity = models.PositiveSmallIntegerField(verbose_name='ظرفیت')
+	purchased_num = models.PositiveSmallIntegerField(default=0)
 
 	class Meta:
 		unique_together = ("event", "ticket_type")

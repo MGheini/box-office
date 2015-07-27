@@ -1,11 +1,17 @@
 from django import forms
 from .models import Event, Ticket, Category, SubCategory
+from django.forms.models import inlineformset_factory
 
 class TicketModelForm(forms.ModelForm):
 
 	class Meta:
 		model = Ticket
 		fields = ['ticket_type', 'ticket_price', 'total_capacity']
+		labels = {
+			'ticket_type': 'نوع بلیت',
+			'ticket_price': 'قیمت بلیت',
+			'total_capacity': 'ظرفیت',
+		}
 
 class EventModelForm(forms.ModelForm):
 	class Meta:
@@ -48,7 +54,6 @@ class CategoryModelForm(forms.ModelForm):
 class SubCategoryModelForm(forms.ModelForm):
 	class Meta:
 		model = SubCategory
-		# exclude = ['---']
 		fields = ['subcategory_name', 'category']
 		labels = {
 			'subcategory_name': 'عنوان زیردسته',
@@ -56,5 +61,6 @@ class SubCategoryModelForm(forms.ModelForm):
 		}
 		widgets = {
 			'subcategory_name': forms.TextInput(attrs={'placeholder': ' مثلا: مجسمه سازی'}),
-			# 'category': forms.TextInput(attrs={'placeholder': ' مثلا: نمایشگاه'}),
         	}
+
+TicketFormSet = inlineformset_factory(Event, Ticket, fields=('ticket_type','ticket_price', 'total_capacity'), can_delete=False,)

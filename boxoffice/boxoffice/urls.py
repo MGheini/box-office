@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.views.generic import RedirectView
+from boxoffice_admin.views import AddEventView
 
 urlpatterns = [
     url(r'^$', 'services.views.home'),
@@ -34,7 +35,7 @@ urlpatterns = [
     url(r'^bo-admin/events/$', 'boxoffice_admin.views.delete_multiple_events'),
     url(r'^bo-admin/events/(?P<event_id>[\d]+)/delete/$', 'boxoffice_admin.views.delete_event'),
     # url(r'^bo-admin/events/(?P<event_id>[\d]+)/edit/$', 'boxoffice_admin.views.edit_event'),
-    url(r'^bo-admin/events/add/$', 'boxoffice_admin.views.add_event'),
+    url(r'^bo-admin/events/add/$', AddEventView.as_view()),
 
     url(r'^bo-admin/categories/$', 'boxoffice_admin.views.delete_multiple_categories'),
     url(r'^bo-admin/categories/(?P<category_id>[\d]+)/delete/$', 'boxoffice_admin.views.delete_category'),
