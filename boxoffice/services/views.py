@@ -144,3 +144,5 @@ def history(request):
 		'categories': layout['categories'],
 		'newest': layout['newest'],
 		'most_populars': layout['most_populars']})
+
+def 

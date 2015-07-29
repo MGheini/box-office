@@ -21,7 +21,7 @@
 <div id="reg-form">
   <div class="well" style="margin: 0px;">
     <p style="font-size: 28px;">ثبت رویداد جدید</p>
-    <form name="submitNewEvent" action="" method="post" onsubmit="">
+    <form name="submitNewEvent" enctype="multipart/form-data" action="" method="post" onsubmit="">
       {% csrf_token %}
       {% for field in event_form %}
       <div class="row" style="background-color: #ecf0f1; margin: 0px;">

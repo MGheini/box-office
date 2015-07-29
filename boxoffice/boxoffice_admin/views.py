@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 
 # Create your views here.
 def delete_multiple_events(request):
-	events = Event.objects.all()
+	events = Event.objects.order_by('-submit_date').all()
 
 	if request.method == 'POST':
 		todel = request.POST.getlist('todelete')

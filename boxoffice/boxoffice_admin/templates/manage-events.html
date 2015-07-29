@@ -40,13 +40,13 @@
 					<thead style="font-size: 20px">
 						<th class="text-right"> </th>
 						<th class="text-right">عنوان رویداد</th>
-						<th class="text-right">دسته</th>
-						<th class="text-right">زیردسته</th>
+						<th class="text-right">دسته(زیردسته)</th>
 						<th class="text-right">محل برگزاری</th>
 						<th class="text-right">میانگین امتیاز</th>
 						<th class="text-right">زمان برگزاری</th>
 						<th class="text-right">مهلت خرید</th>
 						<th class="text-right">زمان ثبت</th>
+						<th class="text-right">بلیت‌ها</th>
 					</thead>
 					<tbody style="text-align: right">
 						{% for event in events %}
@@ -57,13 +57,17 @@
 							<td class="text-right" style="padding-top: 10px; ">
 								<a href="/bo-admin/events/{{ event.id }}/delete/"><span class="glyphicon glyphicon-trash text-danger" style="margin-left: 6px" data-toggle="tooltip" title="حذف"></span></a><a href="/bo-admin/events/{{ event.id }}/edit/"><span class="glyphicon glyphicon-pencil text-info" style="margin-left: 6px" data-toggle="tooltip" title="ویرایش"></span></a>{{ event.event_title }}
 							</td>
-							<td class="text-right" style="padding-top: 10px">{{ event.category }}</td>
-							<td class="text-right" style="padding-top: 10px">{{ event.subcategory }}</td>
+							<td class="text-right" style="padding-top: 10px">{{ event.category }}({{ event.subcategory.subcategory_name }})</td>
 							<td class="text-right" style="padding-top: 10px">{{ event.event_place }}</td>
 							<td class="text-right" style="padding-top: 10px">{{ event.event_avg_rate }}</td>
 							<td class="text-right" style="padding-top: 10px">{{ event.event_date }}</td>
 							<td class="text-right" style="padding-top: 10px">{{ event.event_deadline|naturaltime }}</td>
 							<td class="text-right" style="padding-top: 10px">{{ event.submit_date|naturaltime }}</td>
+							<td class="text-right" style="padding-top: 10px">
+								{% for ticket in event.ticket_set.all %}
+									{{ ticket.ticket_type }}{% if not forloop.last %}،{% endif %}
+								{% endfor %}
+							</td>
 						</tr>
 						{% endfor %}
 					</tbody></table>

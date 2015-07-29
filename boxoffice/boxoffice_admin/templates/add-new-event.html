@@ -30,7 +30,7 @@
 				{% if success %}
 					<p class="text-success">رویداد با موفقیت افزوده شد.</p>
 				{% endif %}
-				<form name="" action="" method="POST">
+				<form name="" action="" method="POST"  enctype="multipart/form-data">
 				{% csrf_token %}
 
 				{% for field in form %}
@@ -41,10 +41,13 @@
 					</div>
 			      {% endfor %}
 
+				{% if not success %}
 				<div class="row" style="background-color: #ffffff; margin: 0px;">
 					<p for="inputTicket" class="row control-label" style="background-color: #ffffff; margin: 0px; padding: 5px; font-weight: normal">تعیین بلیت‌ها</p> 
 					<hr style="margin: 0" />
-				</div
+				</div>
+				{% endif %}
+
 
 			      <div class="row" style="background-color: #ffffff; margin: 0px;">
 			      		 
@@ -77,8 +80,8 @@
 							<div class="col-md-3">
 								 <div class="row form-group" style="background-color: #ffffff; margin: 0px;">
 									{% if not form.is_valid %}
-										{% if form.ticket_type.errors %} خطا در نوع بلیت: {{ form.ticket_type.errors.as_text }}،{% endif %}
-										{% if form.ticket_price.errors %} خطا در قیمت بلیت: {{ form.ticket_price.errors.as_text }}،{% endif %}
+										{% if form.ticket_type.errors %} خطا در نوع بلیت: {{ form.ticket_type.errors.as_text }}<br/>{% endif %}
+										{% if form.ticket_price.errors %} خطا در قیمت بلیت: {{ form.ticket_price.errors.as_text }}<br/>{% endif %}
 										{% if form.total_capacity.errors %} خطا در ظرفیت بلیت: {{ form.total_capacity.errors.as_text }}{% endif %}
 									{% endif %}
 			      				</div>
