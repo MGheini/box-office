@@ -40,28 +40,29 @@
 						<div class="col-md-5 error">{{ field.errors }}</div>
 					</div>
 			      {% endfor %}
+			      		    
+			      <table border="0" cellpadding="0" cellspacing="0">
+			        <tbody>
+			            {% for form in formset.forms %}
+			            <tr>
+			               <td>
+			                  {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+			                  {{ form.ticket_type }}
+			               </td>
+			               <td>{{ form.ticket_price }}</td>
+			               <td>{{ form.total_capacity }}</td>
+			            </tr>
+			            {% endfor %}
+			        </tbody>
+			    </table>
 			      
-
-			    
-			      {{ formset.management_form }}
-			      
-
-			      {% for f in formset %}
-			      	{% for fld in f%}
-			      		<div class="row" style="background-color: #ffffff; margin: 0px;">
-						<div class="col-md-2" style="padding: 5px">{{ fld.label }}</div>
-						<div class="col-md-5">{{ fld }}</div>
-						<div class="col-md-5 error">{{ fld.errors }}</div>
-					</div>
-			      	{% endfor %}
-			      {% endfor %}
-
 				  {% if success %}
 			      	<a href="/bo-admin/events/" class="btn btn-primary btn-block" type="submit" style="width: 200px;">بازگشت</a>
 			      {% else %}
 			      	<button id="submit-new-event" class="btn btn-primary btn-block" type="submit" style="width: 200px;">ثبت</button>
 			      {% endif %}
-
+				
+				{{ formset.management_form }}
 			    </form>
 			</div>
 		</div>
@@ -69,5 +70,14 @@
 	<script type="text/javascript" src="{% static "scripts/jquery-1.9.1.min.js" %}"></script>
 	<script type="text/javascript" src="{% static "scripts/bootstrap.min.js" %}"></script>
 	<script type="text/javascript" src="{% static "scripts/slick.min.js" %}"></script>
+					<script type="text/javascript" src="{% static "scripts/jquery.formset.min.js" %}"></script>
+					<script type="text/javascript">
+					    $(function() {
+        $('form tbody tr').formset({
+            prefix: '{{ formset.prefix }}'
+        });
+    })
+					</script>
+				
 	</body>
 </html>
