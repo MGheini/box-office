@@ -63,4 +63,4 @@ class SubCategoryModelForm(forms.ModelForm):
 			'subcategory_name': forms.TextInput(attrs={'placeholder': ' مثلا: مجسمه سازی'}),
         	}
 
-TicketFormSet = inlineformset_factory(Event, Ticket, fields=('ticket_type','ticket_price', 'total_capacity'),)
+TicketFormSet = inlineformset_factory(Event, Ticket, fields=('ticket_type','ticket_price', 'total_capacity'), extra=1)
