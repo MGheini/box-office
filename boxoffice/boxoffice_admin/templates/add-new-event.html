@@ -40,22 +40,53 @@
 						<div class="col-md-5 error">{{ field.errors }}</div>
 					</div>
 			      {% endfor %}
-			      		    
-			      <table border="0" cellpadding="0" cellspacing="0">
-			        <tbody>
-			            {% for form in formset.forms %}
-			            <tr>
-			               <td>
-			                  {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
-			                  {{ form.ticket_type }}
-			               </td>
-			               <td>{{ form.ticket_price }}</td>
-			               <td>{{ form.total_capacity }}</td>
-			            </tr>
-			            {% endfor %}
-			        </tbody>
-			    </table>
-			      
+
+				<div class="row" style="background-color: #ffffff; margin: 0px;">
+					<p for="inputTicket" class="row control-label" style="background-color: #ffffff; margin: 0px; padding: 5px; font-weight: normal">تعیین بلیت‌ها</p> 
+					<hr style="margin: 0" />
+				</div
+
+			      <div class="row" style="background-color: #ffffff; margin: 0px;">
+			      		 
+			      	{% for form in formset.forms %}
+						<div class="row form-group ticketDiv" style="background-color: #ffffff; margin: 0px;">
+							<div class="col-md-2">
+								
+							</div>							
+
+							<div class="col-md-1">
+								<!-- <input type="text" class="form-control inputTicketType" placeholder="نوع بلیت" /> -->
+								{{ form.ticket_type }}
+							</div>
+
+							<div class="col-md-2">
+								<div class="input-group">
+									<!-- <input type="text" class="form-control inputTicketPrice" placeholder="قیمت" /> -->
+									{{ form.ticket_price }}
+									<span class="input-group-addon" style="color: #D6E0EA"><span class="text-primary">تومان</span></span>
+								</div>
+							</div>
+
+							<div class="col-md-1">
+								<!-- <input type="text" class="form-control inputTicketCapacity" placeholder="ظرفیت" /> -->
+								{{ form.total_capacity }}
+							</div>
+							<div class="col-md-3">
+								{% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+							</div>
+							<div class="col-md-3">
+								 <div class="row form-group" style="background-color: #ffffff; margin: 0px;">
+									{% if not form.is_valid %}
+										{% if form.ticket_type.errors %} خطا در نوع بلیت: {{ form.ticket_type.errors.as_text }}،{% endif %}
+										{% if form.ticket_price.errors %} خطا در قیمت بلیت: {{ form.ticket_price.errors.as_text }}،{% endif %}
+										{% if form.total_capacity.errors %} خطا در ظرفیت بلیت: {{ form.total_capacity.errors.as_text }}{% endif %}
+									{% endif %}
+			      				</div>
+							</div>
+						</div>
+					{% endfor %}
+			      </div>
+
 				  {% if success %}
 			      	<a href="/bo-admin/events/" class="btn btn-primary btn-block" type="submit" style="width: 200px;">بازگشت</a>
 			      {% else %}
@@ -73,10 +104,10 @@
 					<script type="text/javascript" src="{% static "scripts/jquery.formset.min.js" %}"></script>
 					<script type="text/javascript">
 					    $(function() {
-        $('form tbody tr').formset({
-            prefix: '{{ formset.prefix }}'
-        });
-    })
+					        $('form .ticketDiv').formset({
+					            prefix: '{{ formset.prefix }}'
+					        });
+					    })
 					</script>
 				
 	</body>
