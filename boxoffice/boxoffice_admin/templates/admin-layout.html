@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+	<meta charset="UTF-8">
+	<title>
+		مدیریّت
+	</title>
+	{% load staticfiles %}
+	<link rel="stylesheet" href="{% static "styles/bootstrap.min.css" %}" />
+	<link rel="stylesheet" href="{% static "styles/bootstrap-rtl.min.css" %}" />
+	<link rel="stylesheet" href="{% static "styles/farsi-fonts.css" %}">
+	<link rel="stylesheet" href="{% static "styles/mcustom.css" %}" />
+	{% block style %}
+	{% endblock %}
+</head>
+<body>
+	<nav class="navbar navbar-default col-md-10 col-md-offset-1 hidden-print">
+		<h1 style="color: #fff; padding: 10px; margin-top: 10.5px;">به بخش مدیریّت خوش آمدید!</h1>
+	</nav>
+	<aside id="sidebar-1" class="col-md-2 col-md-offset-1 hidden-print">
+		<div class="row">
+			<div class="col-md-12 well" style="margin: 0px;">
+				<p style="font-size: 28px;">مدیریّت وب‌گاه</p>
+				<ul class="list-group" style="margin: 0;">
+					<li class="list-group-item">
+						<details style="margin: 0px;">
+							<summary>
+								<i style="margin-left: 5px; margin-right: 3px" class="glyphicon glyphicon-user"></i>
+								<a class="clicked" href="/">مدیریّت کاربران</a>
+							</summary>
+							<ul class="nav nav-pills nav-stacked">
+								<li>
+									<a href="#">کاربران نوع برگزارکننده</a>
+								</li>
+								<li>
+									<a href="#">کاربران نوع مشتری</a>
+								</li>
+							</ul>
+						</details>
+					</li>
+					<li class="list-group-item">
+						<span class="glyphicon glyphicon-certificate"></span>
+						<a href="#">
+							مدیریّت رویدادها
+						</a>
+					</li>
+					<li class="list-group-item">
+						<span class="glyphicon glyphicon-th-large"></span>
+						<a href="#">
+							مدیریّت دسته‌ها
+						</a>
+					</li>
+					<li class="list-group-item">
+						<span class="glyphicon glyphicon-th"></span>
+						<a href="#">
+							مدیریّت زیردسته‌ها
+						</a>
+					</li>
+					<li class="list-group-item">
+						<details style="margin: 0px;">
+							<summary>
+								<i style="margin-left: 5px; margin-right: 3px" class="glyphicon glyphicon-folder-open"></i>
+								گزارش‌ها
+							</summary>
+							<ul class="nav nav-pills nav-stacked">
+								<li>
+									<a href="#">وضعیّت فروش رویدادها</a>
+								</li>
+								<li>
+									<a href="#">سفارشات</a>
+								</li>
+							</ul>
+						</details>
+					</li>
+					<li class="list-group-item">
+						<span class="glyphicon glyphicon-log-out"></span>
+						<a href="#">
+							خروج
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</aside>
+	<section class="col-md-8 main">
+		{% block content %}
+		{% endblock %}
+	</section>
+	<script type="text/javascript" src="{% static "scripts/jquery-1.9.1.min.js" %}"></script>
+	<script type="text/javascript" src="{% static "scripts/bootstrap.min.js" %}"></script>
+	<script type="text/javascript" src="{% static "scripts/mcustom.js" %}"></script>
+	<script type="text/javascript">
+		$('details summary').each(function(){
+			$(this).nextAll().wrapAll('<div id="wrap"></div>');
+		});
+		$('details').attr('open','').find('#wrap').css('display','none');
+		$('details summary').click(function(e) {
+			e.preventDefault();
+			$(this).siblings('div#wrap').slideToggle(function(){
+				$(this).parent('details').toggleClass('open');
+			});
+		});
+	</script>
+	<script rel="stylesheet" href="{% static "scripts/convert-to-persian.js" %}"></script>
+	{% block script %}
+	{% endblock %}
+</body>
+</html>

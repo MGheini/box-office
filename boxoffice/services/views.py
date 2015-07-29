@@ -25,22 +25,23 @@ def home(request):
 	if request.method == 'POST':
 		return our_login(request) # don't forget to return!
 	elif request.user.is_authenticated():
-		if request.session['user_type'] == 'member':
-			return render(request, 'home.html',
-				{'home': True,
-				'member': True,
-				'categories': layout['categories'],
-				'available_events': available_events,
-				'newest': layout['newest'],
-				'most_populars': layout['most_populars']})
-		elif request.session['user_type'] == 'organizer':
-			return render(request, 'home.html',
-				{'home': True,
-				'organizer': True,
-				'categories': layout['categories'],
-				'available_events': available_events,
-				'newest': layout['newest'],
-				'most_populars': layout['most_populars']})
+		if 'user_type' in request.session:
+			if request.session['user_type'] == 'member':
+				return render(request, 'home.html',
+					{'home': True,
+					'member': True,
+					'categories': layout['categories'],
+					'available_events': available_events,
+					'newest': layout['newest'],
+					'most_populars': layout['most_populars']})
+			elif request.session['user_type'] == 'organizer':
+				return render(request, 'home.html',
+					{'home': True,
+					'organizer': True,
+					'categories': layout['categories'],
+					'available_events': available_events,
+					'newest': layout['newest'],
+					'most_populars': layout['most_populars']})
 		else:
 			return HttpResponseRedirect('/admin')
 	else:
@@ -144,5 +145,3 @@ def history(request):
 		'categories': layout['categories'],
 		'newest': layout['newest'],
 		'most_populars': layout['most_populars']})
-
-def 

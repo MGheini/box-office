@@ -98,7 +98,6 @@ details.open summary:before {
 }
 summary:before, summary:after {
     font-size:.8em;
-    margin-right:6px;
     border: none;
 }
 
