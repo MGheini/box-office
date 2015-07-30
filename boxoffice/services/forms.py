@@ -12,6 +12,11 @@ class TicketModelForm(forms.ModelForm):
 			'ticket_price': 'قیمت بلیت',
 			'total_capacity': 'ظرفیت',
 		}
+		widgets = {
+			'ticket_type': forms.TextInput(attrs={ 'class': 'form-control', 'placeholder': 'نوع بلیت' }),
+			'ticket_price': forms.TextInput(attrs={ 'class': 'form-control', 'placeholder': 'قیمت بلیت' }),
+			'total_capacity': forms.TextInput(attrs={ 'class': 'form-control', 'placeholder': 'ظرفیت بلیت' }),
+        }
 
 class EventModelForm(forms.ModelForm):
 	class Meta:

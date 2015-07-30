@@ -1,11 +1,12 @@
-from django.shortcuts import render, HttpResponseRedirect
-from boxoffice_admin.models import MyAdmin
-from services.models import Event, Category, SubCategory
-from users.models import Organizer
-from services.forms import EventModelForm, CategoryModelForm , SubCategoryModelForm
-from django.views.generic import CreateView
-from services.forms import EventModelForm, TicketFormSet
 from django.contrib.auth.models import User
+from django.views.generic import CreateView
+from django.shortcuts import render, HttpResponseRedirect
+
+from users.models import Organizer
+from boxoffice_admin.models import MyAdmin
+from services.forms import EventModelForm, TicketFormSet
+from services.models import Event, Category, SubCategory
+from services.forms import EventModelForm, CategoryModelForm , SubCategoryModelForm
 
 # Create your views here.
 def delete_multiple_events(request):
