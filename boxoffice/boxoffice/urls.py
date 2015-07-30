@@ -4,12 +4,13 @@ from django.contrib import admin
 from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.views.generic import RedirectView
-
 from boxoffice_admin.views import AddEventView
 
 urlpatterns = [
     url(r'^$', 'services.views.home'),
     url(r'^FAQ/$', 'services.views.answer'),
+    url(r'^search_form/$', 'services.views.search_form'),
+    url(r'^search/$', 'services.views.search'),
     url(r'^Gisheh/$', 'services.views.about_us'),
     url(r'^register/$', 'users.views.register'),
     url(r'^events/', include([
@@ -33,8 +34,6 @@ urlpatterns = [
     url(r'^favicon\.ico$', RedirectView.as_view(url='/static/images/favicon.ico')),
 
     # admin related urls
-    url(r'^bo-admin/$', 'boxoffice_admin.views.admin_home'),
-
     url(r'^bo-admin/events/$', 'boxoffice_admin.views.delete_multiple_events'),
     url(r'^bo-admin/events/(?P<event_id>[\d]+)/delete/$', 'boxoffice_admin.views.delete_event'),
     # url(r'^bo-admin/events/(?P<event_id>[\d]+)/edit/$', 'boxoffice_admin.views.edit_event'),
