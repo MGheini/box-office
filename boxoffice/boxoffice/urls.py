@@ -61,4 +61,5 @@ urlpatterns = [
     # url(r'^bo-admin/orders/showall/$', 'boxoffice_admin.views.showall_orders'),
     # url(r'^bo-admin/orders/search/$', 'boxoffice_admin.views.search_orders'),
 
+    url(r'^bo-admin/logout/$', 'boxoffice_admin.views.our_logout'),    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

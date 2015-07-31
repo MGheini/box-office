@@ -2,6 +2,7 @@
 from django.contrib.auth.models import User
 from django.views.generic import CreateView
 from django.shortcuts import render, HttpResponseRedirect
+from django.contrib.auth import logout
 
 from users.models import Organizer
 from boxoffice_admin.models import MyAdmin
@@ -119,3 +120,7 @@ def add_subcategory(request):
 		subcategory_form = SubCategoryModelForm()
 
 	return render(request, 'add-new-subcategory.html', {'subcategory_form': subcategory_form})
+
+def our_logout(request):
+	logout(request)
+	return render(request, 'logout-admin.html', {})
