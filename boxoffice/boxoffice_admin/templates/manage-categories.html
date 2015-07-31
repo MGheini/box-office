@@ -1,73 +1,65 @@
-	<!DOCTYPE html>
-	<html>
-	<head>
-		<title>مدیریت دسته‌ها</title>
-		{% load humanize %}
-		{% load staticfiles %}
-		<link rel="stylesheet" href="{% static "styles/bootstrap.min.css" %}" />
-		<link rel="stylesheet" href="{% static "styles/bootstrap-rtl.min.css" %}" />
-		<link rel="stylesheet" href="{% static "styles/farsi-fonts.css" %}">
-		<link rel="stylesheet" href="{% static "styles/mcustom.css" %}" />
-		<link rel="stylesheet" href="{% static "styles/slick.css" %}" />
-		<link rel="stylesheet" href="{% static "styles/slick-theme.css" %}" />
-		<link rel="stylesheet" href="{% static "styles/pcustom.css" %}" />
-		{% block style %}
-		<style type="text/css">
-			row-admin {
-				background-color: #ffffff;
-			}
-		</style>
-		{% endblock %}
-	</head>
-	<body>
-		<!-- start -->
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h1 class="panel-title" style="font-size: 30px">مدیریت دسته‌ها</h1>
-				<ul class="list-group" style="margin: 5px;">
-					<li class="list-group-item" style="width: 200px; margin-top: 6px; padding: 0 auto">
-						<a href="add/">
-							<span class="glyphicon glyphicon-plus-sign" style="position: relative; top: 4px"></span>
-							افزودن دسته جدید
-						</a>
-					</li>
-				</ul>
-			</div>
-			<div class="panel-body">
-				<form method="POST">
-					{% csrf_token %}
-					<table class="table" style="border-collapse: collapse">
-						<thead style="font-size: 20px">
-							<th class="text-right"></th>
-							<th class="text-right">عنوان دسته</th>
-							<th class="text-right">زیردسته‌های مرتبط</th>
-						</thead>
-						<tbody>
-							{% for cat in categories %}
-							<tr style="font-size: 15px;">
-								<td class="text-right">
-									<input type="checkbox" name="todelete" value="{{ cat.id }}" class="col-md-1 col-sm-3 col-xs-4" style="margin: 0 auto; width: 15px; height: 15px" />
-								</td>
-								<td class="text-right" style="padding-top: 10px; ">
-									<p class=""><a href="/bo-admin/categories/{{ cat.id }}/delete/"><span class="glyphicon glyphicon-trash text-danger" style="margin-left: 6px" data-toggle="tooltip" title="حذف"></span></a><a href="/bo-admin/categories/{{ cat.id }}/edit/"><span class="glyphicon glyphicon-pencil text-info" style="margin-left: 6px" data-toggle="tooltip" title="ویرایش"></span></a>{{ cat.category_name }}</p>
-								</td>
+{% extends "admin-layout.html" %}	
 
-								<td class="text-right" style="padding-top: 10px">
-									{% for subcat in cat.subcategory_set.all %}
-									{{ subcat.subcategory_name }}{% if not forloop.last %}،{% endif %}
-									{% endfor %}
-								</td>
+{% block title %}
+مدیریت دسته‌ها
+{% endblock %}
 
-							</tr>
-							{% endfor %}
-						</tbody></table>
-						<input type="submit" value="حذف انتخاب شده‌ها" class="btn btn-danger" />
-					</form>
-				</div>
-			</div>
-			<!-- end -->
-			<script type="text/javascript" src="{% static "scripts/jquery-1.9.1.min.js" %}"></script>
-			<script type="text/javascript" src="{% static "scripts/bootstrap.min.js" %}"></script>
-			<script type="text/javascript" src="{% static "scripts/slick.min.js" %}"></script>
-		</body>
-		</html>
+{% load humanize %}
+{% load staticfiles %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static "styles/pcustom.css" %}" />
+<style type="text/css">
+row-admin {
+	background-color: #ffffff;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- start -->
+<div class="panel panel-default" style="border: none">
+	<div class="panel-heading">
+		<h1 class="panel-title" style="font-size: 30px">مدیریت دسته‌ها</h1>
+		<ul class="list-group" style="margin: 5px;">
+			<li class="list-group-item" style="width: 200px; margin-top: 10px; padding: 0 auto;">
+				<a href="add/">
+					<span class="glyphicon glyphicon-plus-sign" style="position: relative; top: 4px"></span>
+					افزودن دسته جدید
+				</a>
+			</li>
+		</ul>
+	</div>
+	<div class="panel-body" style="padding: 0; margin-top: 2px; margin-bottom: 2px">
+		<form method="POST">
+			{% csrf_token %}
+			<table class="table table-condensed table-hover table-bordered" style="border-collapse: collapse; margin-bottom: 20px">
+				<thead style="font-size: 20px">
+					<th class="text-right"> </th>
+					<th class="text-right">عنوان دسته</th>
+					<th class="text-right">زیردسته‌های مرتبط</th>
+				</thead>
+				<tbody>
+					{% for cat in categories %}
+					<tr style="font-size: 15px;">
+						<td class="text-right" style="vertical-align: middle; width: 3%">
+							<input type="checkbox" name="todelete" value="{{ cat.id }}" class="col-md-1 col-sm-3 col-xs-4" style="margin: 0 auto; width: 15px; height: 15px" />
+						</td>
+						<td class="text-right" style="padding-top: 10px; vertical-align: middle; width: 20%">
+							<p style="margin-bottom: 0"><a href="/bo-admin/categories/{{ cat.id }}/delete/"><span class="glyphicon glyphicon-trash text-danger" style="margin-left: 6px" data-toggle="tooltip" title="حذف"></span></a><a href="/bo-admin/categories/{{ cat.id }}/edit/"><span class="glyphicon glyphicon-pencil text-info" style="margin-left: 6px" data-toggle="tooltip" title="ویرایش"></span></a>{{ cat.category_name }}</p>
+						</td>
+						<td class="text-right" style="padding-top: 10px; vertical-align: middle">
+						{% for subcat in cat.subcategory_set.all %}
+							{{ subcat.subcategory_name }}{% if not forloop.last %}،{% endif %}
+						{% endfor %}
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<input type="submit" value="حذف انتخاب شده‌ها" class="btn btn-danger" />
+		</form>
+	</div>
+</div>
+<!-- end -->
+{% endblock %}
