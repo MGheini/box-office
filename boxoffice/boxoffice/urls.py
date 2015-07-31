@@ -9,8 +9,6 @@ from boxoffice_admin.views import AddEventView
 urlpatterns = [
     url(r'^$', 'services.views.home'),
     url(r'^FAQ/$', 'services.views.answer'),
-    url(r'^search_form/$', 'services.views.search_form'),
-    url(r'^search/$', 'services.views.search'),
     url(r'^Gisheh/$', 'services.views.about_us'),
     url(r'^register/$', 'users.views.register'),
     url(r'^events/', include([
@@ -38,6 +36,8 @@ urlpatterns = [
     url(r'^bo-admin/events/(?P<event_id>[\d]+)/delete/$', 'boxoffice_admin.views.delete_event'),
     # url(r'^bo-admin/events/(?P<event_id>[\d]+)/edit/$', 'boxoffice_admin.views.edit_event'),
     url(r'^bo-admin/events/add/$', AddEventView.as_view()),
+    url(r'^bo-admin/search_form/$', 'boxoffice_admin.views.search_form'),
+    url(r'^bo-admin/search/$', 'boxoffice_admin.views.search'),
 
     url(r'^bo-admin/categories/$', 'boxoffice_admin.views.delete_multiple_categories'),
     url(r'^bo-admin/categories/(?P<category_id>[\d]+)/delete/$', 'boxoffice_admin.views.delete_category'),
