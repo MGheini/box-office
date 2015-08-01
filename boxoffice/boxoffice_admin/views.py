@@ -12,6 +12,33 @@ from services.forms import EventModelForm, CategoryModelForm , SubCategoryModelF
 
 def admin_home(request):
 	return render(request, 'admin-layout.html', {})
+	
+	
+def search_form(request):
+    return render(request, 'search-form.html')
+
+def search(request):
+    if 'q' in request.POST:
+        q = request.POST['q']
+        startDate = request.POST['startDate']
+        endDate = request.POST['endDate']
+        try:
+            events = Event.objects.get(Q(event_title=q) & Q(event_date__contains=startDate) & Q(event_deadline__contains=endDate))
+
+        except Event.DoesNotExist:
+            return render(request,'output-table.html',{'query' : q,'success' : False})
+
+        tickets = events.ticket_set
+        number = tickets.count()
+        try:
+            orders = Order.objects.filter(ticket__event=events)
+        except Order.DoesNotExist:
+            return render(request, 'output-table.html',
+                        {'events' : events,'success' : True , 'query' : q , 'ticketNum' : number , 'price': 0 , 'order' : False})
+        total = sum([order.total_price for order in orders])
+        return render(request, 'output-table.html',
+                        {'events' : events,'success' : True , 'query' : q , 'ticketNum' : number , 'price': total ,'order' : True})
+	
 
 def delete_multiple_events(request):
 	events = Event.objects.order_by('-submit_date').all()
