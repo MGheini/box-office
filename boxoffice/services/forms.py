@@ -43,7 +43,7 @@ class CategoryModelForm(forms.ModelForm):
 		fields = ['category_name', 'category_glyphicon']
 		labels = {
 			'category_name': 'عنوان دسته',
-			'category_glyphicon': 'آیکن دسته - توجه داشته باشید که باید یکی از آیکن‌های موجود در بوت استرپ ۳ باشد.',
+			'category_glyphicon': 'آیکن دسته',
 		}
 		widgets = {
 			'category_name': forms.TextInput(attrs={'placeholder': ' مثلا: نمایشگاه'}),

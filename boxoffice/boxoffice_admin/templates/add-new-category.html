@@ -1,7 +1,7 @@
 {% extends "admin-layout.html" %}	
 
 {% block title %}
-افزودن دستهجدید
+افزودن دسته جدید
 {% endblock %}
 
 {% load humanize %}
@@ -41,6 +41,7 @@ row-admin {
 				<div class="col-md-5 error">{{ field.errors }}</div>
 			</div>
 			{% endfor %}
+			<p>توجه داشته باشید که باید یکی از آیکن‌های موجود در بوت استرپ ۳ باشد. لیستی از آن‌ها را در <a href="http://getbootstrap.com/components/#glyphicons">اینجا</a> مشاهده فرمایید.</p>
 			
 			{% if success %}
 			<a href="/bo-admin/categories/" class="btn btn-primary btn-block" type="submit" style="width: 200px;">بازگشت</a>

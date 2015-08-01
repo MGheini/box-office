@@ -25,7 +25,7 @@ class SubCategory(models.Model):
 		verbose_name = "زیردسته"
 
 	def __str__(self):
-		return self.subcategory_name + " (" + self.category.category_name + ")"
+		return self.subcategory_name
 
 class Event(models.Model):
 	category = models.ForeignKey(Category)
