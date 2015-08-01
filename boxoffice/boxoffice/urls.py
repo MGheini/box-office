@@ -34,6 +34,9 @@ urlpatterns = [
 
     # admin related urls
     url(r'^bo-admin/$', 'boxoffice_admin.views.admin_home'),
+    
+    url(r'^bo-admin/search_form/$', 'boxoffice_admin.views.search_form'),
+    url(r'^bo-admin/search/$', 'boxoffice_admin.views.search'),
 
     url(r'^bo-admin/events/$', 'boxoffice_admin.views.delete_multiple_events'),
     url(r'^bo-admin/events/(?P<event_id>[\d]+)/delete/$', 'boxoffice_admin.views.delete_event'),
