@@ -7,8 +7,9 @@ from django.contrib.auth import logout
 from users.models import Organizer
 from boxoffice_admin.models import MyAdmin
 from services.forms import EventModelForm, TicketFormSet
-from services.models import Event, Category, SubCategory
+from services.models import Event, Category, SubCategory,Ticket,Order
 from services.forms import EventModelForm, CategoryModelForm , SubCategoryModelForm
+from django.db.models import Q
 
 def admin_home(request):
 	return render(request, 'admin-layout.html', {})
