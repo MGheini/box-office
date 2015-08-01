@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<title xmlns="http://www.w3.org/1999/html">همه‌ی سفارش‌ها</title>
+
+{% load humanize %}
+		{% load staticfiles %}
+		<link rel="stylesheet" href="{% static "styles/bootstrap.min.css" %}" />
+		<link rel="stylesheet" href="{% static "styles/bootstrap-rtl.min.css" %}" />
+		<link rel="stylesheet" href="{% static "styles/farsi-fonts.css" %}">
+		<link rel="stylesheet" href="{% static "styles/mcustom.css" %}" />
+		<link rel="stylesheet" href="{% static "styles/slick.css" %}" />
+		<link rel="stylesheet" href="{% static "styles/slick-theme.css" %}" />
+		<link rel="stylesheet" href="{% static "styles/pcustom.css" %}" />
+		{% block style %}
+		<style type="text/css">
+			row-admin {
+				background-color: #ffffff;
+			}
+		</style>
+		{% endblock %}
+<html>
+<head>
+<style>
+
+body {
+  padding: 10 2em;
+  font-family: Montserrat, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  color: #444;
+  background: #eee;
+}
+
+h1 {
+  font-weight: normal;
+  letter-spacing: -1px;
+  color: #34495E;
+}
+
+.rwd-table {
+    margin: 1em 0;
+  min-width: 300px;
+  background: #34495E;
+  color: #fff;
+  border-radius: .4em;
+  overflow: hidden;
+  tr {
+       border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-color: black;
+  }
+  th{
+       display: none;
+  }
+
+  td {
+    display: block;
+
+    &:first-child {
+      padding-top: .5em;
+    }
+    &:last-child {
+      padding-bottom: .5em;
+    }
+
+    &:before {
+      content: attr(data-th)": "; // who knew you could do this? The internet, that's who.
+      font-weight: bold;
+
+      // optional stuff to make it look nicer
+      width: 6.5em; // magic number :( adjust according to your own content
+      display: inline-block;
+      // end options
+
+      @media (min-width: $breakpoint-alpha) {
+        display: none;
+      }
+    }
+  th, td {
+      text-align: center;
+      color: gold;
+      border: solid;
+    margin: 50px 50px;
+     @media (min-width: $breakpoint-alpha) {
+      display: table-cell;
+      padding: .25em .5em;
+
+      &:first-child {
+        padding-left: 0;
+      }
+
+      &:last-child {
+        padding-right: 0;
+      }
+    }
+  }
+  th, td:before {
+    color: gold;
+  }
+}
+</style>
+</head>
+
+<body>
+<script type="text/javascript" src="{% static "scripts/jquery-1.9.1.min.js" %}"></script>
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h1 class="panel-title" style="font-size: 30px">سفارش‌ها</h1>
+            </div>
+            <div class="panel-body">
+        {% if success %}
+            {% if orders %}
+                <p>تمامی سفارش‌ها</p>
+                <table id="table" class="rwd-table">
+                    <tr>
+                        <th align="center" color="gold">شماره سفارش</th>
+                        <th align="center">نام کاربر</th>
+                        <th align="center">نام رویداد</th>
+                        <th align="center">قیمت کل</th>
+                    </tr>
+                    {% for order in oders %}
+                    <tr>
+                        <td>{{ order.order_id }}</td>
+                        <td>{{ order.member.user }}</td>
+                        <td>{{ order.ticket.event.event_title }}</td>
+                        <td>{{ order.total_price }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+        {% else %}
+            <p>هیچ سفارشی ثبت نشده است.</p>
+			</div>
+        {% endif %}
+        </div>
+        </div>
+</body>
+</html>
