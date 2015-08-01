@@ -55,9 +55,9 @@ class Event(models.Model):
 
 class Ticket(models.Model):
 	event = models.ForeignKey(Event, null=True)
-	ticket_type = models.CharField(verbose_name='نوع بلیت', max_length=255)
-	ticket_price = models.PositiveIntegerField(verbose_name='قیمت بلیت')
-	total_capacity = models.PositiveSmallIntegerField(verbose_name='ظرفیت')
+	ticket_type = models.CharField(verbose_name='نوع بلیت', max_length=255, help_text='نوع بلیت')
+	ticket_price = models.PositiveIntegerField(verbose_name='قیمت بلیت', help_text='قیمت بلیت')
+	total_capacity = models.PositiveSmallIntegerField(verbose_name='ظرفیت', help_text='ظرفیت بلیت')
 	purchased_num = models.PositiveSmallIntegerField(default=0)
 
 	class Meta:

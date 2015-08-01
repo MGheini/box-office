@@ -12,11 +12,6 @@ class TicketModelForm(forms.ModelForm):
 			'ticket_price': 'قیمت بلیت',
 			'total_capacity': 'ظرفیت',
 		}
-		widgets = {
-			'ticket_type': forms.TextInput(attrs={ 'class': 'form-control', 'placeholder': 'نوع بلیت' }),
-			'ticket_price': forms.TextInput(attrs={ 'class': 'form-control', 'placeholder': 'قیمت بلیت' }),
-			'total_capacity': forms.TextInput(attrs={ 'class': 'form-control', 'placeholder': 'ظرفیت بلیت' }),
-        }
 
 class EventModelForm(forms.ModelForm):
 	class Meta:
@@ -45,7 +40,6 @@ class EventModelForm(forms.ModelForm):
 class CategoryModelForm(forms.ModelForm):
 	class Meta:
 		model = Category
-		# exclude = ['---']
 		fields = ['category_name', 'category_glyphicon']
 		labels = {
 			'category_name': 'عنوان دسته',
@@ -68,4 +62,4 @@ class SubCategoryModelForm(forms.ModelForm):
 			'subcategory_name': forms.TextInput(attrs={'placeholder': ' مثلا: مجسمه سازی'}),
         	}
 
-TicketFormSet = inlineformset_factory(Event, Ticket, fields=('ticket_type','ticket_price', 'total_capacity'), extra=1)
+TicketFormSet = inlineformset_factory(Event, Ticket, fields=('ticket_type','ticket_price', 'total_capacity'), extra=1, widgets={'ticket_type': forms.TextInput(attrs={'placeholder': 'نوع'}), 'ticket_price': forms.TextInput(attrs={'placeholder': 'قیمت'}), 'total_capacity': forms.TextInput(attrs={'placeholder': 'ظرفیت'}),})
