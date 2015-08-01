@@ -66,6 +66,8 @@ def all_orders(request):
         orders = Order.objects.all()
     except Order.DoesNotExist:
         return render(request,'all-orders.html',{'success' : False})
+    if orders.count() == 0:
+        return render(request,'all-orders.html',{'success' : False})
     return render(request, 'all-orders.html' ,{'success' : True , 'orders' : orders})
 
 
