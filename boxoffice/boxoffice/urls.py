@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.views.generic import RedirectView
+
 from boxoffice_admin.views import AddEventView
 
 urlpatterns = [
@@ -32,12 +33,12 @@ urlpatterns = [
     url(r'^favicon\.ico$', RedirectView.as_view(url='/static/images/favicon.ico')),
 
     # admin related urls
+    url(r'^bo-admin/$', 'boxoffice_admin.views.admin_home'),
+
     url(r'^bo-admin/events/$', 'boxoffice_admin.views.delete_multiple_events'),
     url(r'^bo-admin/events/(?P<event_id>[\d]+)/delete/$', 'boxoffice_admin.views.delete_event'),
     # url(r'^bo-admin/events/(?P<event_id>[\d]+)/edit/$', 'boxoffice_admin.views.edit_event'),
     url(r'^bo-admin/events/add/$', AddEventView.as_view()),
-    url(r'^bo-admin/search_form/$', 'boxoffice_admin.views.search_form'),
-    url(r'^bo-admin/search/$', 'boxoffice_admin.views.search'),
 
     url(r'^bo-admin/categories/$', 'boxoffice_admin.views.delete_multiple_categories'),
     url(r'^bo-admin/categories/(?P<category_id>[\d]+)/delete/$', 'boxoffice_admin.views.delete_category'),
@@ -60,4 +61,5 @@ urlpatterns = [
     # url(r'^bo-admin/orders/showall/$', 'boxoffice_admin.views.showall_orders'),
     # url(r'^bo-admin/orders/search/$', 'boxoffice_admin.views.search_orders'),
 
+    url(r'^bo-admin/logout/$', 'boxoffice_admin.views.our_logout'),    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,16 +1,20 @@
-from django.shortcuts import render, HttpResponseRedirect
-from boxoffice_admin.models import MyAdmin
-from services.models import Event, Category, SubCategory,Ticket,Order
-from users.models import Organizer
-from services.forms import EventModelForm, CategoryModelForm , SubCategoryModelForm
-from django.views.generic import CreateView
-from services.forms import EventModelForm, TicketFormSet
-from django.contrib.auth.models import User
-from django.db.models import Q
 
-# Create your views here.
+from django.contrib.auth.models import User
+from django.views.generic import CreateView
+from django.shortcuts import render, HttpResponseRedirect
+from django.contrib.auth import logout
+
+from users.models import Organizer
+from boxoffice_admin.models import MyAdmin
+from services.forms import EventModelForm, TicketFormSet
+from services.models import Event, Category, SubCategory
+from services.forms import EventModelForm, CategoryModelForm , SubCategoryModelForm
+
+def admin_home(request):
+	return render(request, 'admin-layout.html', {})
+
 def delete_multiple_events(request):
-	events = Event.objects.all()
+	events = Event.objects.order_by('-submit_date').all()
 
 	if request.method == 'POST':
 		todel = request.POST.getlist('todelete')
@@ -22,31 +26,6 @@ def delete_multiple_events(request):
 def delete_event(request, event_id):
 	todel = Event.objects.get(id=event_id).delete()
 	return HttpResponseRedirect('/bo-admin/events/')
-
-def search_form(request):
-    return render(request, 'search-form.html')
-
-def search(request):
-    if 'q' in request.POST:
-        q = request.POST['q']
-        startDate = request.POST['startDate']
-        endDate = request.POST['endDate']
-        try:
-            events = Event.objects.get(Q(event_title=q) & Q(event_date__contains=startDate) & Q(event_deadline__contains=endDate))
-
-        except Event.DoesNotExist:
-            return render(request,'output-table.html',{'query' : q,'success' : False})
-
-        tickets = events.ticket_set
-        number = tickets.count()
-        try:
-            orders = Order.objects.filter(ticket__event=events)
-        except Order.DoesNotExist:
-            return render(request, 'output-table.html',
-                        {'events' : events,'success' : True , 'query' : q , 'ticketNum' : number , 'price': 0 , 'order' : False})
-        total = sum([order.total_price for order in orders])
-        return render(request, 'output-table.html',
-                        {'events' : events,'success' : True , 'query' : q , 'ticketNum' : number , 'price': total ,'order' : True})
 
 class AddEventView(CreateView):
     template_name = 'add-new-event.html'
@@ -141,3 +120,7 @@ def add_subcategory(request):
 		subcategory_form = SubCategoryModelForm()
 
 	return render(request, 'add-new-subcategory.html', {'subcategory_form': subcategory_form})
+
+def our_logout(request):
+	logout(request)
+	return render(request, 'logout-admin.html', {})
