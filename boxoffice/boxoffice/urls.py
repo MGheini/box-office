@@ -59,10 +59,10 @@ urlpatterns = [
 
     # url(r'^bo-admin/users/search/$', 'boxoffice_admin.views.search_users'),
 
-    # url(r'^bo-admin/orders/search/$', 'boxoffice_admin.views.search_orders'),
-
-    # url(r'^bo-admin/orders/showall/$', 'boxoffice_admin.views.showall_orders'),
-    # url(r'^bo-admin/orders/search/$', 'boxoffice_admin.views.search_orders'),
+    url(r'^bo-admin/orders/all_orders/$', 'boxoffice_admin.views.all_orders'),
+    url(r'^bo-admin/orders/search_by_time/$', 'boxoffice_admin.views.search_by_time'),
+    url(r'^bo-admin/orders/search_by_time_result/$', 'boxoffice_admin.views.search_by_time_result'),
+    url(r'^bo-admin/show_all_events/$', 'boxoffice_admin.views.show_all_events'),
 
     url(r'^bo-admin/logout/$', 'boxoffice_admin.views.our_logout'),    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
