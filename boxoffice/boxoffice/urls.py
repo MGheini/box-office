@@ -60,7 +60,8 @@ urlpatterns = [
     # url(r'^bo-admin/users/search/$', 'boxoffice_admin.views.search_users'),
 
     
-    url(r'^bo-admin/report/orders/summary/search/$', 'boxoffice_admin.views.search_orders'),
+    url(r'^bo-admin/report/orders/summary/search/$', 'boxoffice_admin.views.search_orders_summary'),
+    url(r'^bo-admin/report/orders/all/search/$', 'boxoffice_admin.views.search_orders_all'),
 
     url(r'^bo-admin/report/orders/summary/$', 'boxoffice_admin.views.show_orders_summary'),
     url(r'^bo-admin/report/orders/all/$', 'boxoffice_admin.views.show_orders_all'),

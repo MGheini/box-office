@@ -81,11 +81,43 @@ class TemplateOrder():
         self.sold_ticket_num = num
         self.total_income = income
 
-def search_orders(request):
+def search_orders_all(request):
     if request.method == "GET":
         start = request.GET.get('start', None)
         end = request.GET.get('end', None)
-        error = None
+        error = ''
+
+        orders = []
+        if start and end:
+            start = datetime.strptime(start, '%Y-%m-%d')
+            end = datetime.strptime(end, '%Y-%m-%d')
+
+            if start < end:
+                orders = list(Order.objects.filter(order_date__range=(start, end)))
+            else:
+                orders = []
+                error = 'زمان شروع باید قبل از زمان پایان باشد.'
+        elif start:
+            orders = []
+            error = 'زمان پایان را مشخص کنید.'
+        elif end:
+            orders = []
+            error = 'زمان شروع را مشخص کنید.'
+        else:
+            orders = []
+            error = 'زمان شروع و پایان را مشخص کنید.'
+
+        if len(orders) == 0 and error is '':
+            error = 'هیچ سفارشی برای نمایش وجود ندارد.'
+
+        return render(request, 'all-orders.html', {'orders': orders, 'error': error})
+
+
+def search_orders_summary(request):
+    if request.method == "GET":
+        start = request.GET.get('start', None)
+        end = request.GET.get('end', None)
+        error = ''
 
         orders = []
         if start and end:
@@ -110,6 +142,9 @@ def search_orders(request):
         template_orders = []
         for order in orders:
             template_orders += [TemplateOrder(order)]
+
+        if len(orders) == 0 and error is '':
+            error = 'هیچ سفارشی برای نمایش وجود ندارد.'
 
         return render(request, 'show-orders-summary.html', {'template_orders': template_orders, 'error': error})
 
