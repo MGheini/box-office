@@ -56,7 +56,7 @@ class SubCategoryModelForm(forms.ModelForm):
 		fields = ['subcategory_name', 'category']
 		labels = {
 			'subcategory_name': 'عنوان زیردسته',
-			'category': 'زیردسته',
+			'category': 'دسته',
 		}
 		widgets = {
 			'subcategory_name': forms.TextInput(attrs={'placeholder': ' مثلا: مجسمه سازی'}),
