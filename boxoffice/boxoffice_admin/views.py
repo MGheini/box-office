@@ -63,14 +63,10 @@ def search_by_time_result(request):
         return render(request, 'search-by-time-result.html',
                         {'events' : events,'success' : True , 'price': total ,'order' : True})
 
-def all_orders(request):
-    try:
-        orders = Order.objects.all()
-    except Order.DoesNotExist:
-        return render(request,'all-orders.html',{'success' : False})
-    if orders.count() == 0:
-        return render(request,'all-orders.html',{'success' : False})
-    return render(request, 'all-orders.html' ,{'success' : True , 'orders' : orders})
+def show_orders_all(request):
+    orders = Order.objects.all()
+
+    return render(request, 'all-orders.html', {'orders': orders})
 
 class TemplateOrder():
 
@@ -117,7 +113,7 @@ def search_orders(request):
 
         return render(request, 'show-orders-summary.html', {'template_orders': template_orders, 'error': error})
 
-def show_orders(request):
+def show_orders_summary(request):
     orders = Event.objects.all()
 
     template_orders = []
@@ -126,24 +122,24 @@ def show_orders(request):
 
     return render(request, 'show-orders-summary.html', {'template_orders': template_orders})
 
+# This part was done by me before. it was in events subcategory. accessible via /bo-admin/events/
+# def show_all_events(request):
+#     events = Event.objects.all()
+#     ticketNum=[]
+#     total=[]
+#     for event in events:
+#         tickets = event.ticket_set
+#         ticketNum.append(tickets.count())
+#         try:
+#             orders = Order.objects.filter(ticket__event=events)
+#         except Order.DoesNotExist:
+#             return render(request, 'all-events.html',
+#                         {'events' : events,'success' : False , 'ticketNum' : ticketNum , 'price': 0 , 'order' : False})
+#         total.append(sum([order.total_price for order in orders]))
 
-def show_all_events(request):
-    events = Event.objects.all()
-    ticketNum=[]
-    total=[]
-    for event in events:
-        tickets = event.ticket_set
-        ticketNum.append(tickets.count())
-        try:
-            orders = Order.objects.filter(ticket__event=events)
-        except Order.DoesNotExist:
-            return render(request, 'all-events.html',
-                        {'events' : events,'success' : False , 'ticketNum' : ticketNum , 'price': 0 , 'order' : False})
-        total.append(sum([order.total_price for order in orders]))
-
-    list = zip(events,ticketNum,total)
-    return render(request, 'all-events.html',
-                        {'success' : True ,'order' : True , 'list' : list})	
+#     list = zip(events,ticketNum,total)
+#     return render(request, 'all-events.html',
+#                         {'success' : True ,'order' : True , 'list' : list})	
 
 def delete_multiple_events(request):
 	events = Event.objects.order_by('-submit_date').all()

@@ -5,6 +5,8 @@ from smart_selects.db_fields import ChainedForeignKey
 
 from users.models import Member, Organizer
 
+import random
+
 class Category(models.Model):
 	category_name = models.CharField(max_length=100)
 	category_glyphicon = models.CharField(max_length=30, null=True)
@@ -96,10 +98,12 @@ class Rate(models.Model):
 class Order(models.Model):
 	member = models.ForeignKey(Member)
 	ticket = models.ForeignKey(Ticket)
-	num = models.PositiveSmallIntegerField(blank=False)
+	event = models.ForeignKey(Event, null=True)
+	num_purchased = models.PositiveSmallIntegerField(blank=False)
 	total_price = models.PositiveIntegerField(blank=False)
 	order_date = models.DateField(blank=False)
-
+	purchase_code = models.PositiveIntegerField(blank=False, default=random.randint(1000000,9999999))
+	
 	class Meta:
 		verbose_name_plural = "سفارش‌ها"
 		verbose_name = "سفارش"

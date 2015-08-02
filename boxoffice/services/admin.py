@@ -74,7 +74,7 @@ class OrderAdmin(admin.ModelAdmin):
 	ticket_fa.short_description = 'بلیت'
 
 	def num_fa(Self, obj):
-		return obj.num
+		return obj.num_purchased
 	num_fa.short_description = 'تعداد خریداری شده'
 
 	def total_price_fa(Self, obj):
