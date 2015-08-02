@@ -11,6 +11,8 @@ from services.models import Event, Category, SubCategory,Ticket,Order
 from services.forms import EventModelForm, CategoryModelForm , SubCategoryModelForm
 from django.db.models import Q
 
+from datetime import datetime
+
 def admin_home(request):
 	return render(request, 'admin-layout.html', {})
 	
@@ -69,6 +71,60 @@ def all_orders(request):
     if orders.count() == 0:
         return render(request,'all-orders.html',{'success' : False})
     return render(request, 'all-orders.html' ,{'success' : True , 'orders' : orders})
+
+class TemplateOrder():
+
+    def __init__(self, event):
+        self.event = event
+        
+        num = 0
+        income = 0
+        for ticket in event.ticket_set.all():
+            num += ticket.purchased_num
+            income += ticket.ticket_price * ticket.purchased_num
+        self.sold_ticket_num = num
+        self.total_income = income
+
+def search_orders(request):
+    if request.method == "GET":
+        start = request.GET.get('start', None)
+        end = request.GET.get('end', None)
+        error = None
+
+        orders = []
+        if start and end:
+            start = datetime.strptime(start, '%Y-%m-%d')
+            end = datetime.strptime(end, '%Y-%m-%d')
+
+            if start < end:
+                orders = list(Event.objects.filter(event_date__range=(start, end)))
+            else:
+                orders = []
+                error = 'زمان شروع باید قبل از زمان پایان باشد.'
+        elif start:
+            orders = []
+            error = 'زمان پایان را مشخص کنید.'
+        elif end:
+            orders = []
+            error = 'زمان شروع را مشخص کنید.'
+        else:
+            orders = []
+            error = 'زمان شروع و پایان را مشخص کنید.'
+
+        template_orders = []
+        for order in orders:
+            template_orders += [TemplateOrder(order)]
+
+        return render(request, 'show-orders-summary.html', {'template_orders': template_orders, 'error': error})
+
+def show_orders(request):
+    orders = Event.objects.all()
+
+    template_orders = []
+    for order in orders:
+        template_orders += [TemplateOrder(order)]
+
+    return render(request, 'show-orders-summary.html', {'template_orders': template_orders})
 
 
 def show_all_events(request):

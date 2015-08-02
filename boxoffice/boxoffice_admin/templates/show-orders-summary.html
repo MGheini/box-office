@@ -1,0 +1,73 @@
+{% extends "admin-layout.html" %}	
+
+{% block title %}
+خلاصه خریدها
+{% endblock %}
+
+{% load humanize %}
+{% load staticfiles %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static "styles/pcustom.css" %}" />
+<style type="text/css">
+	row-admin {
+		background-color: #ffffff;
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- start -->
+<div class="panel panel-default" style="border: none">
+	<div class="panel-heading">
+		<h1 class="panel-title" style="font-size: 30px">گزارش وضعیت خریدها</h1>
+		<ul class="list-inline" style="margin: 5px;">
+			<!-- start filter form -->
+			<li>
+				<form class="navbar-form navbar-left" role="search" action="/bo-admin/report/orders/search/" method="GET" style="padding: 0; margin-top: 15px; margin-bottom: 0">
+					<div class="form-group">
+						<ul class="list-inline">
+ 							{% if error %}<li style="display: block; margin-bottom: 10px" class="text-danger">{{ error }}</li>{% endif %}
+							<li><label for="start">از: <input type="date" data-date="" data-date-format="DD MMMM YYYY" name="start" class="form-control" placeholder="از تاریخ"></label></li>
+							<li><label for="end">تا: <input type="date" name="end" class="form-control" placeholder="تا تاریخ"></label></li>
+							<li><button type="submit" class="btn btn-default">فیلتر</button></li>
+						</ul>
+					</div>
+				</form>
+			</li>
+			<!-- end filter form -->
+		</ul>
+	</div>
+
+	<div class="panel-body" style="padding: 0;">
+		<form method="POST">
+			{% csrf_token %}
+			<table class="table table-striped table-bordered table-hover" style="border-collapse: collapse; margin-top: 2px; margin-bottom: 20px;min-width: 400px;">
+				<thead style="font-size: 15px; background-color: #ecf0f1">
+					<th class="text-right">عنوان رویداد</th>
+					<th class="text-right">دسته(زیردسته)</th>
+					<th class="text-right">زمان برگزاری</th>					
+					<th class="text-right">تعداد بلیت خریداری شده</th>
+					<th class="text-right">درآمد کسب شده</th>
+				</thead>
+				<tbody style="text-align: right">
+					{% for order in template_orders %}
+					<tr style="font-size: 15px;">
+						<td class="text-right" style="padding-top: 10px; vertical-align: middle">{{ order.event.event_title }}</td>
+						<td class="text-right" style="padding-top: 10px; vertical-align: middle">{{ order.event.category }}({{ order.event.subcategory.subcategory_name }})</td>
+						<td class="text-right" style="padding-top: 10px; vertical-align: middle;">{{ order.event.event_date }}</td>
+						<td class="text-right" style="padding-top: 10px; vertical-align: middle">{{ order.sold_ticket_num }}</td>
+						<td class="text-right" style="padding-top: 10px; vertical-align: middle">{{ order.total_income }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<input type="submit" value="حذف انتخاب شده‌ها" class="btn btn-danger" />
+		</form>
+	</div>
+</div>
+<!-- end -->
+{% endblock %}
+
+{% block script %}
+{% endblock %}

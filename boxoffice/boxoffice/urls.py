@@ -59,6 +59,9 @@ urlpatterns = [
 
     # url(r'^bo-admin/users/search/$', 'boxoffice_admin.views.search_users'),
 
+    url(r'^bo-admin/report/orders/$', 'boxoffice_admin.views.show_orders'),
+    url(r'^bo-admin/report/orders/search/$', 'boxoffice_admin.views.search_orders'),
+
     url(r'^bo-admin/orders/all_orders/$', 'boxoffice_admin.views.all_orders'),
     url(r'^bo-admin/orders/search_by_time/$', 'boxoffice_admin.views.search_by_time'),
     url(r'^bo-admin/orders/search_by_time_result/$', 'boxoffice_admin.views.search_by_time_result'),
