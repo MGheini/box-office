@@ -11,8 +11,8 @@ from .forms import CategoryModelForm , SubCategoryModelForm
 
 def get_layout():
 	categories = models.Category.objects.all()
-	most_populars = models.Event.objects.order_by('-event_avg_rate')[:5]
-	newest = models.Event.objects.order_by('-submit_date')[:5]
+	most_populars = models.Event.objects.order_by('-event_avg_rate')[:4]
+	newest = models.Event.objects.order_by('-submit_date')[:4]
 
 	return {'categories': categories, 'newest': newest, 'most_populars': most_populars}
 
