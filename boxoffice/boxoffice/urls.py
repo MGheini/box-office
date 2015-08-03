@@ -35,9 +35,6 @@ urlpatterns = [
     # admin related urls
     url(r'^bo-admin/$', 'boxoffice_admin.views.admin_home'),
     
-    url(r'^bo-admin/search_form/$', 'boxoffice_admin.views.search_form'),
-    url(r'^bo-admin/search/$', 'boxoffice_admin.views.search'),
-
     url(r'^bo-admin/events/$', 'boxoffice_admin.views.delete_multiple_events'),
     url(r'^bo-admin/events/(?P<event_id>[\d]+)/delete/$', 'boxoffice_admin.views.delete_event'),
     # url(r'^bo-admin/events/(?P<event_id>[\d]+)/edit/$', 'boxoffice_admin.views.edit_event'),
@@ -52,22 +49,13 @@ urlpatterns = [
     url(r'^bo-admin/subcategories/(?P<sub_category_id>[\d]+)/delete/$', 'boxoffice_admin.views.delete_subcategory'),
     # url(r'^bo-admin/subcategories/(?P<subcategory_id>[\d]+)/edit/$', 'boxoffice_admin.views.edit_subcategory'),
     url(r'^bo-admin/subcategories/add/$', 'boxoffice_admin.views.add_subcategory'),
-
-    # url(r'^bo-admin/users/customers/delete/$', 'boxoffice_admin.views.delete_multiple_customers'),
-
-    # url(r'^bo-admin/users/organizers/delete/$', 'boxoffice_admin.views.delete_multiple_organizers'),
-
     # url(r'^bo-admin/users/search/$', 'boxoffice_admin.views.search_users'),
-
     
     url(r'^bo-admin/report/orders/summary/search/$', 'boxoffice_admin.views.search_orders_summary'),
     url(r'^bo-admin/report/orders/all/search/$', 'boxoffice_admin.views.search_orders_all'),
 
     url(r'^bo-admin/report/orders/summary/$', 'boxoffice_admin.views.show_orders_summary'),
     url(r'^bo-admin/report/orders/all/$', 'boxoffice_admin.views.show_orders_all'),
-    # url(r'^bo-admin/orders/search_by_time/$', 'boxoffice_admin.views.search_by_time'),
-    # url(r'^bo-admin/orders/search_by_time_result/$', 'boxoffice_admin.views.search_by_time_result'),
-    # url(r'^bo-admin/show_all_events/$', 'boxoffice_admin.views.show_all_events'),
 
     url(r'^bo-admin/logout/$', 'boxoffice_admin.views.our_logout'),    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
