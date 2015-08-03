@@ -36,6 +36,8 @@ urlpatterns = [
     # admin related urls
     url(r'^bo-admin/$', 'boxoffice_admin.views.admin_home'),
 
+    url(r'^bo-admin/users/$', 'boxoffice_admin.views.manage_users'),
+    
     url(r'^bo-admin/events/$', 'boxoffice_admin.views.delete_multiple_events'),
     url(r'^bo-admin/events/(?P<event_id>[\d]+)/delete/$', 'boxoffice_admin.views.delete_event'),
     url(r'^bo-admin/events/(?P<event_id>[\d]+)/edit/$', EditEventView.as_view()),
@@ -50,13 +52,12 @@ urlpatterns = [
     url(r'^bo-admin/subcategories/(?P<sub_category_id>[\d]+)/delete/$', 'boxoffice_admin.views.delete_subcategory'),
     url(r'^bo-admin/subcategories/(?P<subcategory_id>[\d]+)/edit/$', 'boxoffice_admin.views.edit_subcategory'),
     url(r'^bo-admin/subcategories/add/$', 'boxoffice_admin.views.add_subcategory'),
+    
+    url(r'^bo-admin/report/orders/summary/search/$', 'boxoffice_admin.views.search_orders_summary'),
+    url(r'^bo-admin/report/orders/all/search/$', 'boxoffice_admin.views.search_orders_all'),
 
-    url(r'^bo-admin/users/$', 'boxoffice_admin.views.manage_users'),
-
-    # url(r'^bo-admin/orders/search/$', 'boxoffice_admin.views.search_orders'),
-
-    # url(r'^bo-admin/orders/showall/$', 'boxoffice_admin.views.showall_orders'),
-    # url(r'^bo-admin/orders/search/$', 'boxoffice_admin.views.search_orders'),
+    url(r'^bo-admin/report/orders/summary/$', 'boxoffice_admin.views.show_orders_summary'),
+    url(r'^bo-admin/report/orders/all/$', 'boxoffice_admin.views.show_orders_all'),
 
     url(r'^bo-admin/logout/$', 'boxoffice_admin.views.our_logout'),    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

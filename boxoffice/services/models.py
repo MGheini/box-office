@@ -1,3 +1,4 @@
+import random
 
 from django.db import models
 from datetime import datetime
@@ -7,7 +8,7 @@ from users.models import Member, Organizer
 
 class Category(models.Model):
 	category_name = models.CharField(max_length=100)
-	category_glyphicon = models.CharField(max_length=30, null=True)
+	category_glyphicon = models.CharField(max_length=30, null=True, blank=True)
 
 	class Meta:
 		verbose_name_plural = "دسته‌ها"
@@ -40,9 +41,11 @@ class Event(models.Model):
 	event_image = models.ImageField(upload_to='media/', blank=True, default="media/noimage.png")
 	event_place = models.CharField(max_length=255, blank=False)
 	event_description = models.TextField(blank=True)
-	event_date = models.DateTimeField(blank=False)
-	event_deadline = models.DateTimeField(blank=False)
-	submit_date = models.DateTimeField(default=datetime.now)
+	event_date = models.DateField(blank=False)
+	event_time = models.TimeField(blank=False)
+	event_deadline_date = models.DateField(blank=False)
+	event_deadline_time = models.TimeField(blank=False)
+	submit_date = models.DateTimeField(default=datetime.now, blank=False)
 	organizer = models.ForeignKey(Organizer)
 	event_avg_rate = models.FloatField(default=0.0)
 
@@ -54,7 +57,7 @@ class Event(models.Model):
 		return self.event_title
 
 class Ticket(models.Model):
-	event = models.ForeignKey(Event, null=True)
+	event = models.ForeignKey(Event)
 	ticket_type = models.CharField(verbose_name='نوع بلیت', max_length=255, help_text='نوع بلیت')
 	ticket_price = models.PositiveIntegerField(verbose_name='قیمت بلیت', help_text='قیمت بلیت')
 	total_capacity = models.PositiveSmallIntegerField(verbose_name='ظرفیت', help_text='ظرفیت بلیت')
@@ -96,10 +99,12 @@ class Rate(models.Model):
 class Order(models.Model):
 	member = models.ForeignKey(Member)
 	ticket = models.ForeignKey(Ticket)
-	num = models.PositiveSmallIntegerField(blank=False)
+	event = models.ForeignKey(Event, null=True)
+	num_purchased = models.PositiveSmallIntegerField(blank=False)
 	total_price = models.PositiveIntegerField(blank=False)
-	order_date = models.DateField(blank=False)
-
+	order_date = models.DateTimeField(default=datetime.now, blank=False)
+	purchase_code = models.PositiveIntegerField(blank=False, default=random.randint(1000000,9999999))
+	
 	class Meta:
 		verbose_name_plural = "سفارش‌ها"
 		verbose_name = "سفارش"

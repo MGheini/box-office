@@ -10,7 +10,9 @@ class EventAdmin(admin.ModelAdmin):
 		'event_title_fa',
 		'event_place_fa',
 		'event_date_fa',
-		'event_deadline_fa',
+		'event_time_fa',
+		'event_deadline_date_fa',
+		'event_deadline_time_fa',
 		'event_description_fa',
 		'submit_date_fa',
 		'category_fa',
@@ -31,11 +33,19 @@ class EventAdmin(admin.ModelAdmin):
 
 	def event_date_fa(Self, obj):
 		return obj.event_date
-	event_date_fa.short_description = 'زمان برگزاری رویداد'
+	event_date_fa.short_description = 'تاریخ برگزاری رویداد'
 
-	def event_deadline_fa(Self, obj):
-		return obj.event_deadline
-	event_deadline_fa.short_description = 'مهلت خرید بلیت'
+	def event_time_fa(Self, obj):
+		return obj.event_time
+	event_time_fa.short_description = 'زمان برگزاری رویداد'
+
+	def event_deadline_date_fa(Self, obj):
+		return obj.event_deadline_date
+	event_deadline_date_fa.short_description = 'تاریخ مهلت خرید بلیت'
+
+	def event_deadline_time_fa(Self, obj):
+		return obj.event_deadline_time
+	event_deadline_time_fa.short_description = 'زمان مهلت خرید بلیت'
 
 	def event_description_fa(Self, obj):
 		return obj.event_description
@@ -74,7 +84,7 @@ class OrderAdmin(admin.ModelAdmin):
 	ticket_fa.short_description = 'بلیت'
 
 	def num_fa(Self, obj):
-		return obj.num
+		return obj.num_purchased
 	num_fa.short_description = 'تعداد خریداری شده'
 
 	def total_price_fa(Self, obj):

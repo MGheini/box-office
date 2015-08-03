@@ -8,16 +8,18 @@ class EventEditModelForm(forms.ModelForm):
 	class Meta:
 		model = Event
 		exclude = ['submit_date', 'event_avg_rate']
-		fields = ['event_title', 'category', 'subcategory', 'event_image', 'event_place', 'event_date', 'event_description', 'event_deadline', 'organizer']
+		fields = ['event_title', 'category', 'subcategory', 'event_image', 'event_place', 'event_date', 'event_time', 'event_description', 'event_deadline_date', 'event_deadline_time', 'organizer']
 		labels = {
 			'event_title': 'عنوان رویداد',
 			'category': 'دسته',
 			'subcategory': 'زیردسته',
 			'event_image': 'تصویر',
 			'event_place': 'محل برگزاری',
-			'event_date': 'زمان برگزاری',
+			'event_date': 'تاریخ برگزاری',
+			'event_time': 'زمان برگزاری',
 			'event_description': 'توضیحات تکمیلی',
-			'event_deadline': 'آخرین مهلت خرید بلیت',
+			'event_deadline_date': 'آخرین مهلت خرید بلیت',
+			'event_deadline_time': 'زمان مهلت خرید بلیت',
 			'organizer': 'برگزارکننده'
 		}
 
@@ -27,9 +29,11 @@ class EventEditModelForm(forms.ModelForm):
 			self.fields[field].required = False
 		self.fields['event_title'].widget = forms.TextInput(attrs={'placeholder': event.event_title})
 		self.fields['event_place'].widget = forms.TextInput(attrs={'placeholder': event.event_place})
-		self.fields['event_date'].widget = forms.TextInput(attrs={'placeholder': event.event_date})
+		self.fields['event_date'].widget = forms.TextInput(attrs={'placeholder': event.event_date, 'type': 'date'})
+		self.fields['event_time'].widget = forms.TextInput(attrs={'placeholder': event.event_time, 'type': 'time'})
 		self.fields['event_description'].widget = forms.Textarea(attrs={'rows': 4, 'placeholder': event.event_description})
-		self.fields['event_deadline'].widget = forms.TextInput(attrs={'placeholder': event.event_deadline})
+		self.fields['event_deadline_date'].widget = forms.TextInput(attrs={'placeholder': event.event_deadline_date, 'type': 'date'})
+		self.fields['event_deadline_time'].widget = forms.TextInput(attrs={'placeholder': event.event_deadline_time, 'type': 'time'})
 
 	def clean(self):
 		cleaned_data = super(EventEditModelForm, self).clean()

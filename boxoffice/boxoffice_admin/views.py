@@ -1,13 +1,13 @@
 
-from django.contrib.auth import logout, get_user
+from datetime import datetime
 from django.contrib.auth.models import User
 from django.views.generic import CreateView
+from django.contrib.auth import logout, get_user
 from django.shortcuts import render, HttpResponseRedirect
 
 from users.forms import LoginForm
 from users.models import Organizer
-from boxoffice_admin.models import MyAdmin
-from services.models import Event, Category, SubCategory
+from services.models import Event, Category, SubCategory, Order
 from .forms import EventEditModelForm, CategoryEditModelForm, SubCategoryEditModelForm
 from services.forms import EventModelForm, CategoryModelForm , SubCategoryModelForm, TicketFormSet
 
@@ -27,6 +27,100 @@ class TemplateUser():
 def admin_home(request):
 	form = LoginForm()
 	return render(request, 'admin-login.html', {'form': form})
+
+def show_orders_all(request):
+    orders = Order.objects.all()
+
+    return render(request, 'show-all-orders.html', {'orders': orders})
+
+class TemplateOrder():
+
+    def __init__(self, event):
+        self.event = event
+        
+        num = 0
+        income = 0
+        for ticket in event.ticket_set.all():
+            num += ticket.purchased_num
+            income += ticket.ticket_price * ticket.purchased_num
+        self.sold_ticket_num = num
+        self.total_income = income
+
+def search_orders_all(request):
+    if request.method == "GET":
+        start = request.GET.get('start', None)
+        end = request.GET.get('end', None)
+        error = ''
+
+        orders = []
+        if start and end:
+            start = datetime.strptime(start, '%Y-%m-%d')
+            end = datetime.strptime(end, '%Y-%m-%d')
+
+            if start < end:
+                orders = list(Order.objects.filter(order_date__range=(start, end)))
+            else:
+                orders = []
+                error = 'زمان شروع باید قبل از زمان پایان باشد.'
+        elif start:
+            orders = []
+            error = 'زمان پایان را مشخص کنید.'
+        elif end:
+            orders = []
+            error = 'زمان شروع را مشخص کنید.'
+        else:
+            orders = []
+            error = 'زمان شروع و پایان را مشخص کنید.'
+
+        if len(orders) == 0 and error is '':
+            error = 'هیچ سفارشی برای نمایش وجود ندارد.'
+
+        return render(request, 'show-all-orders.html', {'orders': orders, 'error': error})
+
+
+def search_orders_summary(request):
+    if request.method == "GET":
+        start = request.GET.get('start', None)
+        end = request.GET.get('end', None)
+        error = ''
+
+        orders = []
+        if start and end:
+            start = datetime.strptime(start, '%Y-%m-%d')
+            end = datetime.strptime(end, '%Y-%m-%d')
+
+            if start < end:
+                orders = list(Event.objects.filter(event_date__range=(start, end)))
+            else:
+                orders = []
+                error = 'زمان شروع باید قبل از زمان پایان باشد.'
+        elif start:
+            orders = []
+            error = 'زمان پایان را مشخص کنید.'
+        elif end:
+            orders = []
+            error = 'زمان شروع را مشخص کنید.'
+        else:
+            orders = []
+            error = 'زمان شروع و پایان را مشخص کنید.'
+
+        template_orders = []
+        for order in orders:
+            template_orders += [TemplateOrder(order)]
+
+        if len(orders) == 0 and error is '':
+            error = 'هیچ سفارشی برای نمایش وجود ندارد.'
+
+        return render(request, 'show-orders-summary.html', {'template_orders': template_orders, 'error': error})
+
+def show_orders_summary(request):
+    orders = Event.objects.all()
+
+    template_orders = []
+    for order in orders:
+        template_orders += [TemplateOrder(order)]
+
+    return render(request, 'show-orders-summary.html', {'template_orders': template_orders})
 
 def delete_multiple_events(request):
 	events = Event.objects.order_by('-submit_date').all()
@@ -90,12 +184,18 @@ class EditEventView(CreateView):
 		event_date = form.cleaned_data['event_date']
 		if event_date is not None:
 			self.object.event_date = event_date
+		event_time = form.cleaned_data['event_time']
+		if event_time is not None:
+			self.object.event_time = event_time
 		event_description = form.cleaned_data['event_description']
 		if event_description != '':
 			self.object.event_description = event_description
-		event_deadline = form.cleaned_data['event_deadline']
-		if event_deadline is not None:
-			self.object.event_deadline = event_deadline
+		event_deadline_date = form.cleaned_data['event_deadline_date']
+		if event_deadline_date is not None:
+			self.object.event_deadline_date = event_deadline_date
+		event_deadline_time = form.cleaned_data['event_deadline_time']
+		if event_deadline_time is not None:
+			self.object.event_deadline_time = event_deadline_time
 		organizer = form.cleaned_data['organizer']
 		if organizer is not None:
 			self.object.organizer = organizer
@@ -221,7 +321,7 @@ def edit_subcategory(request, subcategory_id):
 			if subcategory_name!='':
 				subcategory.subcategory_name = subcategory_name
 			category = form.cleaned_data['category']
-			if category!='':
+			if category is not None:
 				subcategory.category = category
 			subcategory.save()
 		return HttpResponseRedirect('/bo-admin/subcategories/?successfulEdit=true')

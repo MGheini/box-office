@@ -19,7 +19,7 @@ class EventModelForm(forms.ModelForm):
 	class Meta:
 		model = Event
 		exclude = ['submit_date', 'organizer']
-		fields = ['event_title', 'category', 'subcategory', 'event_image', 'event_place', 'event_date', 'event_description', 'event_deadline']
+		fields = ['event_title', 'category', 'subcategory', 'event_image', 'event_place', 'event_date', 'event_time', 'event_description', 'event_deadline_date', 'event_deadline_time']
 		labels = {
 			'event_title': 'عنوان رویداد',
 			'category': 'دسته',
@@ -27,14 +27,18 @@ class EventModelForm(forms.ModelForm):
 			'event_image': 'تصویر',
 			'event_place': 'محل برگزاری',
 			'event_description': 'توضیحات تکمیلی',
-			'event_deadline': 'آخرین مهلت خرید بلیت',
-			'event_date': 'زمان برگزاری',
+			'event_deadline_date': 'آخرین مهلت خرید بلیت',
+			'event_deadline_time': 'زمان مهلت خرید بلیت',
+			'event_date': 'تاریخ برگزاری',
+			'event_time': 'زمان برگزاری',
 			'ticket': 'بلیت‌ها',
 		}
 		widgets = {
           		'event_description': forms.Textarea(attrs={'rows':4, 'maxlength': 255, 'placeholder': ' مثلا: نیم ساعت قبل از شروع برنامه در سالن حضور داشته باشید.'}),
-			'event_deadline': forms.TextInput(attrs={'id':'date_input', 'placeholder': '1394-04-05 20:14'}),
-			'event_date': forms.TextInput(attrs={'id':'date_input_2', 'placeholder': '1394-04-05 20:14'}),
+			'event_deadline_date': forms.TextInput(attrs={'type': 'date'}),
+			'event_deadline_time': forms.TextInput(attrs={'type': 'time'}),
+			'event_date': forms.TextInput(attrs={'type': 'date'}),
+			'event_time': forms.TextInput(attrs={'type': 'time'}),
 			'event_place': forms.TextInput(attrs={'placeholder': ' استادیوم آزادی'}),
 			'event_title': forms.TextInput(attrs={'placeholder': ' مسابقه والیبال ایران-آمریکا'}),
         	}
@@ -64,4 +68,11 @@ class SubCategoryModelForm(forms.ModelForm):
 			'subcategory_name': forms.TextInput(attrs={'placeholder': ' مثلا: مجسمه سازی'}),
         	}
 
-TicketFormSet = inlineformset_factory(Event, Ticket, fields=('ticket_type','ticket_price', 'total_capacity'), extra=1, widgets={'ticket_type': forms.TextInput(attrs={'placeholder': 'نوع'}), 'ticket_price': forms.TextInput(attrs={'placeholder': 'قیمت'}), 'total_capacity': forms.TextInput(attrs={'placeholder': 'ظرفیت'}),})
+TicketFormSet = inlineformset_factory(
+	Event,
+	Ticket,
+	fields=('ticket_type','ticket_price', 'total_capacity'),
+	extra=1,
+	widgets={'ticket_type': forms.TextInput(attrs={'placeholder': 'نوع'}),
+		'ticket_price': forms.TextInput(attrs={'placeholder': 'قیمت'}),
+		'total_capacity': forms.TextInput(attrs={'placeholder': 'ظرفیت'}),})
