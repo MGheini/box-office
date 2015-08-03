@@ -9,14 +9,14 @@ from .forms import MemberRegModelForm, OrganizerRegModelForm, LoginForm
 
 def get_layout():
 	categories = Category.objects.all()
-	most_populars = Event.objects.order_by('-event_avg_rate')[:5]
-	newest = Event.objects.order_by('-submit_date')[:5]
+	most_populars = Event.objects.order_by('-event_avg_rate')[:4]
+	newest = Event.objects.order_by('-submit_date')[:4]
 
 	return {'categories': categories, 'newest': newest, 'most_populars': most_populars}
 
 def our_login(request):
 	layout = get_layout()
-	available_events = models.Event.objects.all()
+	available_events = Event.objects.all()
 
 	form = LoginForm(request.POST)
 

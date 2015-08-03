@@ -2,8 +2,8 @@
 from datetime import datetime
 from django.contrib.auth.models import User
 from django.views.generic import CreateView
-from django.contrib.auth import logout, get_user
 from django.shortcuts import render, HttpResponseRedirect
+from django.contrib.auth import authenticate, login, get_user, logout
 
 from users.forms import LoginForm
 from users.models import Organizer
@@ -25,7 +25,25 @@ class TemplateUser():
 			self.type = 'مشتری'
 
 def admin_home(request):
+	if request.method == 'POST':
+		form = LoginForm(request.POST)
+
+		if form.is_valid():
+			username = form.cleaned_data['username']
+			password = form.cleaned_data['password']
+		
+			user = authenticate(username=username, password=password)
+
+			if user is not None:
+				if user.is_superuser:
+					login(request, user)
+					return render(request, 'admin-layout.html', {})
+				return render(request, 'admin-login.html', {'form': form, 'not_admin': True})
+			return render(request, 'admin-login.html', {'form': form, 'bad_login': True})
+		return render(request, 'admin-login.html', {'form': form, 'bad_login': True})
 	form = LoginForm()
+	if request.user.is_authenticated():
+		return render(request, 'admin-layout.html', {}) # Agar admin az home biad
 	return render(request, 'admin-login.html', {'form': form})
 
 def show_orders_all(request):

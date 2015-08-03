@@ -9,19 +9,26 @@
 	<link rel="stylesheet" href="{% static "styles/bootstrap.min.css" %}" />
 	<link rel="stylesheet" href="{% static "styles/bootstrap-rtl.min.css" %}" />
 	<link rel="stylesheet" href="{% static "styles/farsi-fonts.css" %}">
+	<link rel="stylesheet" href="{% static "styles/mcustom.css" %}" />
 </head>
 <body>
 	<section class="col-md-10 col-md-offset-1 main" style="padding: 0; border: none; margin-top: 21px;">
 		<nav class="navbar navbar-inverse navbar-default col-md-10 col-md-offset-1 hidden-print">
 			<h1 style="color: #fff; padding: 10px; margin-top: 10.5px;">وارد بخش مدیریت شوید!</h1>
 		</nav>
-		<div class="panel panel-defaulf col-md-6 col-md-offset-3">
-			<form action="/" method="post">
+		<div class="panel panel-defaulf col-md-6 col-md-offset-3" style="margin-top: 80px;">
+			{% if not_admin %}
+			<p style="color: red;">کاربر گرامی، متأسفانه شما حق دسترسی به مدیریت را ندارید.</p>
+			{% endif %}
+			{% if bad_login %}
+			<p style="color: red;">کاربر گرامی، اطلاعات وارد شده، ناصحیح و یا ناکامل است.</p>
+			{% endif %}
+			<form action="/bo-admin/" method="post">
 				{% csrf_token %}
 				{% for field in form %}
-				<div class="row" style="background-color: #ecf0f1; margin: 0px;">
-					<div class="col-md-3" style="padding: 0px;">{{ field.label }}</div>
-					<div class="col-md-9" style="padding: 0px;">{{ field }}</div>
+				<div class="row" style="background-color: #fff; margin: 0px;">
+					<div class="col-md-2 col-md-offset-3">{{ field.label }}</div>
+					<div class="col-md-4">{{ field }}</div>
 				</div>
 				{% endfor %}
 				<button id="login-btn" class="btn btn-primary btn-block" type="submit" style="width: 200px; margin-bottom: 10px;">ورود</button>
