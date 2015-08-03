@@ -4,17 +4,7 @@
 افزودن رویداد جدید
 {% endblock %}
 
-{% load humanize %}
 {% load staticfiles %}
-
-{% block style %}
-<link rel="stylesheet" href="{% static "styles/pcustom.css" %}" />
-<style type="text/css">
-row-admin {
-	background-color: #ffffff;
-}
-</style>
-{% endblock %}
 
 {% block content %}
 <!-- start -->
@@ -52,20 +42,17 @@ row-admin {
 				<div class="row form-group ticketDiv" style="background-color: #ffffff; margin: 0px;">
 					<div class="col-md-2"></div>
 					<div class="col-md-1">
-						<!-- <input type="text" class="form-control inputTicketType" placeholder="نوع بلیت" /> -->
 						{{ form.ticket_type }}
 					</div>
 
 					<div class="col-md-2">
 						<div class="input-group">
-							<!-- <input type="text" class="form-control inputTicketPrice" placeholder="قیمت" /> -->
 							{{ form.ticket_price }}
 							<span class="input-group-addon" style="color: #D6E0EA"><span class="text-primary">تومان</span></span>
 						</div>
 					</div>
 
 					<div class="col-md-1">
-						<!-- <input type="text" class="form-control inputTicketCapacity" placeholder="ظرفیت" /> -->
 						{{ form.total_capacity }}
 					</div>
 

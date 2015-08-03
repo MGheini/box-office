@@ -1,72 +1,24 @@
 
+from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.views.generic import CreateView
 from django.shortcuts import render, HttpResponseRedirect
-from django.contrib.auth import logout
 
 from users.models import Organizer
 from boxoffice_admin.models import MyAdmin
 from services.forms import EventModelForm, TicketFormSet
 from services.models import Event, Category, SubCategory,Ticket,Order
 from services.forms import EventModelForm, CategoryModelForm , SubCategoryModelForm
-from django.db.models import Q
 
 from datetime import datetime
 
 def admin_home(request):
 	return render(request, 'admin-layout.html', {})
-	
-	
-def search_form(request):
-    return render(request, 'search-form.html')
-
-def search(request):
-    if 'q' in request.POST:
-        q = request.POST['q']
-        startDate = request.POST['startDate']
-        endDate = request.POST['endDate']
-        try:
-            events = Event.objects.get(Q(event_title=q) & Q(event_date__contains=startDate) & Q(event_deadline__contains=endDate))
-
-        except Event.DoesNotExist:
-            return render(request,'output-table.html',{'query' : q,'success' : False})
-
-        tickets = events.ticket_set
-        number = tickets.count()
-        try:
-            orders = Order.objects.filter(ticket__event=events)
-        except Order.DoesNotExist:
-            return render(request, 'output-table.html',
-                        {'events' : events,'success' : True , 'query' : q , 'ticketNum' : number , 'price': 0 , 'order' : False})
-        total = sum([order.total_price for order in orders])
-        return render(request, 'output-table.html',
-                        {'events' : events,'success' : True , 'query' : q , 'ticketNum' : number , 'price': total ,'order' : True})
-
-def search_by_time(request):
-    return render(request, 'search-orders-by-time.html')
-
-def search_by_time_result(request):
-    if 'startDate' in request.POST and 'endDate' in request.POST:
-        startDate = request.POST['startDate']
-        endDate = request.POST['endDate']
-        try:
-            events = Event.objects.filter(Q(event_date__contains=startDate) & Q(event_deadline__contains=endDate))
-
-        except Event.DoesNotExist:
-            return render(request,'search-by-time-result.html',{'success' : False})
-        try:
-            orders = Order.objects.filter(ticket__event=events)
-        except Order.DoesNotExist:
-            return render(request, 'search-by-time-result.html',
-                        {'events' : events,'success' : True  , 'price': 0 , 'order' : False})
-        total = sum([order.total_price for order in orders])
-        return render(request, 'search-by-time-result.html',
-                        {'events' : events,'success' : True , 'price': total ,'order' : True})
 
 def show_orders_all(request):
     orders = Order.objects.all()
 
-    return render(request, 'all-orders.html', {'orders': orders})
+    return render(request, 'show-all-orders.html', {'orders': orders})
 
 class TemplateOrder():
 
@@ -110,7 +62,7 @@ def search_orders_all(request):
         if len(orders) == 0 and error is '':
             error = 'هیچ سفارشی برای نمایش وجود ندارد.'
 
-        return render(request, 'all-orders.html', {'orders': orders, 'error': error})
+        return render(request, 'show-all-orders.html', {'orders': orders, 'error': error})
 
 
 def search_orders_summary(request):
@@ -156,25 +108,6 @@ def show_orders_summary(request):
         template_orders += [TemplateOrder(order)]
 
     return render(request, 'show-orders-summary.html', {'template_orders': template_orders})
-
-# This part was done by me before. it was in events subcategory. accessible via /bo-admin/events/
-# def show_all_events(request):
-#     events = Event.objects.all()
-#     ticketNum=[]
-#     total=[]
-#     for event in events:
-#         tickets = event.ticket_set
-#         ticketNum.append(tickets.count())
-#         try:
-#             orders = Order.objects.filter(ticket__event=events)
-#         except Order.DoesNotExist:
-#             return render(request, 'all-events.html',
-#                         {'events' : events,'success' : False , 'ticketNum' : ticketNum , 'price': 0 , 'order' : False})
-#         total.append(sum([order.total_price for order in orders]))
-
-#     list = zip(events,ticketNum,total)
-#     return render(request, 'all-events.html',
-#                         {'success' : True ,'order' : True , 'list' : list})	
 
 def delete_multiple_events(request):
 	events = Event.objects.order_by('-submit_date').all()
