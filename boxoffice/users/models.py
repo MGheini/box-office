@@ -35,6 +35,7 @@ class Organizer(models.Model):
 	
 	organization_name = models.CharField(max_length=255)
 	organization_reg_num = models.CharField(max_length=255)
+	has_permission_to_create_category = models.BooleanField(default=False)
 
 	class Meta:
 		verbose_name_plural = "کاربران نوع برگزارکننده"

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>
-		خروج
+		ورود
 	</title>
 	{% load staticfiles %}
 	<link rel="stylesheet" href="{% static "styles/bootstrap.min.css" %}" />
@@ -13,18 +13,20 @@
 <body>
 	<section class="col-md-10 col-md-offset-1 main" style="padding: 0; border: none; margin-top: 21px;">
 		<nav class="navbar navbar-inverse navbar-default col-md-10 col-md-offset-1 hidden-print">
-			<h1 style="color: #fff; padding: 10px; margin-top: 10.5px;">از بخش مدیریت خارج شدید.</h1>
-			<div class="container-fluid">
-				<div class="navbar-header">
-
-				</div>
-			</div>
+			<h1 style="color: #fff; padding: 10px; margin-top: 10.5px;">وارد بخش مدیریت شوید!</h1>
 		</nav>
-		{% block content %}
 		<div class="panel panel-defaulf col-md-6 col-md-offset-3">
-			<h4>در صورتی که مایل هستید، نگاهی به <a href="/">گیشه</a> بیندازید.</h4>
+			<form action="/" method="post">
+				{% csrf_token %}
+				{% for field in form %}
+				<div class="row" style="background-color: #ecf0f1; margin: 0px;">
+					<div class="col-md-3" style="padding: 0px;">{{ field.label }}</div>
+					<div class="col-md-9" style="padding: 0px;">{{ field }}</div>
+				</div>
+				{% endfor %}
+				<button id="login-btn" class="btn btn-primary btn-block" type="submit" style="width: 200px; margin-bottom: 10px;">ورود</button>
+			</form>
 		</div>
-		{% endblock %}
 	</section>
 	<script type="text/javascript" src="{% static "scripts/jquery-1.9.1.min.js" %}"></script>
 	<script type="text/javascript" src="{% static "scripts/bootstrap.min.js" %}"></script>

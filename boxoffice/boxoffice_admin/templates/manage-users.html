@@ -1,0 +1,72 @@
+{% extends "admin-layout.html" %}	
+
+{% block title %}
+مدیریت کاربران
+{% endblock %}
+
+{% load staticfiles %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static "styles/pcustom.css" %}" />
+<style type="text/css">
+	row-admin {
+		background-color: #ffffff;
+	}
+</style>
+{% endblock %}
+
+{% block search %}
+
+{% endblock %}
+
+{% block content %}
+<!-- start -->
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h1 class="panel-title" style="font-size: 30px">مدیریت کاربران</h1>
+	</div>
+
+	<div class="panel-body">
+		<form action="/bo-admin/users/" method="POST">
+			{% csrf_token %}
+			<table class="table table-striped table-bordered table-hover" style="border-collapse: collapse; margin-top: 2px; margin-bottom: 20px;min-width: 400px;">
+				<thead style="font-size: 15px; background-color: #ecf0f1">
+					<th class="text-right">مجوّز</th>
+					<th class="text-right">نام کاربری</th>
+					<th class="text-right">آدرس ایمیل</th>
+					<th class="text-right">نام</th>
+					<th class="text-right">نام خانوادگی</th>
+					<th class="text-right">نقش</th>
+				</thead>
+				<tbody style="text-align: right">
+					{% for user in users %}
+					<tr style="font-size: 15px;">
+						<td class="text-right" style="vertical-align: middle">
+							<input type="checkbox" name="permitted" value="{{ user.user.id }}" class="col-md-1 col-sm-3 col-xs-4" style="margin: 0 auto; width: 15px; height: 15px"
+							{% if user.checkbox_activity %}
+								{% if user.has_permission %}
+									checked="true"
+								{% endif %} 
+							{% else %}
+							disabled="true"
+							{% endif %} />
+						</td>
+						<td class="text-right" style="padding-top: 10px; vertical-align: middle">
+							{{ user.user.username }}
+						</td>
+						<td class="text-right" style="padding-top: 10px; vertical-align: middle">{{ user.user.email }}</td>
+						<td class="text-right" style="padding-top: 10px; vertical-align: middle">{{ user.user.first_name }}</td>
+						<td class="text-right" style="padding-top: 10px; vertical-align: middle; width: 5%">{{ user.user.last_name }}</td>
+						<td class="text-right" style="padding-top: 10px; vertical-align: middle">
+							{{ user.type }}
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<input type="submit" value="اعمال مجوّزها" class="btn btn-danger" />
+		</form>
+	</div>
+</div>
+<!-- end -->
+{% endblock %}

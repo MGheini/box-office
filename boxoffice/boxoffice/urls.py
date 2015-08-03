@@ -5,7 +5,7 @@ from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.views.generic import RedirectView
 
-from boxoffice_admin.views import AddEventView
+from boxoffice_admin.views import AddEventView, EditEventView
 
 urlpatterns = [
     url(r'^$', 'services.views.home'),
@@ -25,6 +25,7 @@ urlpatterns = [
     	])),
     ])),
     url(r'^submit/$', 'services.views.submit'),
+    url(r'^submitcategory/$', 'services.views.submit_category'),
     url(r'^orders/(?P<order_id>[\d]+)/receipt/$', 'services.views.receipt'),
     url(r'^history/$', 'services.views.history'),
     url(r'^logout/$', 'users.views.our_logout'),
@@ -37,24 +38,20 @@ urlpatterns = [
 
     url(r'^bo-admin/events/$', 'boxoffice_admin.views.delete_multiple_events'),
     url(r'^bo-admin/events/(?P<event_id>[\d]+)/delete/$', 'boxoffice_admin.views.delete_event'),
-    # url(r'^bo-admin/events/(?P<event_id>[\d]+)/edit/$', 'boxoffice_admin.views.edit_event'),
+    url(r'^bo-admin/events/(?P<event_id>[\d]+)/edit/$', EditEventView.as_view()),
     url(r'^bo-admin/events/add/$', AddEventView.as_view()),
 
     url(r'^bo-admin/categories/$', 'boxoffice_admin.views.delete_multiple_categories'),
     url(r'^bo-admin/categories/(?P<category_id>[\d]+)/delete/$', 'boxoffice_admin.views.delete_category'),
-    # url(r'^bo-admin/categories/(?P<category_id>[\d]+)/edit/$', 'boxoffice_admin.views.edit_category'),
+    url(r'^bo-admin/categories/(?P<category_id>[\d]+)/edit/$', 'boxoffice_admin.views.edit_category'),
     url(r'^bo-admin/categories/add/$', 'boxoffice_admin.views.add_category'),
 
     url(r'^bo-admin/subcategories/$', 'boxoffice_admin.views.delete_multiple_subcategories'),
     url(r'^bo-admin/subcategories/(?P<sub_category_id>[\d]+)/delete/$', 'boxoffice_admin.views.delete_subcategory'),
-    # url(r'^bo-admin/subcategories/(?P<subcategory_id>[\d]+)/edit/$', 'boxoffice_admin.views.edit_subcategory'),
+    url(r'^bo-admin/subcategories/(?P<subcategory_id>[\d]+)/edit/$', 'boxoffice_admin.views.edit_subcategory'),
     url(r'^bo-admin/subcategories/add/$', 'boxoffice_admin.views.add_subcategory'),
 
-    # url(r'^bo-admin/users/customers/delete/$', 'boxoffice_admin.views.delete_multiple_customers'),
-
-    # url(r'^bo-admin/users/organizers/delete/$', 'boxoffice_admin.views.delete_multiple_organizers'),
-
-    # url(r'^bo-admin/users/search/$', 'boxoffice_admin.views.search_users'),
+    url(r'^bo-admin/users/$', 'boxoffice_admin.views.manage_users'),
 
     # url(r'^bo-admin/orders/search/$', 'boxoffice_admin.views.search_orders'),
 

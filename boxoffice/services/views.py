@@ -6,13 +6,13 @@ from . import models
 from users.models import Member
 from users.forms import LoginForm
 from users.views import our_login
-from services.forms import EventModelForm
+from .forms import CategoryModelForm , SubCategoryModelForm
 
 
 def get_layout():
 	categories = models.Category.objects.all()
-	most_populars = models.Event.objects.order_by('event_avg_rate')[:5]
-	newest = models.Event.objects.order_by('submit_date')[:5]
+	most_populars = models.Event.objects.order_by('-event_avg_rate')[:5]
+	newest = models.Event.objects.order_by('-submit_date')[:5]
 
 	return {'categories': categories, 'newest': newest, 'most_populars': most_populars}
 
@@ -38,12 +38,15 @@ def home(request):
 				return render(request, 'home.html',
 					{'home': True,
 					'organizer': True,
+					'permitted': request.user.has_permission_to_create_category,
 					'categories': layout['categories'],
 					'available_events': available_events,
 					'newest': layout['newest'],
 					'most_populars': layout['most_populars']})
+			else:
+				return HttpResponseRedirect('/bo-admin')
 		else:
-			return HttpResponseRedirect('/admin')
+			return HttpResponseRedirect('/bo-admin')
 	else:
 		form = LoginForm()
 		return render(request, 'home.html',
@@ -121,14 +124,28 @@ def subcategory(request, category, subcategory):
 
 def submit(request):
 	layout = get_layout()
-	event_form = EventModelForm()
+	member_form = MemberRegModelForm()
+	organizer_form = OrganizerRegModelForm()
 	return render(request, 'submit-new-event.html',
 		{'event_form': event_form,
 		'organizer': True,
+		'permitted': False,
 		'categories': layout['categories'],
 		'newest': layout['newest'],
 		'most_populars': layout['most_populars']})
 
+def submit_category(request):
+	layout = get_layout()
+	category_submit_form = CategoryModelForm()
+	subcategory_submit_form = SubCategoryModelForm()
+	return render(request, 'submit-new-category.html',
+		{'organizer': True,
+		'permitted': True,
+		'category_submit_form': category_submit_form,
+		'subcategory_submit_form': SubCategoryModelForm,
+		'categories': layout['categories'],
+		'newest': layout['newest'],
+		'most_populars': layout['most_populars']})
 
 def receipt(request, order_id):
 	layout = get_layout()

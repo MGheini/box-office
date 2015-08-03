@@ -10,9 +10,9 @@
 {% block style %}
 <link rel="stylesheet" href="{% static "styles/pcustom.css" %}" />
 <style type="text/css">
-row-admin {
-	background-color: #ffffff;
-}
+	row-admin {
+		background-color: #ffffff;
+	}
 </style>
 {% endblock %}
 
@@ -32,6 +32,9 @@ row-admin {
 	</div>
 
 	<div class="panel-body">
+		{% if successful_edit %}
+		<p class="text-success">زیردسته با موفقیت ویرایش شد.</p>
+		{% endif %}
 		<form method="POST">
 			{% csrf_token %}
 			<table class="table table-condensed table-hover table-bordered" style="border-collapse: collapse; margin-bottom: 20px">

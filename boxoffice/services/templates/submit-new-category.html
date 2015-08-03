@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	ثبت دسته و زیردسته
+{% endblock %}
+
+{% block style %}
+<style type="text/css">
+	ul {
+		list-style-type: none;
+	}
+	li {
+		display: inline;
+	}
+	li input {
+		width: 26px;
+		height: 26px;
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+	<div id="reg-form">
+		<div class="well" style="margin: 0px;">
+			<p style="font-size: 28px;">ثبت دسته و زیردسته</p>
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active"><a href="#category" aria-controls="category" role="tab" data-toggle="tab">دسته</a></li>
+				<li role="presentation"><a href="#subcategory" aria-controls="subcategory" role="tab" data-toggle="tab">زیردسته</a></li>
+			</ul>
+
+			<!-- Tab panes -->
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane active" id="category">
+					<div>
+						<form action="" method="post">
+							{% csrf_token %}
+							{% for field in category_submit_form %}
+							<div class="row" style="background-color: #ecf0f1; margin: 0px;">
+								<div class="col-md-2" style="padding: 5px">{{ field.label }}</div>
+								<div class="col-md-5">{{ field }}</div>
+								<div class="col-md-5 error">{{ field.errors }}</div>
+							</div>
+							{% endfor %}
+							<button id="category-submit-btn" class="btn btn-primary btn-block" type="submit" style="width: 200px;">ثبت</button>
+						</form>
+					</div>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="subcategory">
+					<div>
+						<form action="" method="post">
+							{% csrf_token %}
+							{% for field in subcategory_submit_form %}
+							<div class="row" style="background-color: #ecf0f1; margin: 0px;">
+								<div class="col-md-2" style="padding: 5px">{{ field.label }}</div>
+								<div class="col-md-5">{{ field }}</div>
+								<div class="col-md-5 error">{{ field.errors }}</div>
+							</div>
+							{% endfor %}
+							<button id="subcategory-reg-btn" class="btn btn-primary btn-block" type="submit" style="width: 200px;">ثبت</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

@@ -119,6 +119,12 @@
 						<span class="glyphicon glyphicon-plus"></span>
 						افزودن رویداد جدید
 					</li></a>
+					{% if permitted %}
+					<a href="/submitcategory/"><li class="list-group-item">
+						<span class="glyphicon glyphicon-plus"></span>
+						افزودن دسته و یا زیر دسته جدید
+					</li></a>
+					{% endif %}
 					<li class="list-group-item">
 						<a href="/">
 							<span class="glyphicon glyphicon-log-out"></span>
@@ -161,9 +167,8 @@
 				<ul class="list-group" style="margin: 0;">
 					{% for event in newest %}
 					<li class="list-group-item">
-						<a href="/events/{{ event.id }}/">
-							<img class="img img-thumbnail img-responsive" src="{{ event.event_image.url }}" style="width: 180px; height: 120px; display: block; margin: 0 auto" />
-							<p style="text-align: center; margin-top: 10px">{{ event.event_title }}</p>
+						<a class="airview" data-content="{{ event.event_image.url }}" href="/events/{{ event.id }}/">
+							<p style="margin-bottom: 0px">{{ event.event_title }}</p>
 						</a>
 					</li>
 					{% endfor %}
@@ -176,9 +181,8 @@
 				<ul class="list-group" style="margin: 0;">
 					{% for event in most_populars %}
 					<li class="list-group-item">
-						<a href="/events/{{ event.id }}/">
-							<img class="img img-thumbnail img-responsive" src="{{ event.event_image.url }}" style="width: 180px; height: 120px; display: block; margin: 0 auto" />
-							<p style="text-align: center; margin-top: 10px">{{ event.event_title }}</p>
+						<a class="airview" data-content="{{ event.event_image.url }}" href="/events/{{ event.id }}/">
+							<p style="margin-bottom: 0px">{{ event.event_title }}</p>
 						</a>
 					</li>
 					{% endfor %}
@@ -188,6 +192,7 @@
 	</aside>
 	<script type="text/javascript" src="{% static "scripts/jquery-1.9.1.min.js" %}"></script>
 	<script type="text/javascript" src="{% static "scripts/bootstrap.min.js" %}"></script>
+	<script type="text/javascript" src="{% static "scripts/airview.min.js" %}"></script>
 	<script type="text/javascript" src="{% static "scripts/slick.min.js" %}"></script>
 	<script type="text/javascript" src="{% static "scripts/mcustom.js" %}"></script>
 	<script type="text/javascript">
@@ -207,6 +212,11 @@
 			$(this).siblings('div#wrap').slideToggle(function(){
 				$(this).parent('details').toggleClass('open');
 			});
+		});
+		$(".airview").airview({
+			url: '', 
+			width: 100,
+			delay: { "hide": 100 }
 		});
 	</script>
 	<script rel="stylesheet" href="{% static "scripts/convert-to-persian.js" %}"></script>

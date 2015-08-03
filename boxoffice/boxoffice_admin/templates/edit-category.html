@@ -1,0 +1,42 @@
+{% extends "admin-layout.html" %}
+
+{% block title %}
+ویرایش دسته
+{% endblock %}
+
+{% load staticfiles %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static "styles/pcustom.css" %}" />
+<style type="text/css">
+row-admin {
+	background-color: #ffffff;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- start -->
+<script type="text/javascript" src="{% static "scripts/jquery-1.9.1.min.js" %}"></script>
+<div class="panel panel-default" style="border: none">
+	<div class="panel-heading">
+		<h1 class="panel-title" style="font-size: 30px">ویرایش دسته</h1>
+	</div>
+	<div class="panel-body">
+		<form name="" action="/bo-admin/categories/{{ category_id }}/edit/" method="POST">
+			{% csrf_token %}
+
+			{% for field in form %}
+			<div class="row" style="background-color: #ffffff; margin: 0px;">
+				<div class="col-md-2" style="padding: 5px">{{ field.label }}</div>
+				<div class="col-md-5">{{ field }}</div>
+				<div class="col-md-5 error">{{ field.errors }}</div>
+			</div>
+			{% endfor %}
+
+			<button id="edit-category" class="btn btn-primary btn-block" type="submit" style="width: 200px;">ثبت</button>
+		</form>
+	</div>
+</div>
+<!-- end -->
+{% endblock %}

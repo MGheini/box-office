@@ -1,0 +1,123 @@
+{% extends "admin-layout.html" %}	
+
+{% block title %}
+ویرایش رویداد
+{% endblock %}
+
+{% load humanize %}
+{% load staticfiles %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static "styles/pcustom.css" %}" />
+<style type="text/css">
+	row-admin {
+		background-color: #ffffff;
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- start -->
+<script type="text/javascript" src="{% static "scripts/jquery-1.9.1.min.js" %}"></script>
+<div class="panel panel-default" style="border: none">
+	<div class="panel-heading">
+		<h1 class="panel-title" style="font-size: 30px">ویرایش رویداد</h1>
+	</div>
+	<div class="panel-body">
+		<form name="" action="/bo-admin/events/{{ event.id }}/edit/" method="POST"  enctype="multipart/form-data">
+			{% csrf_token %}
+
+			{% for field in form %}
+			<div class="row" style="background-color: #ffffff; margin: 0px;">
+				<div class="col-md-2" style="padding: 5px">{{ field.label }}</div>
+				<div class="col-md-5">{{ field }}</div>
+				<div class="col-md-5 error">{{ field.errors }}</div>
+			</div>
+			{% endfor %}
+
+			<div class="row" style="background-color: #ffffff; margin: 0px;">
+				<p class="row control-label" style="background-color: #ffffff; margin: 0px; padding: 5px; font-weight: normal">انتخاب بلیت‌های فعلی جهت حذف (تنها بلیت‌های فروش نرفته در این بخش موجود هستند.)</p> 
+				<hr style="margin: 0" />
+			</div>
+
+			<table class="table table-striped table-bordered table-hover" style="border-collapse: collapse; margin-top: 2px; margin-bottom: 20px;width: 150px;">
+				<thead style="font-size: 15px; background-color: #ecf0f1">
+					<th class="text-right"> </th>
+					<th class="text-right">نوع بلیت</th>
+				</thead>
+				<tbody style="text-align: right">
+					{% for ticket in event.ticket_set.all %}
+					{% if ticket.purchased_num == 0 %}
+					<tr style="font-size: 15px;">
+						<td class="text-right" style="vertical-align: middle">
+							<input type="checkbox" name="todelete" value="{{ ticket.id }}" class="col-md-1 col-sm-3 col-xs-4" style="margin: 0 auto; width: 15px; height: 15px" />
+						</td>
+						<td class="text-right" style="padding-top: 10px; vertical-align: middle">
+							{{ ticket.ticket_type }}
+						</td>
+					</tr>
+					{% endif %}
+					{% endfor %}
+				</tbody>
+			</table>
+
+			<div class="row" style="background-color: #ffffff; margin: 0px;">
+				<p class="row control-label" style="background-color: #ffffff; margin: 0px; padding: 5px; font-weight: normal">افزودن بلیت‌های جدید</p> 
+				<hr style="margin: 0" />
+			</div>
+
+			<div class="row" style="background-color: #ffffff; margin: 0px;">
+				{% for form in formset.forms %}
+				<div class="row form-group ticketDiv" style="background-color: #ffffff; margin: 0px;">
+					<div class="col-md-2"></div>
+					<div class="col-md-1">
+						{{ form.ticket_type }}
+					</div>
+
+					<div class="col-md-2">
+						<div class="input-group">
+							{{ form.ticket_price }}
+							<span class="input-group-addon" style="color: #D6E0EA"><span class="text-primary">تومان</span></span>
+						</div>
+					</div>
+
+					<div class="col-md-1">
+						{{ form.total_capacity }}
+					</div>
+
+					<div class="col-md-3">
+						{% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+					</div>
+
+					<div class="col-md-3">
+						<div class="row form-group" style="background-color: #ffffff; margin: 0px;">
+						{% if not form.is_valid %}
+							{% if form.ticket_type.errors %} خطا در نوع بلیت: {{ form.ticket_type.errors.as_text }}<br/>{% endif %}
+							{% if form.ticket_price.errors %} خطا در قیمت بلیت: {{ form.ticket_price.errors.as_text }}<br/>{% endif %}
+							{% if form.total_capacity.errors %} خطا در ظرفیت بلیت: {{ form.total_capacity.errors.as_text }}{% endif %}
+						{% endif %}
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+
+			<button id="edit-event" class="btn btn-primary btn-block" type="submit" style="width: 200px;">ثبت</button>
+
+			{{ formset.management_form }}
+		</form>
+	</div>
+</div>
+<!-- end -->
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="{% static "scripts/jquery.formset.min.js" %}"></script>
+<script type="text/javascript">
+	$(function() {
+		$('form .ticketDiv').formset({
+			prefix: '{{ formset.prefix }}'
+		});
+	})
+</script>
+ {% endblock %}

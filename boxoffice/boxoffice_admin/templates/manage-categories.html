@@ -10,15 +10,15 @@
 {% block style %}
 <link rel="stylesheet" href="{% static "styles/pcustom.css" %}" />
 <style type="text/css">
-row-admin {
-	background-color: #ffffff;
-}
+	row-admin {
+		background-color: #ffffff;
+	}
 </style>
 {% endblock %}
 
 {% block content %}
 <!-- start -->
-<div class="panel panel-default" style="border: none">
+<div class="panel panel-default">
 	<div class="panel-heading">
 		<h1 class="panel-title" style="font-size: 30px">مدیریت دسته‌ها</h1>
 		<ul class="list-group" style="margin: 5px;">
@@ -30,7 +30,10 @@ row-admin {
 			</li>
 		</ul>
 	</div>
-	<div class="panel-body" style="padding: 0; margin-top: 2px; margin-bottom: 2px">
+	<div class="panel-body">
+		{% if successful_edit %}
+		<p class="text-success">دسته با موفقیت ویرایش شد.</p>
+		{% endif %}
 		<form method="POST">
 			{% csrf_token %}
 			<table class="table table-condensed table-hover table-bordered" style="border-collapse: collapse; margin-bottom: 20px">
@@ -49,9 +52,9 @@ row-admin {
 							<p style="margin-bottom: 0"><a href="/bo-admin/categories/{{ cat.id }}/delete/"><span class="glyphicon glyphicon-trash text-danger" style="margin-left: 6px" data-toggle="tooltip" title="حذف"></span></a><a href="/bo-admin/categories/{{ cat.id }}/edit/"><span class="glyphicon glyphicon-pencil text-info" style="margin-left: 6px" data-toggle="tooltip" title="ویرایش"></span></a>{{ cat.category_name }}</p>
 						</td>
 						<td class="text-right" style="padding-top: 10px; vertical-align: middle">
-						{% for subcat in cat.subcategory_set.all %}
+							{% for subcat in cat.subcategory_set.all %}
 							{{ subcat.subcategory_name }}{% if not forloop.last %}،{% endif %}
-						{% endfor %}
+							{% endfor %}
 						</td>
 					</tr>
 					{% endfor %}

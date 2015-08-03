@@ -1,6 +1,8 @@
+
 from django import forms
-from .models import Event, Ticket, Category, SubCategory
 from django.forms.models import inlineformset_factory
+
+from .models import Event, Ticket, Category, SubCategory
 
 class TicketModelForm(forms.ModelForm):
 
@@ -56,7 +58,7 @@ class SubCategoryModelForm(forms.ModelForm):
 		fields = ['subcategory_name', 'category']
 		labels = {
 			'subcategory_name': 'عنوان زیردسته',
-			'category': 'زیردسته',
+			'category': 'دسته',
 		}
 		widgets = {
 			'subcategory_name': forms.TextInput(attrs={'placeholder': ' مثلا: مجسمه سازی'}),
