@@ -103,7 +103,7 @@ class Order(models.Model):
 	event = models.ForeignKey(Event, null=True)
 	num_purchased = models.PositiveSmallIntegerField(blank=False)
 	total_price = models.PositiveIntegerField(blank=False)
-	order_date = models.DateTimeField(blank=False)
+	order_date = models.DateTimeField(default=datetime.now(), blank=False)
 	purchase_code = models.PositiveIntegerField(blank=False, default=random.randint(1000000,9999999))
 	
 	class Meta:

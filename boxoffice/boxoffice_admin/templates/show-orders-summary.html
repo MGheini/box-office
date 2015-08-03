@@ -37,7 +37,8 @@
 				<thead style="font-size: 15px; background-color: #ecf0f1">
 					<th class="text-right">عنوان رویداد</th>
 					<th class="text-right">دسته(زیردسته)</th>
-					<th class="text-right">زمان برگزاری</th>					
+					<th class="text-right">تاریخ برگزاری</th>					
+					<th class="text-right">ساعت برگزاری</th>					
 					<th class="text-right">تعداد بلیت خریداری شده</th>
 					<th class="text-right">درآمد کسب شده</th>
 				</thead>
@@ -47,6 +48,7 @@
 						<td class="text-right" style="padding-top: 10px; vertical-align: middle">{{ order.event.event_title }}</td>
 						<td class="text-right" style="padding-top: 10px; vertical-align: middle">{{ order.event.category }}({{ order.event.subcategory.subcategory_name }})</td>
 						<td class="text-right" style="padding-top: 10px; vertical-align: middle;">{{ order.event.event_date }}</td>
+						<td class="text-right" style="padding-top: 10px; vertical-align: middle;">{{ order.event.event_time }}</td>
 						<td class="text-right" style="padding-top: 10px; vertical-align: middle">{{ order.sold_ticket_num }}</td>
 						<td class="text-right" style="padding-top: 10px; vertical-align: middle">{{ order.total_income }}</td>
 					</tr>

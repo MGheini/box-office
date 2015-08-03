@@ -32,8 +32,10 @@
 					<th class="text-right">دسته(زیردسته)</th>
 					<th class="text-right">محل برگزاری</th>
 					<th class="text-right">میانگین امتیاز</th>
-					<th class="text-right">زمان برگزاری</th>
-					<th class="text-right">مهلت خرید</th>
+					<th class="text-right">تاریخ برگزاری</th>
+					<th class="text-right">ساعت برگزاری</th>
+					<th class="text-right">تاریخ مهلت خرید</th>
+					<th class="text-right">زمان مهلت خرید</th>
 					<th class="text-right">زمان ثبت</th>
 					<th class="text-right">بلیت‌ها</th>
 				</thead>
@@ -50,7 +52,9 @@
 						<td class="text-right" style="padding-top: 10px; vertical-align: middle">{{ event.event_place }}</td>
 						<td class="text-right" style="padding-top: 10px; vertical-align: middle; width: 5%">{{ event.event_avg_rate }}</td>
 						<td class="text-right" style="padding-top: 10px; vertical-align: middle">{{ event.event_date }}</td>
-						<td class="text-right" style="padding-top: 10px; vertical-align: middle">{{ event.event_deadline|naturaltime }}</td>
+						<td class="text-right" style="padding-top: 10px; vertical-align: middle">{{ event.event_time }}</td>
+						<td class="text-right" style="padding-top: 10px; vertical-align: middle">{{ event.event_deadline_date }}</td>
+						<td class="text-right" style="padding-top: 10px; vertical-align: middle">{{ event.event_deadline_time }}</td>
 						<td class="text-right" style="padding-top: 10px; vertical-align: middle">{{ event.submit_date|naturaltime }}</td>
 						<td class="text-right" style="padding-top: 10px; vertical-align: middle">
 						{% for ticket in event.ticket_set.all %}
