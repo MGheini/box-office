@@ -102,25 +102,55 @@ def rate(request, event_id):
 def comment(request, event_id):
 	return HttpResponse('post')
 
+class TemplateEvent():
+
+	def __init__(self, event):
+		self.event = event
+		self.ticket_available = False
+
+		event_tickets = self.event.ticket_set.all()
+		for ticket in event_tickets:
+			if ticket.total_capacity - ticket.purchased_num > 0:
+				self.ticket_available = True;
+				break
+
+
 def category(request, category):
 	layout = get_layout()
 	form = LoginForm()
+	
+	events = models.Event.objects.filter(category__category_name=category)
+	template_events = []
+	for event in events:
+		template_events += [TemplateEvent(event)]
+
 	return render(request, 'view-category-events.html',
 		{'form': form,
 		'visitor': True,
 		'categories': layout['categories'],
 		'newest': layout['newest'],
-		'most_populars': layout['most_populars']})
+		'most_populars': layout['most_populars'],
+		'events': template_events,
+		'category': category})
 
 def subcategory(request, category, subcategory):
 	layout = get_layout()
 	form = LoginForm()
+
+	events = models.Event.objects.filter(subcategory__subcategory_name=subcategory)
+	template_events = []
+	for event in events:
+		template_events += [TemplateEvent(event)]
+
 	return render(request, 'view-sub-category-events.html',
 		{'form': form,
 		'visitor': True,
 		'categories': layout['categories'],
 		'newest': layout['newest'],
-		'most_populars': layout['most_populars']})
+		'most_populars': layout['most_populars'],
+		'events': template_events,
+		'category': category,
+		'subcategory': subcategory})
 
 def submit(request):
 	layout = get_layout()
