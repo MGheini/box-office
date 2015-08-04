@@ -41,6 +41,7 @@
 					<th class="text-right">زمان مهلت خرید</th>
 					<th class="text-right">زمان ثبت</th>
 					<th class="text-right">بلیت‌ها</th>
+					<th class="text-right">برگزارکننده</th>
 				</thead>
 				<tbody style="text-align: right">
 					{% for event in events %}
@@ -64,6 +65,7 @@
 							{{ ticket.ticket_type }}{% if not forloop.last %}،{% endif %}
 							{% endfor %}
 						</td>
+						<td class="text-right" style="padding-top: 10px; vertical-align: middle">{{ event.organizer }}</td>
 					</tr>
 					{% endfor %}
 				</tbody>

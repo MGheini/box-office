@@ -18,8 +18,8 @@ class TicketModelForm(forms.ModelForm):
 class EventModelForm(forms.ModelForm):
 	class Meta:
 		model = Event
-		exclude = ['submit_date', 'organizer']
-		fields = ['event_title', 'category', 'subcategory', 'event_image', 'event_place', 'event_date', 'event_time', 'event_description', 'event_deadline_date', 'event_deadline_time']
+		exclude = ['submit_date']
+		fields = ['event_title', 'category', 'subcategory', 'event_image', 'event_place', 'event_date', 'event_time', 'event_description', 'event_deadline_date', 'event_deadline_time', 'organizer']
 		labels = {
 			'event_title': 'عنوان رویداد',
 			'category': 'دسته',
@@ -32,6 +32,7 @@ class EventModelForm(forms.ModelForm):
 			'event_date': 'تاریخ برگزاری',
 			'event_time': 'زمان برگزاری',
 			'ticket': 'بلیت‌ها',
+			'organizer': 'برگزارکننده',
 		}
 		widgets = {
           		'event_description': forms.Textarea(attrs={'rows':4, 'maxlength': 255, 'placeholder': ' مثلا: نیم ساعت قبل از شروع برنامه در سالن حضور داشته باشید.'}),

@@ -249,7 +249,7 @@ class AddEventView(CreateView):
         formset = context['formset']
         if formset.is_valid():
             self.object = form.save(commit=False)
-            self.object.organizer = Organizer.objects.get(user=get_user(self.request))
+            # self.object.organizer = Organizer.objects.all()[0] #Organizer.objects.get(user=get_user(self.request))
             self.object.save()
             formset.instance = self.object
             formset.save()
