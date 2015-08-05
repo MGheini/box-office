@@ -1,4 +1,5 @@
 import random
+import datetime
 
 from django.db import models
 from datetime import datetime
@@ -103,7 +104,8 @@ class Order(models.Model):
 	num_purchased = models.PositiveSmallIntegerField(blank=False)
 	total_price = models.PositiveIntegerField(blank=False)
 	order_date = models.DateTimeField(default=datetime.now, blank=False)
-	purchase_code = models.PositiveIntegerField(blank=False, default=random.randint(1000000,9999999))
+
+	purchase_code = models.PositiveIntegerField(blank=False)
 	
 	class Meta:
 		verbose_name_plural = "سفارش‌ها"

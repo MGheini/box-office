@@ -89,6 +89,11 @@ def event_details(request, event_id):
 		'most_populars': layout['most_populars']})
 
 def purchase(request, event_id):
+
+	# calculate the code
+	# s = str(datetime.now()) + 
+	# order_num = abs(hash(s)) % (10 ** 6)
+
 	layout = get_layout()
 	return render(request, 'buy-ticket.html',
 		{'member': True,
