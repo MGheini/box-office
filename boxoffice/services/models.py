@@ -76,6 +76,7 @@ class Comment(models.Model):
 	member = models.ForeignKey(Member)
 	event = models.ForeignKey(Event)
 	comment_text = models.CharField(max_length=200)
+	datetime = models.DateTimeField(blank=True, null=False)
 
 	class Meta:
 		verbose_name_plural = "نظرها"

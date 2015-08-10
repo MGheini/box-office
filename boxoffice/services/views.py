@@ -81,12 +81,18 @@ def about_us(request):
 def event_details(request, event_id):
 	layout = get_layout()
 	form = LoginForm()
+
+	member = models.Member.objects.all()[0]
+	event = models.Event.objects.get(id=event_id)
+
 	return render(request, 'view-event-details.html',
 		{'form': form,
 		'visitor': True,
 		'categories': layout['categories'],
 		'newest': layout['newest'],
-		'most_populars': layout['most_populars']})
+		'most_populars': layout['most_populars'],
+		'event': event,
+		'member': member})
 
 def purchase(request, event_id):
 
@@ -105,7 +111,23 @@ def rate(request, event_id):
 	return HttpResponse('rate')
 
 def comment(request, event_id):
-	return HttpResponse('post')
+	
+	#member = Member.objects.get(user=request.user)
+	member = models.Member.objects.all()[0]
+	if request.method == "GET":	
+		comment_text = request.GET.get('comment_text')
+
+		if not (comment_text):
+			return HttpResponse("Not enough information.", status=400)
+
+		postcomment = models.Comment()
+		postcomment.member = member
+		postcomment.post = models.Event.objects.filter(id=event_id)[0]
+		postcomment.comment_text = comment_text
+		postcomment.datetime = datetime.datetime.now()
+		postcomment.save()
+
+		return HttpResponse(postcomment.datetime, status=200)
 
 class TemplateEvent():
 

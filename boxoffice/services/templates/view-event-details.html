@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-مشاهده جزییات رویداد
+{{ event.event_title }}
 {% endblock %}
 
 {% load staticfiles %}
@@ -21,7 +21,7 @@
 <div class="panel-heading" style="padding-top: 0; padding-bottom: 0">
   <div class="row-event">
     <div class="col-md-12">
-      <h3 style="margin-bottom: 0"> عنوان اصلی رویداد <small> <span class="glyphicon glyphicon-star"> </span>
+      <h3 style="margin-bottom: 0"> {{ event.event_title }} <small> <span class="glyphicon glyphicon-star"> </span>
         <span class="glyphicon glyphicon-star"></span>
         <span class="glyphicon glyphicon-star"></span>
         <span class="glyphicon glyphicon-star"></span>
@@ -34,8 +34,8 @@
     <div class="col-md-12" style="height: 50px;">
       <h4 style="margin-top: 10px; margin-bottom: 10px">
         <ul class="breadcrumb" style="margin-top: 10;"  style="padding-top: 0">
-          <li class="active"><a href="/events/dasteh/">دسته</a></li>
-          <li class="active"><a href="/events/dasteh/zirdasteh/">زیردسته</a></li>
+          <li class="active"><a href="/{{ event.event_category.category_name }}/">{{ event.event_category.category_name }}</a></li>
+          <li class="active"><a href="/{{ event.event_category.category_name }}/{{ event.event_subcategory.subcategory_name }}/">{{ event.event_subcategory.subcategory_name }}</a></li>
         </ul>
       </h4>
     </div>
@@ -44,7 +44,7 @@
 
 <div class="panel-body">
   <div class="col-md-4 text-center center-block">
-    <img src="http://placehold.it/150x350" class="img img-responsive center-block img-thumbnail" id="eventImage" style="width: 200px; height: 250px; padding: 10px" />
+    <img src="{{ event.event_image.url }}" class="img img-responsive center-block img-thumbnail" id="eventImage" style="width: 200px; height: 250px; padding: 10px" />
     <div class="col-md-12">
           <!-- <h4></h4> -->
           <form role="form" method="GET">
@@ -138,25 +138,12 @@
                 <hr />
                 <!-- end of each comment -->
 
-                <!-- start of each comment -->
-                <li class="comment">
-                  <div class="comment-body">
-                    <div class="comment-heading">
-                      <a><h4 class="user"> پردیس پاشاخانلو </h4></a>
-                      <h5 class="time"> ارسال شده در ۲۵ آبان ۹۳ ساعت ۱۵:۳۰ </h5>
-                    </div>
-                    <p> این جا کامنت من نوشته می‌شود. این جا کامنت من نوشته می‌شود. این جا کامنت من نوشته می‌شود. این جا کامنت من نوشته می‌شود. این جا کامنت من نوشته می‌شود. این جا کامنت من نوشته می‌شود. این جا کامنت من نوشته می‌شود. </p>
-                  </div>
-                </li>
-                <hr />
-                <!-- end of each comment -->
-
               </ul>
             </div>
-            <form method="GET" action="">
+            <form method="GET" action="/events/{{ event.id }}/comment/">
               <div class="input-group">
                 <input type="text" id="comment-text" class="form-control" placeholder="نظر شما چیست؟" style="padding: 10px" />
-                <span class="input-group-btn"><button type="submit" class="add-comment btn btn-default" data-id="{{ template_post.post.id }}"><span class="glyphicon glyphicon-comment"></span></button></span>
+                <span class="input-group-btn"><button type="submit" class="add-comment btn btn-default" data-id="{{ event.id }}"><span class="glyphicon glyphicon-comment"></span></button></span>
               </div>
             </form>
           </div>
@@ -173,19 +160,43 @@
       for(var i = 0; i < buttons.length; i++) {
         buttons[i].addEventListener('click', function(event) {
           event.preventDefault();
+
           var comment_text = document.getElementById("comment-text").value;
-          var newComment = document.createElement("li");
-          newComment.setAttribute("class", "comment");
-          newComment.innerHTML = '<div class="comment-body"><div class="comment-heading"><a><h4 class="user">'
-          + 'پردیس پاشاخانلو'
-          + '</h4></a><h5 class="time"> '
-          + 'ارسال شده در '
-          + 'اندکی پیش '
-          + ' </h5></div><p>'
-          + comment_text
-          +'</p></div><hr />';
-          document.querySelector(".comments-list").appendChild(newComment);
-          document.getElementById("comment-text").value = "";
+          var event_id = {{ event.id }};
+
+          var xhr = new XMLHttpRequest();
+          var make_url = '/events/' + event_id + '/comment/?comment_text=' + comment_text;
+          alert(make_url);
+          xhr.open('get', make_url);
+          xhr.send(null);
+
+          xhr.onreadystatechange = function() {
+                if(xhr.readyState === 4) {
+                    if(xhr.status === 200) {
+                        if (!(comment_text === "")) {
+                            document.getElementById("comment-text").value = "";
+                            var newComment = document.createElement("li");
+                            newComment.setAttribute("class", "comment");
+                            newComment.innerHTML = '<div class="comment-body"><div class="comment-heading"><a><h4 class="user">'
+                            + {{ member.user.username }}
+                            + '</h4></a><h5 class="time"> '
+                            + 'ارسال شده در '
+                            + 'اندکی پیش '
+                            + ' </h5></div><p>'
+                            + comment_text
+                            +'</p></div><hr />';
+
+                            document.querySelector(".comments-list").appendChild(newComment);
+                            //cm_num = parseInt(document.querySelector("#p" + post_id + " .cm-num").innerHTML)
+                            //document.querySelector("#p" + post_id + " .cm-num").innerHTML = cm_num + 1
+                            document.getElementById("comment-text").value = "";
+                        }
+                    }
+                    else {
+                        // alert('ERROR!');
+                    }
+                }
+            };
         });
       }
     </script>
