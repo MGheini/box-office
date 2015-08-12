@@ -67,4 +67,6 @@ def register(request):
 											'most_populars': layout['most_populars']})
 
 def our_logout(request):
+	layout = get_layout()
+	logout(request)
 	return HttpResponseRedirect('/')

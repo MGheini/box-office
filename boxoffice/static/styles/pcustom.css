@@ -95,3 +95,8 @@ table th {
 .comments-list .comment > .comments-list {
   margin-left: 50px;
 }
+
+form li {
+  list-style-type: none;
+  margin: 10px;
+}

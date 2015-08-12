@@ -16,15 +16,17 @@ urlpatterns = [
     	url(r'^(?P<event_id>[\d]+)/', include([
     		url(r'^$', 'services.views.event_details'),
 			url(r'^purchase/$', 'services.views.purchase'),
+            url(r'^pay/$', 'services.views.pay'),
 			url(r'^rate/$', 'services.views.rate'),
-			url(r'^comment/$', 'services.views.comment'),    		
+			url(r'^comment/$', 'services.views.comment'),   # /events/5/comment/?comment_text=loremipsums
+            url(r'^comment/like/$', 'services.views.like_unlike'),   # /events/{{event.id}}/comment/{{comment.id}}/like/
     	])),
     	url(r'^(?P<category>[\w ]+)/', include([
     		url(r'^$', 'services.views.category'),
     		url(r'^(?P<subcategory>[\w ]+)/$', 'services.views.subcategory'),
     	])),
     ])),
-    url(r'^submit/$', 'services.views.submit'),
+    url(r'^submit/$', 'services.views.submit_event'),
     url(r'^submitcategory/$', 'services.views.submit_category'),
     url(r'^orders/(?P<order_id>[\d]+)/receipt/$', 'services.views.receipt'),
     url(r'^history/$', 'services.views.history'),
