@@ -123,7 +123,9 @@ def event_details(request, event_id):
 		'event': event,
 		'member': member,
 		'tickets': tickets,
-		'like_comments': like_comments,})
+		'like_comments': like_comments,
+		'avg_rate': int(event.event_avg_rate),
+		'c_avg_rate': (5 - int(event.event_avg_rate)),})
 
 def purchase(request, event_id):
 	event = models.Event.objects.get(id=event_id)
