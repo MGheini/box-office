@@ -1,4 +1,5 @@
 import random
+import datetime
 
 from django.db import models
 from datetime import datetime
@@ -69,12 +70,14 @@ class Ticket(models.Model):
 		verbose_name = "بلیت"
 
 	def __str__(self):
-		return self.ticket_type + " (" + self.event.event_title +")"
+		return self.ticket_type + ' (' + str(self.ticket_price) + ' تومان)'
 
 class Comment(models.Model):
 	member = models.ForeignKey(Member)
 	event = models.ForeignKey(Event)
 	comment_text = models.CharField(max_length=200)
+	datetime = models.DateTimeField(blank=True, null=False)
+	like_num = models.PositiveIntegerField(default=0)
 
 	class Meta:
 		verbose_name_plural = "نظرها"
@@ -82,6 +85,13 @@ class Comment(models.Model):
 
 	def __str__(self):
 		return self.comment_text
+
+class LikeComment(models.Model):
+	member = models.ForeignKey(Member)
+	comment = models.ForeignKey(Comment)
+
+	# def __str__(self):
+	# 	return member.user.username + ' (' + comment.comment_text + ')'
 
 class Rate(models.Model):
 	member = models.ForeignKey(Member)
@@ -103,7 +113,7 @@ class Order(models.Model):
 	num_purchased = models.PositiveSmallIntegerField(blank=False)
 	total_price = models.PositiveIntegerField(blank=False)
 	order_date = models.DateTimeField(default=datetime.now, blank=False)
-	purchase_code = models.PositiveIntegerField(blank=False, default=random.randint(1000000,9999999))
+	purchase_code = models.PositiveIntegerField(blank=False)
 	
 	class Meta:
 		verbose_name_plural = "سفارش‌ها"
@@ -111,3 +121,10 @@ class Order(models.Model):
 
 	def __str__(self):
 		return self.member.user.username + " (" + self.ticket.event.event_title + ")"
+
+
+class TempOrder(models.Model):
+	event = models.ForeignKey(Event, null=True)
+	ticket = models.ForeignKey(Ticket, null=True)
+	num_purchased = models.PositiveSmallIntegerField(blank=False, default=0)
+	purchase_code = models.PositiveIntegerField(blank=False, default=0)

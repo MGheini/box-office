@@ -1,0 +1,100 @@
+{% extends "layout.html" %}
+
+{% block title %}
+خرید بلیت
+{% endblock %}
+
+{% load staticfiles %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static "styles/pcustom.css" %}" />
+{% endblock %}
+
+{% block content %}
+<div class="panel panel-default" style="background-color: #F2F6F7">
+  <div class="panel-body">
+    <!-- start of buy-ticket -->
+    <div class="row-ticket form-group">
+      <div class="col-md-12">
+
+        <ul class="nav nav-pills nav-justified thumbnail setup-panel">
+
+          <li class="disabled" style="float: none;" tabindex="-1">
+            <a href="#step-1" tabindex="-1">
+              <span class="badge" style="margin: 3px; position: relative; top: -1px;">گام ۱</span>
+              <span class="list-group-item-heading">
+               انتخاب بلیت
+             </span>
+
+           </a>
+         </li>
+
+         <li class="disabled" style="float: none;" tabindex="-1">
+          <a href="#step-2" tabindex="-1">
+            <span class="badge" style="margin: 3px; position: relative; top: -1px;">گام ۲</span>
+            <span class="list-group-item-heading">
+              مرور خرید
+            </span>
+          </a>
+        </li>
+
+        <li class="active" style="float: none;" tabindex="-1">
+          <a href="#step-3" tabindex="-1">
+            <span class="badge" style="margin: 3px; position: relative; top: -1px;">گام ۳</span>
+            <span class="list-group-item-heading">
+              پرداخت
+            </span>
+          </a>
+        </li>
+
+      </ul>
+
+    </div>
+  </div>
+
+  <div class="row-ticket setup-content" id="step-3">
+    <div class="col-md-12">
+      <div class="col-md-12 well text-center" style="background-color: #F2F6F7">
+        <!-- <h1 class="text-center">گام سوم</h1> -->
+        {% if not success %}
+        <form method="POST" class="form-horizontal" action="/events/{{ event.id }}/pay/">
+        {% csrf_token %}
+          <div class="form-group">
+            <div class="col-md-4" style="padding: 0; width: 100px"><label style="margin: 8px; width: 100px; height: 21px">شماره کارت</label></div>
+            <div class="col-md-2" style="padding: 3px; width: 80px; height: 30px">{{ payment_form.card_number_1 }}</div>
+            <div class="col-md-2" style="padding: 3px; width: 80px; height: 30px">{{ payment_form.card_number_2 }}</div>
+            <div class="col-md-2" style="padding: 3px; width: 80px; height: 30px">{{ payment_form.card_number_3 }}</div>
+            <div class="col-md-2" style="padding: 3px; width: 80px; height: 30px">{{ payment_form.card_number_4 }}</div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-4" style="padding: 0; width: 100px"><label style="margin: 8px; width: 100px; height: 21px">CVV2</label></div>
+            <div class="col-md-2" style="padding: 0">{{ payment_form.cvv2 }}</div>
+            <div class="col-md-6" style="padding: 0"> </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-4" style="padding: 0; width: 100px"><label style="margin: 8px">رمز اینترنتی</label></div>
+            <div class="col-md-2" style="padding: 0">{{ payment_form.password }}</div>
+          </div>
+
+          <div class="form-group">
+            <button class="btn btn-default btn-md edit-step-1 col-md-3 col-md-offset-1" style="margin-left: 5px">ویرایش خرید</button>
+            <button type="submit" class="btn btn-success btn-md col-md-6" role="button">پرداخت<span id="acceptedTotalPrice" class="badge" style="margin-right: 6px;">{{ total_price }}</span> تومان </button>
+          </div>
+
+        </form>
+        {% else %}
+        <p class="text-success">با موفقیت پرداخت شد.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <!-- End of buy-ticket -->
+</div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="{% static "scripts/pcustom.js" %}"></script>
+{% endblock %}

@@ -1,67 +1,80 @@
 {% extends "layout.html" %}
+{% load range %}
 
 {% block title %}
-مشاهده جزییات رویداد
+{{ event.event_title }}
 {% endblock %}
 
 {% load staticfiles %}
+{% load humanize %}
 
 {% block style %}
 <link rel="stylesheet" href="{% static "styles/pcustom.css" %}" />
 <style type="text/css">
-.row-event {
-  background-color: white;
-}
+  .row-event {
+    background-color: white;
+  }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="panel panel-default">
-
-<div class="panel-heading" style="padding-top: 0; padding-bottom: 0">
-  <div class="row-event">
-    <div class="col-md-12">
-      <h3 style="margin-bottom: 0"> عنوان اصلی رویداد <small> <span class="glyphicon glyphicon-star"> </span>
-        <span class="glyphicon glyphicon-star"></span>
-        <span class="glyphicon glyphicon-star"></span>
-        <span class="glyphicon glyphicon-star"></span>
-        <span class="glyphicon glyphicon-star-empty"></span></small>
-      </h3>
-    </div>
-  </div>
-
-  <div class="row-event">
-    <div class="col-md-12" style="height: 50px;">
-      <h4 style="margin-top: 10px; margin-bottom: 10px">
-        <ul class="breadcrumb" style="margin-top: 10;"  style="padding-top: 0">
-          <li class="active"><a href="/events/dasteh/">دسته</a></li>
-          <li class="active"><a href="/events/dasteh/zirdasteh/">زیردسته</a></li>
-        </ul>
-      </h4>
-    </div>
-  </div>
-</div>
-
-<div class="panel-body">
-  <div class="col-md-4 text-center center-block">
-    <img src="http://placehold.it/150x350" class="img img-responsive center-block img-thumbnail" id="eventImage" style="width: 200px; height: 250px; padding: 10px" />
-    <div class="col-md-12">
-          <!-- <h4></h4> -->
-          <form role="form" method="GET">
-            <div style="margin: 5px" class="row-event lead center-block">
-              <h5><span style="margin: 20px">امتیاز دهید:</span><div id="stars" class="starrr"></div><h5>
-                <!-- You gave a rating of <span id="count">0</span> star(s) -->
-              </div>
-            </form>
-          </div>
-  </div>
-
-  <div class="col-md-8">
+  <div class="panel-heading" style="padding-top: 0; padding-bottom: 0">
     <div class="row-event">
       <div class="col-md-12">
-        <h4 style="margin-bottom: 20px"><strong>محل برگزاری رویداد: </strong> <span id="occurPlace"> برج میلاد تهران </span></h4>
-        <h4 style="margin-bottom: 20px"><strong>زمان برگزاری رویداد: </strong> <span id="occurTime"> ۲۱ آبان ۱۳۹۴ ساعت ۱۸:۳۰ </span></h4>
-        <h4 style="margin-bottom: 20px"><strong>آخرین مهلت خرید بلیت: </strong> <span id="lastTimeToBuy"> ۲۰ آبان ۱۳۹۴ ساعت ۲۳:۵۵ </span></h4>
+        <h3 style="margin-bottom: 0"> {{ event.event_title }} <small>
+    
+          {% for i in avg_rate|get_range %}
+            <span class="glyphicon glyphicon-star"></span>
+          {% endfor %}
+          {% for i in c_avg_rate|get_range %}
+            <span class="glyphicon glyphicon-star-empty"></span>
+          {% endfor %}
+          </small>
+
+        </h3>
+      </div>
+    </div>
+    <div class="row-event">
+      <div class="col-md-12" style="height: 50px;">
+        <h4 style="margin-top: 10px; margin-bottom: 10px">
+          <ul class="breadcrumb" style="margin-top: 10;"  style="padding-top: 0">
+            <li class="active"><a href="/events/{{ event.category.category_name }}/">{{ event.category.category_name }}</a></li>
+            <li class="active"><a href="/events/{{ event.category.category_name }}/{{ event.subcategory.subcategory_name }}/">{{ event.subcategory.subcategory_name }}</a></li>
+          </ul>
+        </h4>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="col-md-4 text-center center-block">
+      <img src="{{ event.event_image.url }}" class="img img-responsive center-block img-thumbnail" id="eventImage" style="width: 200px; height: 250px; padding: 10px" />
+      <div class="col-md-12">
+        <form role="form" method="GET">
+          <div style="margin: 5px" class="row-event lead center-block">
+            {% if member %}<h5><span style="margin: 20px">امتیاز دهید:</span><div id="stars" class="starrr"></div><h5>{% endif %}
+            <!-- You gave a rating of <span id="count">0</span> star(s) -->
+
+            {% if not member %}
+             <h5 style="cursor: not-allowed" title="برای امتیاز دادن ابتدا وارد شوید."><span style="margin: 20px">امتیاز دهید:</span><div>
+              <span style="color: #FFD700; font-size: 25px;" class="glyphicon glyphicon-star-empty"></span>
+              <span style="color: #FFD700; font-size: 25px;" class="glyphicon glyphicon-star-empty"></span>
+              <span style="color: #FFD700; font-size: 25px;" class="glyphicon glyphicon-star-empty"></span>
+              <span style="color: #FFD700; font-size: 25px;" class="glyphicon glyphicon-star-empty"></span>
+              <span style="color: #FFD700; font-size: 25px;" class="glyphicon glyphicon-star-empty"></span>
+            </div><h5>
+            {% endif %}
+            
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="row-event">
+        <div class="col-md-12">
+          <h4 style="margin-bottom: 20px"><strong>محل برگزاری رویداد: </strong> <span id="occurPlace"> {{ event.event_place }} </span></h4>
+          <h4 style="margin-bottom: 20px"><strong>زمان برگزاری رویداد: </strong> <span id="occurTime"> {{ event.event_date }}، {{ event.event_time }} </span></h4>
+          <h4 style="margin-bottom: 20px"><strong>آخرین مهلت خرید بلیت: </strong> <span id="lastTimeToBuy"> {{ event.event_deadline_date }}، {{ event.event_deadline_time }} </span></h4>
           <h5>
             <table class="table table-striped table-bordered table-hover table-condensed table-responsive">
               <thead>
@@ -71,122 +84,230 @@
                   <th>ظرفیت</th>
                 </tr>
               </thead>
-
               <tbody>
+                {% for ticket in tickets %}
                 <tr>
-                  <td>بلیت ارزون</td>
-                  <td>۳۰۰۰۰ تومان</td>
-                  <td>۱۲ نفر</td>
+                  <td>{{ ticket.ticket.ticket_type }}</td>
+                  <td>{{ ticket.ticket.ticket_price }} تومان</td>
+                  <td>{{ ticket.ticket_available_capacity }} نفر</td>
                 </tr>
-
-                <tr>
-                  <td>بلیت گرون</td>
-                  <td>۶۰۰۰۰ تومان</td>
-                  <td>۲۰ نفر</td>
-                </tr>
+                {% endfor %}
               </tbody>
-
             </table>
           </h5>
-
         </div>
       </div>
-
-      <div class="row-event">
-        <div class="col-md-10 col-md-offset-1">
-          <a href="/events/1/purchase/" class="btn btn-success btn-lg btn-block">می‌خواهم بخرم!</a>
-        </div>
-      </div>
-    </div>
       
-    <hr />
+      <div class="row-event">
+        <div class="col-md-10 col-md-offset-1" style="margin-top: 15px">
+          {% if member %}<a href="/events/{{ event.id }}/purchase/" class="btn btn-success btn-lg btn-block">می‌خواهم بخرم!</a>
+          {% else %}<a href="#" disabled="disabled" title="برای خریدن بلیت، ابتدا وارد شوید." class="btn btn-success btn-lg btn-block">می‌خواهم بخرم!</a>{% endif %}
+        </div>
+      </div>
+      
+    </div>
+
     <div class="row-event">
       <div class="col-md-8 col-md-offset-2 text-center">
+        {% if event.event_description %}
         <div class="panel panel-default">
           <div class="panel-body">
             <h4 style="margin-top: 0">توضیحات تکمیلی</h4>
             <p>
-              در این جا یک سری توضیح تکمیلی مینوتیسیم که چیزایی است که برگزارکنده‌ی رویداد قبلا موقعی که می‌خواسته رویداد را ثبت کنه وارد کرده.
-              حواسمان باشد که اگر کللن اینجا خالی بود، نگذاریمش
+              {{ event.event_description }}
             </p>
           </div>
         </div>
+        {% endif %}
       </div>
     </div>
 
+    <div class="row-event">
+      <div class="col-md-12" style="height: 50px; margin-top: 50px">
+        <h4 style="margin-top: 10px; margin-bottom: 10px">
+          <ul class="breadcrumb" style="margin-top: 10;"  style="padding-top: 0">
+            <li>نظرات کاربران</li>
+            {% if not member %}<li style="font-size: 15px">برای نظر گذاشتن ابتدا وارد شوید.</li>{% endif %}
+          </ul>
+        </h4>
+      </div>
+    </div>
 
     <hr />
     <div class="row-event">
       <div class="col-md-12">
         <div class="panel panel-default" style="border: none">
           <div class="panel-body" style="padding-top: 0">
-            <h3 style="margin: 0">نظرات کاربران</h3>
+            {% if member %}
+            <form method="GET" action="/events/{{ event.id }}/comment/">
+              <div class="input-group" style="margin-top: 5px">
+                <input type="text" id="comment-text" class="form-control" placeholder="نظر شما در مورد این رویداد چیست؟" style="padding: 10px" />
+                <span class="input-group-btn"><button type="submit" class="add-comment btn btn-default" data-id="{{ event.id }}"><span class="glyphicon glyphicon-comment"></span></button></span>
+              </div>
+            </form>
+            {% endif %}
             <div>
               <ul class="comments-list">
                 <!--Comments go here!-->
-
+                {% for comment in event.comment_set.all %}
                 <!-- start of each comment -->
                 <li class="comment">
                   <div class="comment-body">
                     <div class="comment-heading">
-                      <a><h4 class="user"> پردیس پاشاخانلو </h4></a>
-                      <h5 class="time"> ارسال شده در ۲۵ آبان ۹۳ ساعت ۱۵:۳۰ </h5>
+                      <small class="btn-group btn-group-xs" style="top: 2px">
+                        <a id="{{ comment.id }}" href="/events/{{ event.id }}/comment/like/?comment_id={{ comment.id }}" class="like btn btn-danger btn-xs" {% if not member %}title="برای ابراز علاقمندی به این نظر، وارد شوید."{% endif %} {% if not member %}disabled="disabled"{% endif %}>
+                          {% for lc in comment.likecomment_set.all %}
+                          {% if lc.member.id == member.id and lc.comment.id == comment.id %}
+                          <i class="glyphicon glyphicon-heart"></i>
+                          {% else %}
+                          <i class="glyphicon glyphicon-heart-empty"></i>
+                          {% endif %}
+                          {% endfor %}
+                          {% if not comment.likecomment_set.all %}
+                          <i class="glyphicon glyphicon-heart-empty"></i>
+                          {% endif %}
+                        </a>
+                        <strong class="like-num btn btn-default btn-xs disabled">{{ comment.like_num }}</strong>
+                      </small>
+                      <a style="cursor: default"><h4 class="user"> {{ comment.member.user.username }} </h4></a>
+                      <h5 class="time" style="margin-right: 5px">ارسال شده در {{ comment.datetime|naturaltime }} </h5>
                     </div>
-                    <p> این جا کامنت من نوشته می‌شود. این جا کامنت من نوشته می‌شود. این جا کامنت من نوشته می‌شود. این جا کامنت من نوشته می‌شود. این جا کامنت من نوشته می‌شود. این جا کامنت من نوشته می‌شود. این جا کامنت من نوشته می‌شود. </p>
+                    <p style="margin-right: 80px; margin-top: 3px"> {{ comment.comment_text }} </p>
                   </div>
                 </li>
                 <hr />
                 <!-- end of each comment -->
-
-                <!-- start of each comment -->
-                <li class="comment">
-                  <div class="comment-body">
-                    <div class="comment-heading">
-                      <a><h4 class="user"> پردیس پاشاخانلو </h4></a>
-                      <h5 class="time"> ارسال شده در ۲۵ آبان ۹۳ ساعت ۱۵:۳۰ </h5>
-                    </div>
-                    <p> این جا کامنت من نوشته می‌شود. این جا کامنت من نوشته می‌شود. این جا کامنت من نوشته می‌شود. این جا کامنت من نوشته می‌شود. این جا کامنت من نوشته می‌شود. این جا کامنت من نوشته می‌شود. این جا کامنت من نوشته می‌شود. </p>
-                  </div>
-                </li>
-                <hr />
-                <!-- end of each comment -->
-
+                {% endfor %}
               </ul>
             </div>
-            <form method="GET" action="">
-              <div class="input-group">
-                <input type="text" id="comment-text" class="form-control" placeholder="نظر شما چیست؟" style="padding: 10px" />
-                <span class="input-group-btn"><button type="submit" class="add-comment btn btn-default" data-id="{{ template_post.post.id }}"><span class="glyphicon glyphicon-comment"></span></button></span>
-              </div>
-            </form>
           </div>
         </div>
       </div>
     </div>
-    </div> <!-- end of panel-body -->
-    {% endblock %}
 
-    {% block script %}
-    <script type="text/javascript" src="{% static "scripts/star-rating.js" %}"></script>
-    <script type="text/javascript">
-      buttons = document.getElementsByClassName("add-comment");
-      for(var i = 0; i < buttons.length; i++) {
-        buttons[i].addEventListener('click', function(event) {
-          event.preventDefault();
-          var comment_text = document.getElementById("comment-text").value;
-          var newComment = document.createElement("li");
-          newComment.setAttribute("class", "comment");
-          newComment.innerHTML = '<div class="comment-body"><div class="comment-heading"><a><h4 class="user">'
-          + 'پردیس پاشاخانلو'
-          + '</h4></a><h5 class="time"> '
-          + 'ارسال شده در '
-          + 'اندکی پیش '
-          + ' </h5></div><p>'
-          + comment_text
-          +'</p></div><hr />';
-          document.querySelector(".comments-list").appendChild(newComment);
-          document.getElementById("comment-text").value = "";
-        });
-      }
-    </script>
-    {% endblock %}
+  </div> <!-- end of panel-body -->
+  {% endblock %}
+
+  {% block script %}
+  <script type="text/javascript" src="{% static "scripts/star-rating.js" %}"></script>
+
+  <!-- comment -->
+  <script type="text/javascript">
+    buttons = document.getElementsByClassName("add-comment");
+    for(var i = 0; i < buttons.length; i++) {
+      buttons[i].addEventListener('click', function(event) {
+        event.preventDefault();
+
+        var comment_text = document.getElementById("comment-text").value;
+        var event_id = {{ event.id }};
+
+        var xhr = new XMLHttpRequest();
+        var make_url = '/events/' + event_id + '/comment/?comment_text=' + comment_text;
+        xhr.open('get', make_url);
+        xhr.send(null);
+
+        xhr.onreadystatechange = function() {
+          if(xhr.readyState === 4) {
+            if(xhr.status === 200) {
+              if (!(comment_text === "")) {
+                comment_id = xhr.responseText;
+                document.getElementById("comment-text").value = "";
+                var newComment = document.createElement("li");
+                newComment.setAttribute("class", "comment");
+                newComment.innerHTML = '<li class="comment"><div class="comment-body"><div class="comment-heading"><small class="btn-group btn-group-xs" style="top: 2px"><a id="'
+                + comment_id
+                +'" href="/events/{{ event.id }}/comment/like/?comment_id='
+                + comment_id
+                +'" class="like btn btn-danger btn-xs"><i class="glyphicon glyphicon-heart-empty"></i></a>'
+                +'<strong class="like-num btn btn-default btn-xs disabled">0</strong>'
+                +'</small><a style="cursor: default"><h4 class="user"> '
+                +'{{ member.user.username }}'
+                +'</h4></a><h5 class="time" style="margin-right: 5px">ارسال شده در اندکی پیش </h5>'
+                +'</div><p style="margin-right: 80px; margin-top: 3px">'
+                + comment_text
+                +'</p></div></li>';
+
+                document.querySelector(".comments-list").appendChild(newComment);
+                document.getElementById("comment-text").value = "";
+
+                var likeLinks2 = document.getElementsByClassName('like');
+                for(var i = 0; i < likeLinks2.length; i++) {
+                  likeLinks2[i].addEventListener('click', function(event) {
+                    event.preventDefault();
+
+                    var xhr2 = new XMLHttpRequest();
+
+                    var srcID = this.getAttribute('id');
+                    var url = this.getAttribute('href');
+
+                    xhr2.open('get', url);
+                    xhr2.send(null);
+
+                    xhr2.onreadystatechange = function() {
+                      if(xhr2.readyState === 4) {
+                        if(xhr2.status === 200) {
+
+                          if(xhr2.responseText === 'liked') {
+                            src = document.getElementById(srcID);
+                            src.firstChild.className = 'glyphicon glyphicon-heart';
+                            src.nextSibling.innerHTML = parseInt(src.nextSibling.innerHTML) + 1;
+                          }
+                          else if(xhr2.responseText === 'unliked') {
+                            src = document.getElementById(srcID);
+                            src.firstChild.className = 'glyphicon glyphicon-heart-empty';
+                            src.nextSibling.innerHTML = parseInt(src.nextSibling.innerHTML) - 1;
+                          }
+                        }
+                      }
+                    };
+                  });
+}
+
+
+}
+}
+else {
+// alert('ERROR!');
+}
+}
+};
+});
+}
+</script>
+
+<!-- like comments -->
+<script type="text/javascript">
+  var likeLinks = document.getElementsByClassName('like');
+  for(var i = 0; i < likeLinks.length; i++) {
+    likeLinks[i].addEventListener('click', function(event) {
+      event.preventDefault();
+
+      var xhr2 = new XMLHttpRequest();
+
+      var srcID = this.getAttribute('id');
+      var url = this.getAttribute('href');
+
+      xhr2.open('get', url);
+      xhr2.send(null);
+
+      xhr2.onreadystatechange = function() {
+        if(xhr2.readyState === 4) {
+          if(xhr2.status === 200) {
+
+            if(xhr2.responseText === 'liked') {
+              src = document.getElementById(srcID);
+              src.firstChild.nextSibling.className = 'glyphicon glyphicon-heart';
+              src.nextSibling.nextSibling.innerHTML = parseInt(src.nextSibling.nextSibling.innerHTML) + 1;
+            }
+            else if(xhr2.responseText === 'unliked') {
+              src = document.getElementById(srcID);
+              src.firstChild.nextSibling.className = 'glyphicon glyphicon-heart-empty';
+              src.nextSibling.nextSibling.innerHTML = parseInt(src.nextSibling.nextSibling.innerHTML) - 1;
+            }
+          }
+        }
+      };
+    });
+}
+</script>
+{% endblock %}

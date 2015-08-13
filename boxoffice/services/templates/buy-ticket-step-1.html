@@ -1,0 +1,116 @@
+{% extends "layout.html" %}
+
+{% block title %}
+خرید بلیت
+{% endblock %}
+
+{% load staticfiles %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static "styles/pcustom.css" %}" />
+{% endblock %}
+
+{% block content %}
+<div class="panel panel-default" style="background-color: #F2F6F7">
+  <div class="panel-body">
+    <!-- start of buy-ticket -->
+    <div class="row-ticket form-group">
+      <div class="col-md-12">
+
+        <ul class="nav nav-pills nav-justified thumbnail setup-panel">
+
+          <li class="active" style="float: none;" tabindex="-1">
+            <a href="#step-1" tabindex="-1">
+              <span class="badge" style="margin: 3px; position: relative; top: -1px;">گام ۱</span>
+              <span class="list-group-item-heading">
+               انتخاب بلیت
+             </span>
+
+           </a>
+         </li>
+
+         <li class="disabled" style="float: none;" tabindex="-1">
+          <a href="#step-2" tabindex="-1">
+            <span class="badge" style="margin: 3px; position: relative; top: -1px;">گام ۲</span>
+            <span class="list-group-item-heading">
+              مرور خرید
+            </span>
+          </a>
+        </li>
+
+        <li class="disabled" style="float: none;" tabindex="-1">
+          <a href="#step-3" tabindex="-1">
+            <span class="badge" style="margin: 3px; position: relative; top: -1px;">گام ۳</span>
+            <span class="list-group-item-heading">
+              پرداخت
+            </span>
+          </a>
+        </li>
+
+      </ul>
+
+    </div>
+  </div>
+
+  <div class="row-ticket setup-content" id="step-1">
+    <div class="col-md-12">
+      <div class="col-md-12 well">
+        <h3 style="margin-top: 0px; margin-bottom: 20px">نوع بلیت انتخابی خود را به همراه تعداد آن مشخص فرمایید.</h3>
+        <form method="POST" action="/events/{{event.id}}/purchase/" id="ticket-form">
+        {% csrf_token %}
+          <div class="form-group">
+            <div class="col-md-12">
+            <table class="table table-hover table-striped table-bordered table-condensed">
+              <tbody>
+              {% for radio in ticket_form.tickets %}
+                <tr><td style="padding: 0;"><h4>
+                  <div class="row" style="margin: 0; background-color: transparent">
+                    <div class="col-md-3" style="width: 50px; hwight: 50px">{{ radio.tag }}</div>
+                    <div class="col-md-9" style="margin-top: 13px; padding: 0">{{ radio.choice_label }}</div>
+                  </div>
+                </h4></td></tr>
+              {% endfor %}
+              <tr><td>{{ ticket_form.tickets.errors }} </td></tr>
+              </tbody>
+            </table>
+            </div>
+          </div>
+          
+<!--           {% if ticket_form.errors %}
+              {% for field in ticket_form %}
+                  {% for error in field.errors %}
+                      <div class="alert alert-error">
+                          <strong>{{ error|escape }}</strong>
+                      </div>
+                  {% endfor %}
+              {% endfor %}
+              {% for error in ticket_form.non_field_errors %}
+                  <div class="alert alert-error">
+                      <strong>{{ error|escape }}</strong>
+                  </div>
+              {% endfor %}
+          {% endif %} -->
+
+          <div class="form-group">
+            <div class="col-md-3" style="margin-top: 26px; margin-bottom: 20px;">تعداد بلیت مورد نیاز: </div>
+            <div class="col-md-3" style="margin-top: 20px; margin-bottom: 20px">{{ ticket_form.num }}</div>
+            <div class="col-md-6" style="margin-top: 20px; margin-bottom: 20px"> {{ ticket_form.num.errors }}</div>
+          </div>
+          <button type="submit" id="activate-step-2" class="btn btn-info btn-md btn-block">تایید</button>
+        </form>
+
+        <div id="error-msg1" class="alert alert-dismissible alert-danger" style="visibility: hidden;">
+          لطفا یکی از بلیت‌ها را انتخاب کنید.
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- End of buy-ticket -->
+</div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="{% static "scripts/pcustom.js" %}"></script>
+{% endblock %}

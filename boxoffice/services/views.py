@@ -1,12 +1,16 @@
- 
+
+import datetime
+
 from django.shortcuts import render
+from django.views.generic import CreateView
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseRedirect
 
 from . import models
 from users.forms import LoginForm
 from users.views import our_login
 from users.models import Member, Organizer
-from .forms import EventModelForm, CategoryModelForm, SubCategoryModelForm
+from .forms import CategoryModelForm , SubCategoryModelForm, PurchaseChooseForm, BankPaymentForm, EventModelFormOrganizer, TicketFormSet
 
 def get_layout():
 	categories = models.Category.objects.all()
@@ -78,32 +82,187 @@ def about_us(request):
 		'newest': layout['newest'],
 		'most_populars': layout['most_populars']})
 
+class TicketWithAvailableCapacity():
+
+	def __init__(self, ticket):
+		self.ticket = ticket
+		self.ticket_available_capacity = ticket.total_capacity - ticket.purchased_num
+
+class EnhancedComment():
+
+	def __init__(self, comment, member):
+		self.comment = comment
+
+		if models.LikeComment.objects.filter(comment=comment, member=member) > 0:
+			self.do_i_like = True
+		else:
+			self.do_i_like = False
+
 def event_details(request, event_id):
 	layout = get_layout()
 	form = LoginForm()
+	event = models.Event.objects.get(id=event_id)		
+
+	if request.user.is_authenticated():
+		member = Member.objects.get(user=request.user)
+		visitor = False
+	else:
+		member = None
+		visitor = True
+
+	tickets = []
+	for ticket in event.ticket_set.all():
+		tickets += [TicketWithAvailableCapacity(ticket)]
+
+	like_comments = models.LikeComment.objects.filter(comment__event__id=event_id)
+
 	return render(request, 'view-event-details.html',
 		{'form': form,
-		'visitor': True,
+		'visitor': visitor,
 		'categories': layout['categories'],
 		'newest': layout['newest'],
-		'most_populars': layout['most_populars']})
+		'most_populars': layout['most_populars'],
+		'event': event,
+		'member': member,
+		'tickets': tickets,
+		'like_comments': like_comments,
+		'avg_rate': int(event.event_avg_rate),
+		'c_avg_rate': (5 - int(event.event_avg_rate)),})
 
 def purchase(request, event_id):
+	event = models.Event.objects.get(id=event_id)
 	layout = get_layout()
-	return render(request, 'buy-ticket.html',
-		{'member': True,
-		'categories': layout['categories'],
-		'newest': layout['newest'],
-		'most_populars': layout['most_populars']})
+	form = LoginForm()
+
+	if request.user.is_authenticated():
+		if request.method == 'POST':
+			ticket_form = PurchaseChooseForm(event_id, request.POST)
+			if ticket_form.is_valid():
+				num = ticket_form.cleaned_data['num']
+				ticket = ticket_form.cleaned_data['tickets']
+				total_price = int(num) * ticket.ticket_price
+				
+				return render(request, 'buy-ticket-step-2.html',
+					{'form': form,
+					'categories': layout['categories'],
+					'newest': layout['newest'],
+					'most_populars': layout['most_populars'],
+					'num': num,
+					'ticket': ticket,
+					'total_price': total_price,
+					})
+		else:
+			ticket_form = PurchaseChooseForm(event_id)
+
+		return render(request, 'buy-ticket-step-1.html',
+			{'ticket_form': ticket_form,
+			'categories': layout['categories'],
+			'newest': layout['newest'],
+			'most_populars': layout['most_populars'],
+			'ticket_form': ticket_form,
+			'event': event,
+			})
+
+# todo
+def pay(request, event_id):
+	event = models.Event.objects.get(id=event_id)
+	layout = get_layout()
+	form = LoginForm()
+
+	if request.user.is_authenticated():
+		member = Member.objects.get(user=request.user)
+		if request.method == "GET":
+			payment_form = BankPaymentForm(request.GET)
+			
+			ticket_id = request.GET['ticket_id']
+			num = request.GET['num']
+			
+			if ticket_id and num:
+				ticket = models.Ticket.objects.get(id=ticket_id)
+				total_price = int(num) * ticket.ticket_price
+
+				return render(request, 'buy-ticket-step-3.html',
+					{'member': member,
+					'categories': layout['categories'],
+					'newest': layout['newest'],
+					'most_populars': layout['most_populars'],
+					'total_price': total_price,
+					'payment_form': payment_form,
+					'event': event,})
+				# for order:
+				# member = models.ForeignKey(Member)
+				# ticket = models.ForeignKey(Ticket)
+				# event = models.ForeignKey(Event, null=True)
+				# num_purchased = models.PositiveSmallIntegerField(blank=False)
+				# total_price = models.PositiveIntegerField(blank=False)
+				# order_date = models.DateTimeField(default=datetime.now, blank=False)
+				# purchase_code = models.PositiveIntegerField(blank=False)
+		elif request.method == "POST":
+			payment_form = BankPaymentForm(request.POST)
+			if payment_form.is_valid():
+				
+
+				# save the order...
+				success = True
+				return render(request, 'buy-ticket-step-3.html',
+					{'member': member,
+					'categories': layout['categories'],
+					'newest': layout['newest'],
+					'most_populars': layout['most_populars'],
+					'success': success,
+					'order': order,})
+		else:
+			payment_form = BankPaymentForm(event_id)
 
 def rate(request, event_id):
 	return HttpResponse('rate')
 
+def like_unlike(request, event_id):
+	if request.user.is_authenticated():
+		member = Member.objects.get(user=request.user)
+
+		comment_id = request.GET.get('comment_id')
+		if not comment_id:
+			return HttpResponse("Not enough information.", status=400)
+		comment = models.Comment.objects.get(id=comment_id)
+		
+		for like in models.LikeComment.objects.all():
+			if like.comment.id == comment.id and like.member.id == member.id:
+				comment.like_num -= 1
+				comment.save()
+				like.delete() # unlike it.
+				return HttpResponse('unliked', status=200)
+
+		# like it.
+		new_like = models.LikeComment()
+		new_like.member = member
+		new_like.comment = comment
+		comment.like_num += 1
+		comment.save()
+		new_like.save()
+		return HttpResponse('liked', status=200)
+
 def comment(request, event_id):
-	return HttpResponse('post')
+	if request.user.is_authenticated():
+		member = Member.objects.get(user=request.user)
+
+		if request.method == "GET":
+			comment_text = request.GET.get('comment_text')
+
+			if not (comment_text):
+				return HttpResponse("Not enough information.", status=400)
+
+			new_comment = models.Comment()
+			new_comment.member = member
+			new_comment.event = models.Event.objects.get(id=event_id)
+			new_comment.comment_text = comment_text
+			new_comment.datetime = datetime.datetime.now()
+			new_comment.liked_members = []
+			new_comment.save()
+
+			return HttpResponse(new_comment.id, status=200)
 
 class TemplateEvent():
-
 	def __init__(self, event):
 		self.event = event
 		self.ticket_available = False
@@ -151,42 +310,49 @@ def subcategory(request, category, subcategory):
 		'category': category,
 		'subcategory': subcategory})
 
-def submit(request):
-	layout = get_layout()
-	event_form = EventModelForm()
-	return render(request, 'submit-new-event.html',
-		{'event_form': event_form,
-		'organizer': True,
-		'permitted': False,
-		'categories': layout['categories'],
-		'newest': layout['newest'],
-		'most_populars': layout['most_populars']})
-
 class AddEventView(CreateView):
-    template_name = 'add-new-event.html'
-    form_class = EventModelForm
+	template_name = 'submit-new-event.html'
+	form_class = EventModelFormOrganizer
+	layout = get_layout()
+	
+	def get_context_data(self, **kwargs):
+		context = super(AddEventView, self).get_context_data(**kwargs)
+		layout = get_layout()
+		if self.request.POST:
+			context['formset'] = TicketFormSet(self.request.POST)
+		else:
+			context['formset'] = TicketFormSet()
+		context['organizer'] = True
+		context['categories'] = layout['categories']
+		context['newest'] = layout['newest']
+		context['most_populars'] = layout['most_populars']
+		return context
 
-    def get_context_data(self, **kwargs):
-        context = super(AddEventView, self).get_context_data(**kwargs)
-        if self.request.POST:
-            context['formset'] = TicketFormSet(self.request.POST)
-        else:
-            context['formset'] = TicketFormSet()
-        return context
+	def form_valid(self, form):
+		context = self.get_context_data()
+		formset = context['formset']
+		layout = get_layout()
 
-    def form_valid(self, form):
-        context = self.get_context_data()
-        formset = context['formset']
-        if formset.is_valid():
-            self.object = form.save(commit=False)
-            # self.object.organizer = Organizer.objects.all()[0] #Organizer.objects.get(user=get_user(self.request))
-            self.object.save()
-            formset.instance = self.object
-            formset.save()
-            success = True
-            return render(self.request, 'add-new-event.html', {'success': success})
-        else:
-            return render(self.request, 'add-new-event.html', {'form': form})
+		if formset.is_valid():
+			self.object = form.save(commit=False)
+			self.object.organizer = Organizer.objects.get(user=self.request.user)
+			self.object.save()
+			formset.instance = self.object
+			formset.save()
+			success = True
+			return render(self.request, 'submit-new-event.html',
+				{'success': success,
+				'organizer': True,
+				'categories': layout['categories'],
+				'newest': layout['newest'],
+				'most_populars': layout['most_populars']})
+		else:
+			return render(self.request, 'submit-new-event.html',
+				{'form': form,
+				'organizer': True,
+				'categories': layout['categories'],
+				'newest': layout['newest'],
+				'most_populars': layout['most_populars']})
 
 def submit_category(request):
 	layout = get_layout()
