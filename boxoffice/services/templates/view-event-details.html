@@ -97,13 +97,14 @@
           </h5>
         </div>
       </div>
-      {% if member %}
+      
       <div class="row-event">
         <div class="col-md-10 col-md-offset-1" style="margin-top: 15px">
-          <a href="/events/{{ event.id }}/purchase/" class="btn btn-success btn-lg btn-block">می‌خواهم بخرم!</a>
+          {% if member %}<a href="/events/{{ event.id }}/purchase/" class="btn btn-success btn-lg btn-block">می‌خواهم بخرم!</a>
+          {% else %}<a href="#" disabled="disabled" title="برای خریدن بلیت، ابتدا وارد شوید." class="btn btn-success btn-lg btn-block">می‌خواهم بخرم!</a>{% endif %}
         </div>
       </div>
-      {% endif %}
+      
     </div>
 
     <div class="row-event">
