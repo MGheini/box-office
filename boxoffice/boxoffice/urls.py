@@ -6,6 +6,7 @@ from django.conf.urls.static import static
 from django.views.generic import RedirectView
 
 from boxoffice_admin.views import AddEventView, EditEventView
+from services.views import AddEventView as AddEventViewByOrganizer
 
 urlpatterns = [
     url(r'^$', 'services.views.home'),
@@ -26,7 +27,7 @@ urlpatterns = [
     		url(r'^(?P<subcategory>[\w ]+)/$', 'services.views.subcategory'),
     	])),
     ])),
-    url(r'^submit/$', 'services.views.submit_event'),
+    url(r'^submit/$', AddEventViewByOrganizer.as_view()),
     url(r'^submitcategory/$', 'services.views.submit_category'),
     url(r'^orders/(?P<order_id>[\d]+)/receipt/$', 'services.views.receipt'),
     url(r'^history/$', 'services.views.history'),

@@ -2,6 +2,7 @@
 import datetime
 
 from django.shortcuts import render
+from django.views.generic import CreateView
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseRedirect
 
@@ -9,7 +10,7 @@ from . import models
 from users.models import Member
 from users.forms import LoginForm
 from users.views import our_login
-from .forms import CategoryModelForm , SubCategoryModelForm, PurchaseChooseForm, BankPaymentForm
+from .forms import CategoryModelForm , SubCategoryModelForm, PurchaseChooseForm, BankPaymentForm, EventModelFormOrganizer, TicketFormSet
 
 def get_layout():
 	categories = models.Category.objects.all()
@@ -40,7 +41,7 @@ def home(request):
 				return render(request, 'home.html',
 					{'home': True,
 					'organizer': True,
-					'permitted': request.user.has_permission_to_create_category,
+					# 'permitted': request.user.has_permission_to_create_category,
 					'categories': layout['categories'],
 					'available_events': available_events,
 					'newest': layout['newest'],
@@ -308,18 +309,32 @@ def subcategory(request, category, subcategory):
 		'category': category,
 		'subcategory': subcategory})
 
-def submit_event(request):
-	layout = get_layout()
-	member_form = MemberRegModelForm()
-	organizer_form = OrganizerRegModelForm()
+class AddEventView(CreateView):
+    template_name = 'submit-new-event.html'
+    form_class = EventModelFormOrganizer
 
-	return render(request, 'submit-new-event.html',
-		{'event_form': event_form,
-		'organizer': True,
-		'permitted': False,
-		'categories': layout['categories'],
-		'newest': layout['newest'],
-		'most_populars': layout['most_populars']})
+    def get_context_data(self, **kwargs):
+        context = super(AddEventView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            context['formset'] = TicketFormSet(self.request.POST)
+        else:
+            context['formset'] = TicketFormSet()
+        return context
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        formset = context['formset']
+        if formset.is_valid():
+            self.object = form.save(commit=False)
+            self.object.organizer = models.Organizer.objects.get(user=self.request.user)
+            self.object.save()
+            formset.instance = self.object
+            formset.save()
+            success = True
+            return render(self.request, 'add-new-event.html', {'success': success})
+        else:
+            return render(self.request, 'add-new-event.html', {'form': form})
+
 
 def submit_category(request):
 	layout = get_layout()

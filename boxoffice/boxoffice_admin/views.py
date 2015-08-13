@@ -9,7 +9,7 @@ from users.forms import LoginForm
 from users.models import Organizer
 from services.models import Event, Category, SubCategory, Order
 from .forms import EventEditModelForm, CategoryEditModelForm, SubCategoryEditModelForm
-from services.forms import EventModelForm, CategoryModelForm , SubCategoryModelForm, TicketFormSet
+from services.forms import EventModelFormAdmin, CategoryModelForm , SubCategoryModelForm, TicketFormSet
 
 class TemplateUser():
 
@@ -234,7 +234,7 @@ class EditEventView(CreateView):
 
 class AddEventView(CreateView):
     template_name = 'add-new-event.html'
-    form_class = EventModelForm
+    form_class = EventModelFormAdmin
 
     def get_context_data(self, **kwargs):
         context = super(AddEventView, self).get_context_data(**kwargs)
