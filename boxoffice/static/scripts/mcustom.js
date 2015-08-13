@@ -1,5 +1,5 @@
 function validateMemberRegForm() {
-	var elements = document.getElementsByClassName("error");
+	var elements = document.getElementsByClassName("has-error");
 	for(var i = 0; i < elements.length; i++) {
  		elements[i].innerHTML = "";
 	}
@@ -32,14 +32,6 @@ function validateMemberRegForm() {
 	if(!c)
     	return false;
     
-    c = checkRequired(document.forms["memberRegForm"]["pre_phone_number"].value, "pre_phone_number");
-	if(!c)
-    	return false;
-
-    c = checkRequired(document.forms["memberRegForm"]["phone_number"].value, "phone_number");
-    if(!c)
-        return false;
-    
     c = validateEmail(document.forms["memberRegForm"]["member_email"].value, "member_email");
 	if(!c)
     	return false;
@@ -50,7 +42,7 @@ function validateMemberRegForm() {
 }
 
 function validateOrganizerRegForm() {
-    var elements = document.getElementsByClassName("error");
+    var elements = document.getElementsByClassName("has-error");
     for(var i = 0; i < elements.length; i++) {
         elements[i].innerHTML = "";
     }
@@ -115,7 +107,7 @@ function validateEmail(email, inputName) {
 
 function validatePassword(password, secondPassword, inputName1, inputName2) {
 	if (password.length < 6) {
-		react(inputName1, "رمز عبور باید حداقل 6 نویسه باشد.");
+		react(inputName1, "رمز عبور باید حداقل ۶ نویسه باشد.");
 		return false;
 	}
 
@@ -130,12 +122,12 @@ function react(name, message) {
     if (name === "gender") {
        var element = document.getElementsByName(name);
        target = element[0].parentElement.parentElement.parentElement.parentElement.nextSibling.nextSibling;
-       target.innerHTML = message.fontcolor("red");
+       target.innerHTML = message;
     }
     else {
 	   var element = document.getElementsByName(name);
        target = element[0].parentElement.nextSibling.nextSibling;
-	   target.innerHTML = message.fontcolor("red");
+	   target.innerHTML = message;
     }
 }
 

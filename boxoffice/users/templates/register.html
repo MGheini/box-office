@@ -33,35 +33,59 @@
 			<div class="tab-content">
 				<div role="tabpanel" class="tab-pane active" id="user">
 					<div>
-						<form name="memberRegForm" action="" method="post" onsubmit="return validateMemberRegForm()">
+						<p style="margin-top: 10px;">* پر کردن تمام فیلدها با حاشیه قرمز و فیلد جنسیت برای ثبت نام اجباری است.
+						<br />
+						* در صورت ثبت نام موفّق شما وارد حساب کاربری خود شده و به صفحه اصلی منتقل خواهید شد.
+						</p>
+						<form name="memberRegForm" value="memberRegForm" action="/register/" method="post" onsubmit="return validateMemberRegForm()">
 							{% csrf_token %}
 							{% for field in member_form %}
 							<div class="row" style="background-color: #ecf0f1; margin: 0px;">
 								<div class="col-md-2" style="padding: 5px">{{ field.label }}</div>
 								<div class="col-md-5">{{ field }}</div>
-								<div class="col-md-5 error">{{ field.errors }}</div>
+								<div class="col-md-5 has-error" style="color: red;">{{ field.errors }}</div>
 							</div>
 							{% endfor %}
-							<button id="member-reg-btn" class="btn btn-primary btn-block" type="submit" style="width: 200px;">ثبت</button>
+							<button name="member-reg-btn" value="member-reg-btn" class="btn btn-primary btn-block" type="submit" style="width: 200px;">ثبت</button>
 						</form>
 					</div>
 				</div>
 				<div role="tabpanel" class="tab-pane" id="organizer">
 					<div>
-						<form name="organizerRegForm" action="" method="post" onsubmit="return validateOrganizerRegForm()">
+						<p style="margin-top: 10px;">* پر کردن تمام فیلدها با حاشیه قرمز برای ثبت نام اجباری است.
+						<br />
+						* در صورت ثبت نام موفّق شما وارد حساب کاربری خود شده و به صفحه اصلی منتقل خواهید شد.
+						</p>
+						<!-- name-value doesn't work for <form> -->
+						<form name="organizerRegForm" value="organizerRegForm" action="/register/#organizer" method="post" onsubmit="return validateOrganizerRegForm()">
 							{% csrf_token %}
 							{% for field in organizer_form %}
 							<div class="row" style="background-color: #ecf0f1; margin: 0px;">
 								<div class="col-md-2" style="padding: 5px">{{ field.label }}</div>
 								<div class="col-md-5">{{ field }}</div>
-								<div class="col-md-5 error">{{ field.errors }}</div>
+								<div class="col-md-5 has-error" style="color: red;">{{ field.errors }}</div>
 							</div>
 							{% endfor %}
-							<button id="organizer-reg-btn" class="btn btn-primary btn-block" type="submit" style="width: 200px;">ثبت</button>
+							<button name="organizer-reg-btn" value="organizer-reg-btn" class="btn btn-primary btn-block" type="submit" style="width: 200px;">ثبت</button>
 						</form>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+{% endblock %}
+
+{% block script %}
+<!-- <3 -->
+<script type="text/javascript">
+	var url = document.location.toString();
+	if (url.match('#')) {
+	    $('.nav-tabs a[href=#'+url.split('#')[1]+']').tab('show') ;
+	} 
+
+	// Change hash for page-reload
+	$('.nav-tabs a').on('shown.bs.tab', function (e) {
+	    window.location.hash = e.target.hash;
+	})
+</script>
 {% endblock %}

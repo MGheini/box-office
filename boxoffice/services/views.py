@@ -3,11 +3,10 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 
 from . import models
-from users.models import Member
 from users.forms import LoginForm
 from users.views import our_login
-from .forms import CategoryModelForm , SubCategoryModelForm
-
+from users.models import Member, Organizer
+from .forms import EventModelForm, CategoryModelForm, SubCategoryModelForm
 
 def get_layout():
 	categories = models.Category.objects.all()
@@ -35,10 +34,11 @@ def home(request):
 					'newest': layout['newest'],
 					'most_populars': layout['most_populars']})
 			elif request.session['user_type'] == 'organizer':
+				permitted = Organizer.objects.get(user=request.user).has_permission_to_create_category
 				return render(request, 'home.html',
 					{'home': True,
 					'organizer': True,
-					'permitted': request.user.has_permission_to_create_category,
+					'permitted': permitted,
 					'categories': layout['categories'],
 					'available_events': available_events,
 					'newest': layout['newest'],
@@ -114,7 +114,6 @@ class TemplateEvent():
 				self.ticket_available = True;
 				break
 
-
 def category(request, category):
 	layout = get_layout()
 	form = LoginForm()
@@ -154,8 +153,7 @@ def subcategory(request, category, subcategory):
 
 def submit(request):
 	layout = get_layout()
-	member_form = MemberRegModelForm()
-	organizer_form = OrganizerRegModelForm()
+	event_form = EventModelForm()
 	return render(request, 'submit-new-event.html',
 		{'event_form': event_form,
 		'organizer': True,
@@ -163,6 +161,32 @@ def submit(request):
 		'categories': layout['categories'],
 		'newest': layout['newest'],
 		'most_populars': layout['most_populars']})
+
+class AddEventView(CreateView):
+    template_name = 'add-new-event.html'
+    form_class = EventModelForm
+
+    def get_context_data(self, **kwargs):
+        context = super(AddEventView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            context['formset'] = TicketFormSet(self.request.POST)
+        else:
+            context['formset'] = TicketFormSet()
+        return context
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        formset = context['formset']
+        if formset.is_valid():
+            self.object = form.save(commit=False)
+            # self.object.organizer = Organizer.objects.all()[0] #Organizer.objects.get(user=get_user(self.request))
+            self.object.save()
+            formset.instance = self.object
+            formset.save()
+            success = True
+            return render(self.request, 'add-new-event.html', {'success': success})
+        else:
+            return render(self.request, 'add-new-event.html', {'form': form})
 
 def submit_category(request):
 	layout = get_layout()
@@ -187,8 +211,19 @@ def receipt(request, order_id):
 
 def history(request):
 	layout = get_layout()
-	return render(request, 'purchase-history.html',
-		{'member': True,
-		'categories': layout['categories'],
-		'newest': layout['newest'],
-		'most_populars': layout['most_populars']})
+
+	if request.user.is_authenticated() and request.session['user_type'] == 'member':
+		orders = {}
+		categories = models.Category.objects.all()
+		
+		for category in categories:
+			orders[category.category_name] = list(models.Order.objects.filter(member__user=request.user, event__category__category_name=category.category_name))
+
+		return render(request, 'purchase-history.html',
+			{'member': True,
+			 'orders': orders,
+			'categories': layout['categories'],
+			'newest': layout['newest'],
+			'most_populars': layout['most_populars']})
+	else:
+		return HttpResponseRedirect('/')

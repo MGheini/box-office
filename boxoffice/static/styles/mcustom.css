@@ -71,6 +71,10 @@ input {
     background: #fafafa;
 }
 
+.required {
+	border-color: #c56d65;
+}
+
 select {
 	padding: 10px;
     height: 60px;

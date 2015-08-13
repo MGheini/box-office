@@ -31,7 +31,7 @@
       </div>
       {% endfor %}
       <!-- START of adding ticket -->
-      <div class="row" style="background-color: #ecf0f1; margin: 0px;">
+      <div class="row form-group ticketDiv" style="background-color: #ecf0f1; margin: 0px;">
         <div class="col-md-2" style="padding: 5px">نوع بلیت</div>
         
         <div class="col-md-8" style="padding-right: 0">
@@ -68,40 +68,12 @@
 {% endblock %}
 
 {% block script %}
-<script>
-function addTicket(e) {
-  e.preventDefault();
-  document.getElementById('ticketDiv').innerHTML +='<div class="col-md-3"><input type="text" placeholder="نوع" style="padding-top: 15px" /></div>'
-  +'<div class="col-md-5"><div class="input-group"><input type="text" placeholder="قیمت" style="padding-top: 15px; border-top-left-radius: 0; border-bottom-left-radius: 0" /><span class="input-group-addon" style="color: #D6E0EA; border-top-right-radius: 0;">'
-  +'<span class="text-primary">تومان</span></span></div></div><div class="col-md-3"><input type="text" placeholder="ظرفیت" style="padding-top: 15px" /></div><div class="col-md-1"><button id="addTicketRow" class="btn btn-default btn-circle" style="visibility: hidden;"><span class="glyphicon glyphicon-plus"></span></button></div><br/>';
-
-  document.getElementById('addTicketRow').addEventListener('click', addTicket);
-}
-document.getElementById('addTicketRow').addEventListener('click', addTicket);
+<script type="text/javascript" src="{% static "scripts/jquery.formset.min.js" %}"></script>
+<script type="text/javascript">
+  $(function() {
+    $('form .ticketDiv').formset({
+      prefix: '{{ formset.prefix }}'
+    });
+  })
 </script>
-<script src="{% static "scripts/jalali.js" %}"></script>
-<script src="{% static "scripts/calendar.js" %}"></script>
-<script src="{% static "scripts/calendar-setup.js" %}"></script>
-<script src="{% static "scripts/lang/calendar-fa.js" %}"></script>
- <script>
-   Calendar.setup({
-     inputField     :    "date_input",   // id of the input field
-     button         :    "date_btn",   // trigger for the calendar (button ID)
-         ifFormat       :    "%Y-%m-%d %H:%M",       // format of the input field
-         showsTime      :    true,
-         dateType     :  'jalali',
-         timeFormat     :    "24",
-         weekNumbers    : false
-       });
-
-             Calendar.setup({
-     inputField     :    "date_input_2",   // id of the input field
-     button         :    "date_btn_2",   // trigger for the calendar (button ID)
-         ifFormat       :    "%Y-%m-%d %H:%M",       // format of the input field
-         showsTime      :    true,
-         dateType     :  'jalali',
-         timeFormat     :    "24",
-         weekNumbers    : false
-       });
-           </script>
-          {% endblock %}
+{% endblock %}
