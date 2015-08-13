@@ -7,9 +7,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseRedirect
 
 from . import models
-from users.models import Member
 from users.forms import LoginForm
 from users.views import our_login
+from users.models import Member, Organizer
 from .forms import CategoryModelForm , SubCategoryModelForm, PurchaseChooseForm, BankPaymentForm, EventModelFormOrganizer, TicketFormSet
 
 def get_layout():
@@ -38,10 +38,11 @@ def home(request):
 					'newest': layout['newest'],
 					'most_populars': layout['most_populars']})
 			elif request.session['user_type'] == 'organizer':
+				permitted = Organizer.objects.get(user=request.user).has_permission_to_create_category
 				return render(request, 'home.html',
 					{'home': True,
 					'organizer': True,
-					# 'permitted': request.user.has_permission_to_create_category,
+					'permitted': permitted,
 					'categories': layout['categories'],
 					'available_events': available_events,
 					'newest': layout['newest'],
@@ -103,7 +104,7 @@ def event_details(request, event_id):
 	event = models.Event.objects.get(id=event_id)		
 
 	if request.user.is_authenticated():
-		member = models.Member.objects.get(user=request.user)
+		member = Member.objects.get(user=request.user)
 		visitor = False
 	else:
 		member = None
@@ -373,7 +374,7 @@ class AddEventView(CreateView):
 
 		if formset.is_valid():
 			self.object = form.save(commit=False)
-			self.object.organizer = models.Organizer.objects.get(user=self.request.user)
+			self.object.organizer = Organizer.objects.get(user=self.request.user)
 			self.object.save()
 			formset.instance = self.object
 			formset.save()
@@ -415,8 +416,19 @@ def receipt(request, order_id):
 
 def history(request):
 	layout = get_layout()
-	return render(request, 'purchase-history.html',
-		{'member': True,
-		'categories': layout['categories'],
-		'newest': layout['newest'],
-		'most_populars': layout['most_populars']})
+
+	if request.user.is_authenticated() and request.session['user_type'] == 'member':
+		orders = {}
+		categories = models.Category.objects.all()
+		
+		for category in categories:
+			orders[category.category_name] = list(models.Order.objects.filter(member__user=request.user, event__category__category_name=category.category_name))
+
+		return render(request, 'purchase-history.html',
+			{'member': True,
+			 'orders': orders,
+			'categories': layout['categories'],
+			'newest': layout['newest'],
+			'most_populars': layout['most_populars']})
+	else:
+		return HttpResponseRedirect('/')
