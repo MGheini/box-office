@@ -54,6 +54,17 @@
           <div style="margin: 5px" class="row-event lead center-block">
             {% if member %}<h5><span style="margin: 20px">امتیاز دهید:</span><div id="stars" class="starrr"></div><h5>{% endif %}
             <!-- You gave a rating of <span id="count">0</span> star(s) -->
+
+            {% if not member %}
+             <h5 style="cursor: not-allowed" title="برای امتیاز دادن ابتدا وارد شوید."><span style="margin: 20px">امتیاز دهید:</span><div>
+              <span style="color: #FFD700; font-size: 25px;" class="glyphicon glyphicon-star-empty"></span>
+              <span style="color: #FFD700; font-size: 25px;" class="glyphicon glyphicon-star-empty"></span>
+              <span style="color: #FFD700; font-size: 25px;" class="glyphicon glyphicon-star-empty"></span>
+              <span style="color: #FFD700; font-size: 25px;" class="glyphicon glyphicon-star-empty"></span>
+              <span style="color: #FFD700; font-size: 25px;" class="glyphicon glyphicon-star-empty"></span>
+            </div><h5>
+            {% endif %}
+            
           </div>
         </form>
       </div>
@@ -115,6 +126,7 @@
         <h4 style="margin-top: 10px; margin-bottom: 10px">
           <ul class="breadcrumb" style="margin-top: 10;"  style="padding-top: 0">
             <li>نظرات کاربران</li>
+            {% if not member %}<li style="font-size: 15px">برای نظر گذاشتن ابتدا وارد شوید.</li>{% endif %}
           </ul>
         </h4>
       </div>
