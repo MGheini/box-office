@@ -50,6 +50,8 @@ class Event(models.Model):
 	organizer = models.ForeignKey(Organizer)
 	event_avg_rate = models.FloatField(default=0.0)
 
+	empty_chair_offset = models.PositiveIntegerField(default=1)
+
 	class Meta:
 		verbose_name_plural = "رویدادها"
 		verbose_name = "رویداد"
@@ -114,7 +116,8 @@ class Order(models.Model):
 	total_price = models.PositiveIntegerField(blank=False)
 	order_date = models.DateTimeField(default=datetime.now, blank=False)
 	purchase_code = models.PositiveIntegerField(blank=False)
-	
+	first_chair_offset = models.PositiveIntegerField(default=0)
+
 	class Meta:
 		verbose_name_plural = "سفارش‌ها"
 		verbose_name = "سفارش"

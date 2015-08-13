@@ -89,10 +89,15 @@
 
         </table>
         <!-- END OF SOORAT HESAB -->
-        <!-- <form class="form-horizontal center"> -->
-          <a href="/events/{{ ticket.event.id }}/pay/?ticket_id={{ ticket.id }}&num={{ num }}" id="activate-step-3" class="btn btn-success btn-md">تایید</a>
-          <input type="submit" class="btn btn-default btn-md edit-step-1" value="ویرایش خرید" />
-        <!-- </form> -->
+        <form class="form-horizontal center" method="GET" action="/events/{{ ticket.event.id }}/pay/">
+          {% csrf_token %}
+          {% csrf_token %}
+          <input type="hidden" value="{{ ticket.id }}" name="tid" />
+          <input type="hidden" value="{{ num }}" name="n" />
+          {% csrf_token %}
+          <button type="submit" class="btn btn-success btn-md">تایید</a>
+          <!-- <input type="submit" class="btn btn-default btn-md edit-step-1" value="ویرایش خرید" /> -->
+        </form>
       </div>
     </div>
   </div>

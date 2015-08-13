@@ -162,7 +162,6 @@ def purchase(request, event_id):
 			'event': event,
 			})
 
-# todo
 def pay(request, event_id):
 	event = models.Event.objects.get(id=event_id)
 	layout = get_layout()
@@ -173,8 +172,8 @@ def pay(request, event_id):
 		if request.method == "GET":
 			payment_form = BankPaymentForm(request.GET)
 			
-			ticket_id = request.GET['ticket_id']
-			num = request.GET['num']
+			ticket_id = request.GET['tid']
+			num = request.GET['n']
 			
 			if ticket_id and num:
 				ticket = models.Ticket.objects.get(id=ticket_id)
@@ -187,31 +186,71 @@ def pay(request, event_id):
 					'most_populars': layout['most_populars'],
 					'total_price': total_price,
 					'payment_form': payment_form,
-					'event': event,})
+					'event_id': event.id,
+					'num': num,
+					'ticket_id': ticket.id,})
 				# for order:
-				# member = models.ForeignKey(Member)
-				# ticket = models.ForeignKey(Ticket)
-				# event = models.ForeignKey(Event, null=True)
-				# num_purchased = models.PositiveSmallIntegerField(blank=False)
-				# total_price = models.PositiveIntegerField(blank=False)
+				# member = models.ForeignKey(Member)##
+				# ticket = models.ForeignKey(Ticket)##
+				# event = models.ForeignKey(Event, null=True)##
+				# num_purchased = models.PositiveSmallIntegerField(blank=False)##
+				# total_price = models.PositiveIntegerField(blank=False)##
 				# order_date = models.DateTimeField(default=datetime.now, blank=False)
 				# purchase_code = models.PositiveIntegerField(blank=False)
 		elif request.method == "POST":
 			payment_form = BankPaymentForm(request.POST)
-			if payment_form.is_valid():
-				
+			
+			ticket_id = request.POST['ticket_id']
+			event_id = request.POST['event_id']
+			num = request.POST['num']
+			total_price = int(num) * models.Ticket.objects.get(id=ticket_id).ticket_price
 
+			if payment_form.is_valid():
 				# save the order...
-				success = True
+				order = models.Order()
+				order.member = member
+				order.ticket = models.Ticket.objects.get(id=ticket_id)
+				order.event = models.Event.objects.get(id=event_id)
+				order.num_purchased = int(num)
+				order.total_price = order.num_purchased * order.ticket.ticket_price
+				# order.order_date = datetime.datetime.now() --> DEFAULT WILL SET IT
+				order.purchase_code = (order.ticket.id + order.event.id + order.member.id + order.num_purchased + order.total_price) * 1300
+
+				order.ticket.purchased_num += 1
+				order.ticket.save()
+
+				order.first_chair_offset = order.event.empty_chair_offset
+
+				order.event.empty_chair_offset += order.num_purchased
+				order.event.save()
+
+				order.save()
+
+				chairs = []
+				for i in range(order.num_purchased):
+					chairs += [i+order.first_chair_offset]
+
 				return render(request, 'buy-ticket-step-3.html',
 					{'member': member,
 					'categories': layout['categories'],
 					'newest': layout['newest'],
 					'most_populars': layout['most_populars'],
-					'success': success,
-					'order': order,})
-		else:
+					'paid': True,
+					'order': order,
+					'chairs': chairs,
+					})
+
 			payment_form = BankPaymentForm(event_id)
+			return render(request, 'buy-ticket-step-3.html',
+				{'member': member,
+				'categories': layout['categories'],
+				'newest': layout['newest'],
+				'most_populars': layout['most_populars'],
+				'total_price': total_price,
+				'payment_form': payment_form,
+				'event_id': event.id,
+				'num': num,
+				'ticket_id': ticket_id,})
 
 def rate(request, event_id):
 	return HttpResponse('rate')
