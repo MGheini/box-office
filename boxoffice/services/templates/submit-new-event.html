@@ -40,23 +40,22 @@
 
         {% for form in formset.forms %}
         <div class="row form-group ticketDiv" style="background-color: #ffffff; margin: 0px;">
-          <div class="col-md-2"></div>
-          <div class="col-md-1">
+          <div class="col-md-2">
             {{ form.ticket_type }}
           </div>
 
-          <div class="col-md-2">
+          <div class="col-md-3">
             <div class="input-group">
               {{ form.ticket_price }}
               <span class="input-group-addon" style="color: #D6E0EA"><span class="text-primary">تومان</span></span>
             </div>
           </div>
 
-          <div class="col-md-1">
+          <div class="col-md-2">
             {{ form.total_capacity }}
           </div>
 
-          <div class="col-md-3">
+          <div class="col-md-2">
             {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
           </div>
 
@@ -74,7 +73,7 @@
       </div>
 
       {% if success %}
-      <a href="/bo-admin/events/" class="btn btn-primary btn-block" type="submit" style="width: 200px;">بازگشت</a>
+<!--       <a href="/bo-admin/events/" class="btn btn-primary btn-block" type="submit" style="width: 200px;">بازگشت</a> -->
       {% else %}
       <button id="submit-new-event" class="btn btn-primary btn-block" type="submit" style="width: 200px;">ثبت</button>
       {% endif %}

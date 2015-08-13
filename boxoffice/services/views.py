@@ -310,31 +310,48 @@ def subcategory(request, category, subcategory):
 		'subcategory': subcategory})
 
 class AddEventView(CreateView):
-    template_name = 'submit-new-event.html'
-    form_class = EventModelFormOrganizer
+	template_name = 'submit-new-event.html'
+	form_class = EventModelFormOrganizer
+	layout = get_layout()
+	
+	def get_context_data(self, **kwargs):
+		context = super(AddEventView, self).get_context_data(**kwargs)
+		layout = get_layout()
+		if self.request.POST:
+			context['formset'] = TicketFormSet(self.request.POST)
+		else:
+			context['formset'] = TicketFormSet()
+		context['organizer'] = True
+		context['categories'] = layout['categories']
+		context['newest'] = layout['newest']
+		context['most_populars'] = layout['most_populars']
+		return context
 
-    def get_context_data(self, **kwargs):
-        context = super(AddEventView, self).get_context_data(**kwargs)
-        if self.request.POST:
-            context['formset'] = TicketFormSet(self.request.POST)
-        else:
-            context['formset'] = TicketFormSet()
-        return context
+	def form_valid(self, form):
+		context = self.get_context_data()
+		formset = context['formset']
+		layout = get_layout()
 
-    def form_valid(self, form):
-        context = self.get_context_data()
-        formset = context['formset']
-        if formset.is_valid():
-            self.object = form.save(commit=False)
-            self.object.organizer = models.Organizer.objects.get(user=self.request.user)
-            self.object.save()
-            formset.instance = self.object
-            formset.save()
-            success = True
-            return render(self.request, 'add-new-event.html', {'success': success})
-        else:
-            return render(self.request, 'add-new-event.html', {'form': form})
-
+		if formset.is_valid():
+			self.object = form.save(commit=False)
+			self.object.organizer = models.Organizer.objects.get(user=self.request.user)
+			self.object.save()
+			formset.instance = self.object
+			formset.save()
+			success = True
+			return render(self.request, 'submit-new-event.html',
+				{'success': success,
+				'organizer': True,
+				'categories': layout['categories'],
+				'newest': layout['newest'],
+				'most_populars': layout['most_populars']})
+		else:
+			return render(self.request, 'submit-new-event.html',
+				{'form': form,
+				'organizer': True,
+				'categories': layout['categories'],
+				'newest': layout['newest'],
+				'most_populars': layout['most_populars']})
 
 def submit_category(request):
 	layout = get_layout()
