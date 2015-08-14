@@ -386,9 +386,9 @@ class AddEventView(CreateView):
 		context = super(AddEventView, self).get_context_data(**kwargs)
 		layout = get_layout()
 		if self.request.POST:
-			context['formset'] = TicketFormSet(self.request.POST)
+			context['formset'] = forms.TicketFormSet(self.request.POST)
 		else:
-			context['formset'] = TicketFormSet()
+			context['formset'] = forms.TicketFormSet()
 		context['organizer'] = True
 		context['categories'] = layout['categories']
 		context['newest'] = layout['newest']
