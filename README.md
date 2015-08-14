@@ -1,8 +1,6 @@
 # box-office
 Created for the project of systems analysis and design course
 
-@mozhdeh: if you remember more admin (mandatory) functionalities, please add below.
-در ضمن، اسامی ای که باید در لیوت باشد را برای اینکه فراموش نکنیم در زیر نوشته‌ام. به فارسی !!
 ------------------------------------------------------------------------------------
 
 PhaseTwo
