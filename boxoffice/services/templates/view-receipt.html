@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% load staticfiles %}
+{% load farsinum %}
 
 {% block style %}
 <link rel="stylesheet" href="{% static "styles/pcustom.css" %}" />
@@ -17,83 +18,78 @@
 
 {% block content %}
 <div class="panel panel-default">
+  <div class="panel-heading hidden-print">
+    <h2>مشاهده‌ی رسید</h2>
+  </div>
+
   <div class="panel-body">
-
-  <div class="row-receipt hidden-print">
-      <div class="col-md-8 col-md-offset-2">
-        <div class="alert alert-dismissible alert-success">
-          <h3 style="margin-top: 0">با تشکر،</h3>
-          <p style="padding-right: 40px">پرداخت شما با موفقیت انجام شد.</p>
-        </div>
-      </div>
+    <div class="row" style="background-color: transparent">
+      <div class="col-md-10 col-md-offset-1">
+        <h3>کد رهگیری شما: <span>{{ order.purchase_code|farsi_num }}</span></h3>
+      </div>        
     </div>
 
-    <div class="row-receipt">
-      <div class="col-md-8 col-md-offset-2 text-center">
-        <div class="well">
-          <h4>شماره پیگیری شما: <span id="trackingCode">۱۲۳۴۵۶</span></h4>
-        </div>
-      </div>
+    <!-- START OF SOORAT HESAB -->
+    <div class="row" style="background-color: transparent">
+    <div class="col-md-12">
+    <table class="table table-striped table-bordered table-hover table-responsive">
+          <tr>
+            <th>عنوان رویداد</th>
+            <td>{{ order.event.event_title }}</td>
+          </tr>
+          
+          <tr>
+            <th>نوع بلیت</th>
+            <td>{{ order.ticket.ticket_type }}</td>
+          </tr>
+
+          <tr>
+            <th>محل برگزاری</th>
+            <td>{{ order.ticket.event.event_place }}</td>
+          </tr>
+          
+          <tr>
+            <th>روز</th>
+            <td>{{ order.ticket.event.event_date }}</td>
+          </tr>
+
+          <tr>
+            <th>ساعت</th>
+            <td>{{ order.ticket.event.event_time|farsi_num }}</td>
+          </tr>
+
+          <tr>
+            <th>قیمت واحد</th>
+            <td>{{ order.ticket.ticket_price|farsi_num }}</td>
+          </tr>
+
+          <tr>
+            <th>تعداد</th>
+            <td>{{ order.num_purchased|farsi_num }}</td>
+          </tr>
+
+          <tr>
+            <th>زمان خرید</th>
+            <td>{{ order.order_date }}</td>
+          </tr>
+
+          <tr>
+            <th>شماره صندلی‌ها</th>
+            <td>/{% for chair in chairs %}{{ chair|farsi_num }}/{% endfor %}</td>
+          </tr>
+
+        <tr>
+          <td colspan="20" style="text-align: left; font-size: 25px">بهای پرداخت شده: <span id="totalPrice">{{ order.total_price|farsi_num }}</span> تومان
+          </td>
+        </tr>
+
+    </table>
+    <!-- END OF SOORAT HESAB -->
+    </div>
     </div>
 
-    <div class="row-receipt">
-      <div class="col-12-md">
-        <!-- START OF SOORAT HESAB -->
-        <table class="table table-striped table-bordered table-hover table-condensed table-responsive">
-          <thead>
-            <tr>
-              <th>نوع بلیت</th>
-              <th>محل برگزاری</th>
-              <th>روز</th>
-              <th>ساعت</th>
-              <th>شماره صندلی</th>
-              <th>قیمت</th>
-            </tr>
-          </thead>
+    <a href="javascript:window.print()" class="btn btn-primary btn-lg hidden-print center"><span style="margin-top: 3px" class="glyphicon glyphicon-print"></span> چاپ رسید</a>
 
-          <tbody id="factorBody">
-            <script type="text/javascript">
-
-            </script>
-            <tr>
-              <td>گرون</td>
-              <td>برج میلاد</td>
-              <td>۲۱ آبان ۹۴</td>
-              <td>۱۸:۳۰</td>
-              <td>۲۵</td>
-              <td>۶۰۰۰۰</td>
-            </tr>
-            <tr>
-              <td>گرون</td>
-              <td>برج میلاد</td>
-              <td>۲۱ آبان ۹۴</td>
-              <td>۱۸:۳۰</td>
-              <td>۲۶</td>
-              <td>۶۰۰۰۰</td>
-            </tr>
-            <tr>
-              <td colspan="20" style="text-align: left">مبلغ کل : <span id="totalPrice">۱۲۰۰۰۰</span> تومان
-              </td>
-            </tr>
-          </tbody>
-
-        </table>
-        <!-- END OF SOORAT HESAB -->
-
-        <div class="row-receipt">
-          <div class="col-md-4 col-md-offset-4 text-center">
-            <button class="btn btn-default btn-block btn-lg btn-info hidden-print" id="printButton">پرینت بلیت‌ها</button>
-          </div>
-        </div>
-
-        <div class="row-receipt">
-          <div class="col-md-4 col-md-offset-4 text-center">
-            <p class="visible-print">در این بخش توضیحات تکمیلی و جزییات نوشته می‌شود.</p>
-          </div>
-        </div>
-
-      </div>
-    </div>
   </div> <!-- end of panel-body -->
 </div> <!-- end of panel panel-default -->
 {% endblock %}

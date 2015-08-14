@@ -207,7 +207,7 @@ def pay(request, event_id):
 				order.num_purchased = int(num)
 				order.total_price = order.num_purchased * order.ticket.ticket_price
 				# order.order_date = datetime.datetime.now() --> DEFAULT WILL SET IT
-				order.purchase_code = (order.ticket.id + order.event.id + order.member.id + order.num_purchased + order.total_price) * 1300
+				order.purchase_code = int(order.member.id + (order.order_date - datetime.datetime(1970, 1, 1)).total_seconds())
 
 				order.ticket.purchased_num += 1
 				order.ticket.save()
@@ -399,11 +399,20 @@ def submit_category(request):
 
 def receipt(request, order_id):
 	layout = get_layout()
+
+	order = models.Order.objects.get(id=order_id)
+
+	chairs = []
+	for i in range(order.num_purchased):
+		chairs += [i + order.first_chair_offset]
+
 	return render(request, 'view-receipt.html',
 		{'member': True,
 		'categories': layout['categories'],
 		'newest': layout['newest'],
-		'most_populars': layout['most_populars']})
+		'most_populars': layout['most_populars'],
+		'order': order,
+		'chairs': chairs,})
 
 def history(request):
 	layout = get_layout()

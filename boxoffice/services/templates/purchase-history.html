@@ -24,6 +24,7 @@
 						<tr>
 							<th>#</th>
 							<th>رویداد</th>
+							<th>تاریخ خرید</th>
 							<th>رسید پرداخت</th>
 						</tr>
 					</thead>
@@ -32,6 +33,7 @@
 						<tr>
 							<td>{{ forloop.counter }}</td>
 							<td><a href="/events/{{ order.event.id }}/" style="text-decoration: none;">{{ order.event.event_title }}</a></td>
+							<th>{{ order.order_date }}</th>
 							<td><a href="/orders/{{ order.id }}/receipt"><span class="glyphicon glyphicon-list-alt"></span></a></td>
 						</tr>
 						{% endfor %}

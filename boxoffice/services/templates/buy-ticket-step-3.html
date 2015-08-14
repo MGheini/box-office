@@ -15,7 +15,7 @@
 <div class="panel panel-default" style="background-color: #F2F6F7">
   <div class="panel-body">
     <!-- start of buy-ticket -->
-    <div class="row form-group" style="background-color: transparent">
+    <div class="row form-group hidden-print" style="background-color: transparent">
       <div class="col-md-12">
 
         <ul class="nav nav-pills nav-justified thumbnail setup-panel">
@@ -86,7 +86,7 @@
             
             <a class="btn btn-md btn-danger col-md-1" style="margin-right: 5px" href="/events/{{ event_id }}/">لغو</a>
 
-            <a type="submit" class="btn btn-success btn-md col-md-5" style="margin-right: 5px" role="button">پرداخت<span id="acceptedTotalPrice" class="badge" style="margin-right: 6px;">{{ total_price|farsi_num }}</span> تومان </a>
+            <button type="submit" class="btn btn-success btn-md col-md-5" style="margin-right: 5px">پرداخت<span id="acceptedTotalPrice" class="badge" style="margin-right: 6px;">{{ total_price|farsi_num }}</span> تومان </button>
           </div>
 
           <input type="hidden" name="ticket_id" value="{{ ticket_id }}" />
@@ -95,53 +95,81 @@
 
         </form>
         {% else %}
-        <p class="text-success">با موفقیت پرداخت شد.</p>
-
-        <h3>کد رهگیری خرید شما: <span>{{ order.purchase_code }}</span></h3>
+        <div class="row-receipt hidden-print">
+          <div class="col-md-8 col-md-offset-2">
+            <div class="alert alert-dismissible alert-success">
+              <h3 style="margin-top: 0">با تشکر،</h3>
+              <p style="padding-right: 40px">پرداخت شما با موفقیت انجام شد.</p>
+            </div>
+          </div>
+        </div>
+        <div class="row" style="background-color: transparent">
+          <div class="col-md-10 col-md-offset-1">
+            <h3>کد رهگیری شما: <span>{{ order.purchase_code|farsi_num }}</span></h3>
+          </div>        
+        </div>
         <hr />
 
         <!-- START OF SOORAT HESAB -->
         <div class="row" style="background-color: transparent">
         <div class="col-md-12">
-        <table class="table table-striped table-bordered table-hover table-condensed table-responsive">
-          <thead>
-            
-            <tr>
-              <th>عنوام رویداد</th>
-              <th>نوع بلیت</th>
-              <th>محل برگزاری</th>
-              <th>روز</th>
-              <th>ساعت</th>
-              <th>قیمت واحد</th>
-              <th>تعداد</th>
-              <th>زمان خرید</th>
-              <th>شماره صندلی‌ها</th>
-            </tr>
-          </thead>
+        <table class="table table-striped table-bordered table-hover table-responsive">
+              <tr>
+                <th>عنوان رویداد</th>
+                <td>{{ order.event.event_title }}</td>
+              </tr>
+              
+              <tr>
+                <th>نوع بلیت</th>
+                <td>{{ order.ticket.ticket_type }}</td>
+              </tr>
 
-          <tbody id="factorBody">
+              <tr>
+                <th>محل برگزاری</th>
+                <td>{{ order.ticket.event.event_place }}</td>
+              </tr>
+              
+              <tr>
+                <th>روز</th>
+                <td>{{ order.ticket.event.event_date }}</td>
+              </tr>
+
+              <tr>
+                <th>ساعت</th>
+                <td>{{ order.ticket.event.event_time|farsi_num }}</td>
+              </tr>
+
+              <tr>
+                <th>قیمت واحد</th>
+                <td>{{ order.ticket.ticket_price|farsi_num }}</td>
+              </tr>
+
+              <tr>
+                <th>تعداد</th>
+                <td>{{ order.num_purchased|farsi_num }}</td>
+              </tr>
+
+              <tr>
+                <th>زمان خرید</th>
+                <td>{{ order.order_date }}</td>
+              </tr>
+
+              <tr>
+                <th>شماره صندلی‌ها</th>
+                <td>/{% for chair in chairs %}{{ chair|farsi_num }}/{% endfor %}</td>
+              </tr>
+
             <tr>
-              <td>{{ order.event.event_title }}</td>
-              <td>{{ order.ticket.ticket_type }}</td>
-              <td>{{ order.ticket.event.event_place }}</td>
-              <td>{{ order.ticket.event.event_date }}</td>
-              <td>{{ order.ticket.event.event_time|farsi_num }}</td>
-              <td>{{ order.ticket.ticket_price }}</td>
-              <td>{{ order.num_purchased }}</td>
-              <td>{{ order.order_date }}</td>
-              <td>/{% for chair in chairs %}{{ chair }}/{% endfor %}</td>
-            </tr>
-            
-            <tr>
-              <td colspan="20" style="text-align: left">مبلغ کل : <span id="totalPrice">{{ order.total_price }}</span> تومان
+              <td colspan="20" style="text-align: left; font-size: 25px">بهای پرداخت شده: <span id="totalPrice">{{ order.total_price|farsi_num }}</span> تومان
               </td>
             </tr>
-          </tbody>
 
         </table>
         <!-- END OF SOORAT HESAB -->
         </div>
         </div>
+
+        <a href="javascript:window.print()" class="btn btn-primary btn-lg hidden-print"><span style="margin-top: 3px" class="glyphicon glyphicon-print"></span> چاپ رسید</a>
         {% endif %}
       </div>
     </div>
