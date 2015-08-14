@@ -105,7 +105,7 @@ class Rate(models.Model):
 		verbose_name = "امتیاز"
 
 	def __str__(self):
-		return self.rate
+		return str(self.rate)
 
 class Order(models.Model):
 	member = models.ForeignKey(Member)

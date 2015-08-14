@@ -6,12 +6,11 @@ from django.views.generic import CreateView
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseRedirect
 
+from . import forms
 from . import models
 from users.forms import LoginForm
 from users.views import our_login
 from users.models import Member, Organizer
-# from .forms import CategoryModelForm , SubCategoryModelForm, PurchaseChooseForm, BankPaymentForm, EventModelFormOrganizer, TicketFormSet
-from . import forms
 
 def get_layout():
 	categories = models.Category.objects.all()
@@ -105,10 +104,26 @@ def event_details(request, event_id):
 	event = models.Event.objects.get(id=event_id)		
 
 	if request.user.is_authenticated():
-		member = Member.objects.get(user=request.user)
-		visitor = False
+		if request.session['user_type'] == 'member':
+			member = Member.objects.get(user=request.user)
+			if models.Rate.objects.filter(member=member, event=event).count() > 0:
+				rate = models.Rate.objects.get(member=member, event=event).rate
+			else:
+				rate = None
+			organizer = None
+			permitted = False
+			visitor = False
+		else:
+			organizer = True
+			permitted = Organizer.objects.get(user=request.user).has_permission_to_create_category
+			member = None
+			rate = None
+			visitor = False
 	else:
 		member = None
+		rate = None
+		organizer = None
+		permitted = False
 		visitor = True
 
 	tickets = []
@@ -125,10 +140,12 @@ def event_details(request, event_id):
 		'most_populars': layout['most_populars'],
 		'event': event,
 		'member': member,
+		'organizer': organizer,
+		'permitted': permitted,
+		'rate': rate,
 		'tickets': tickets,
 		'like_comments': like_comments,
-		'avg_rate': int(event.event_avg_rate),
-		'c_avg_rate': (5 - int(event.event_avg_rate)),})
+		'avg_rate': event.event_avg_rate,})
 
 def purchase(request, event_id):
 	event = models.Event.objects.get(id=event_id)
@@ -245,7 +262,27 @@ def pay(request, event_id):
 				'ticket_id': ticket_id,})
 
 def rate(request, event_id):
-	return HttpResponse('rate')
+	member = Member.objects.get(user=request.user)
+	event = models.Event.objects.get(id=event_id)
+	rate = int(request.GET['rate'])
+	if models.Rate.objects.filter(member=member, event=event).count() > 0:
+		rating = models.Rate.objects.get(member=member, event=event)
+		old_rate = rating.rate
+		rating.rate = rate
+		rating.save()
+		total_raters = models.Rate.objects.filter(event=event).count()
+		event.event_avg_rate = ((total_raters) * event.event_avg_rate - old_rate + rate) / total_raters
+		event.save()
+	else:
+		new_rating = models.Rate()
+		new_rating.member = member
+		new_rating.event = event
+		new_rating.rate = rate
+		new_rating.save()
+		total_raters = models.Rate.objects.filter(event=event).count()
+		event.event_avg_rate = ((total_raters - 1) * event.event_avg_rate + rate) / total_raters
+		event.save()
+	return HttpResponse(event.event_avg_rate, status=200)
 
 def like_unlike(request, event_id):
 	if request.user.is_authenticated():
@@ -392,7 +429,7 @@ def submit_category(request):
 		{'organizer': True,
 		'permitted': True,
 		'category_submit_form': category_submit_form,
-		'subcategory_submit_form': SubCategoryModelForm,
+		'subcategory_submit_form': subcategory_submit_form,
 		'categories': layout['categories'],
 		'newest': layout['newest'],
 		'most_populars': layout['most_populars']})

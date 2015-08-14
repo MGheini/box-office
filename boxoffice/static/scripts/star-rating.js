@@ -106,8 +106,14 @@ $( document ).ready(function() {
 
   $('#stars').on('starrr:change', function(e, value){
     $('#count').html(value);
-    // HERE I SHOULD DO WHAT I WANT! PASSING ANY THING ...
-    //alert("I put here intentionally. just search for this alert to find out where to write the event listener action for rating." + "\n" + "scripts/star-rating.js");
+    
+    $.ajax({
+      method: "GET",
+      url: window.location.pathname + "rate/?rate=" + value,
+    })
+    .done(function( msg ) {
+      
+    });
   });
   
   $('#stars-existing').on('starrr:change', function(e, value){
