@@ -10,6 +10,7 @@
 
 {% block style %}
 <link rel="stylesheet" href="{% static "styles/pcustom.css" %}" />
+<link rel="stylesheet" href="{% static "styles/jquery.raty.css" %}" />
 <style type="text/css">
   .row-event {
     background-color: white;
@@ -23,14 +24,8 @@
     <div class="row-event">
       <div class="col-md-12">
         <h3 style="margin-bottom: 0"> {{ event.event_title }} <small>
-    
-          {% for i in avg_rate|get_range %}
-            <span class="glyphicon glyphicon-star"></span>
-          {% endfor %}
-          {% for i in c_avg_rate|get_range %}
-            <span class="glyphicon glyphicon-star-empty"></span>
-          {% endfor %}
-          </small>
+
+          <div class="avg" style="margin-top: 5px;"></div>
 
         </h3>
       </div>
@@ -52,7 +47,7 @@
       <div class="col-md-12">
         <form role="form" method="GET">
           <div style="margin: 5px" class="row-event lead center-block">
-            {% if member %}<h5><span style="margin: 20px">امتیاز دهید:</span><div id="stars" class="starrr"></div><h5>{% endif %}
+            {% if member %}<h5><span style="margin: 20px">امتیاز دهید:</span><div id="stars" class="starrr" {% if rate %}data-rating='{{ rate }}'{% endif %}></div><h5>{% endif %}
             <!-- You gave a rating of <span id="count">0</span> star(s) -->
 
             {% if not member %}
@@ -190,6 +185,16 @@
 
   {% block script %}
   <script type="text/javascript" src="{% static "scripts/star-rating.js" %}"></script>
+  <script type="text/javascript" src="{% static "scripts/jquery.raty.js" %}"></script>
+
+  <script type="text/javascript">
+    $('div .avg').raty({ score: {{ avg_rate }},
+                         path: "{% static "images" %}",
+                         readOnly   : true,
+                         noRatedMsg : "این رویداد هنوز امتیازی دریافت نکرده است.",
+                         halfShow: true,
+                         hints: ['میانگین امتیاز', 'میانگین امتیاز', 'میانگین امتیاز', 'میانگین امتیاز', 'میانگین امتیاز'],});
+  </script>
 
   <!-- comment -->
   <script type="text/javascript">
