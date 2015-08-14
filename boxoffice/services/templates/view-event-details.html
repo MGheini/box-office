@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% load range %}
+{% load farsinum %}
 
 {% block title %}
 {{ event.event_title }}
@@ -83,8 +84,8 @@
                 {% for ticket in tickets %}
                 <tr>
                   <td>{{ ticket.ticket.ticket_type }}</td>
-                  <td>{{ ticket.ticket.ticket_price }} تومان</td>
-                  <td>{{ ticket.ticket_available_capacity }} نفر</td>
+                  <td>{{ ticket.ticket.ticket_price|farsi_num }} تومان</td>
+                  <td>{{ ticket.ticket_available_capacity|farsi_num }} نفر</td>
                 </tr>
                 {% endfor %}
               </tbody>
