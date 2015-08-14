@@ -80,7 +80,9 @@
           </div>
 
           <div class="form-group">
-            <button class="btn btn-default btn-md edit-step-1 col-md-3 col-md-offset-1" style="margin-left: 5px">ویرایش خرید</button>
+            <script>
+              document.write('<a class="btn btn-default btn-md col-md-3 col-md-offset-1" style="margin-left: 5px" href="' + document.referrer + '">ویرایش خرید</a>');
+            </script>
             <button type="submit" class="btn btn-success btn-md col-md-6" role="button">پرداخت<span id="acceptedTotalPrice" class="badge" style="margin-right: 6px;">{{ total_price|farsi_num }}</span> تومان </button>
           </div>
 

@@ -95,8 +95,10 @@
           <input type="hidden" value="{{ ticket.id }}" name="tid" />
           <input type="hidden" value="{{ num }}" name="n" />
           {% csrf_token %}
-          <button type="submit" class="btn btn-success btn-md">تایید</a>
-          <!-- <input type="submit" class="btn btn-default btn-md edit-step-1" value="ویرایش خرید" /> -->
+          <script>
+            document.write('<a class="btn btn-default btn-md" href="' + document.referrer + '">ویرایش خرید</a>');
+          </script>
+          <button type="submit" class="btn btn-success btn-md">تایید</button>
         </form>
       </div>
     </div>
