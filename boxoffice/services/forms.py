@@ -108,10 +108,9 @@ TicketFormSet = inlineformset_factory(
 		'ticket_price': forms.TextInput(attrs={'placeholder': 'قیمت'}),
 		'total_capacity': forms.TextInput(attrs={'placeholder': 'ظرفیت'}),})
 
-# used for step 1
 class PurchaseChooseForm(forms.Form):
 	tickets = forms.ModelChoiceField(queryset=Ticket.objects.none(), widget=forms.RadioSelect(attrs={'class': 'radio', 'style': 'display: inline; cursor: pointer;'}), empty_label=None)
-	num = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder': 'تعداد', 'value': '0'}),)
+	num = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder': 'تعداد', 'value': '1', 'min': '1'}),)
 
 	def __init__(self, event_id, *args, **kwargs):
 		super(PurchaseChooseForm, self).__init__(*args, **kwargs)

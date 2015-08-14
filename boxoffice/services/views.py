@@ -10,7 +10,8 @@ from . import models
 from users.forms import LoginForm
 from users.views import our_login
 from users.models import Member, Organizer
-from .forms import CategoryModelForm , SubCategoryModelForm, PurchaseChooseForm, BankPaymentForm, EventModelFormOrganizer, TicketFormSet
+# from .forms import CategoryModelForm , SubCategoryModelForm, PurchaseChooseForm, BankPaymentForm, EventModelFormOrganizer, TicketFormSet
+from . import forms
 
 def get_layout():
 	categories = models.Category.objects.all()
@@ -136,12 +137,12 @@ def purchase(request, event_id):
 
 	if request.user.is_authenticated():
 		if request.method == 'POST':
-			ticket_form = PurchaseChooseForm(event_id, request.POST)
+			ticket_form = forms.PurchaseChooseForm(event_id, request.POST)
 			if ticket_form.is_valid():
 				num = ticket_form.cleaned_data['num']
 				ticket = ticket_form.cleaned_data['tickets']
 				total_price = int(num) * ticket.ticket_price
-				
+
 				return render(request, 'buy-ticket-step-2.html',
 					{'form': form,
 					'categories': layout['categories'],
@@ -149,10 +150,9 @@ def purchase(request, event_id):
 					'most_populars': layout['most_populars'],
 					'num': num,
 					'ticket': ticket,
-					'total_price': total_price,
-					})
+					'total_price': total_price,})
 		else:
-			ticket_form = PurchaseChooseForm(event_id)
+			ticket_form = forms.PurchaseChooseForm(event_id)
 
 		return render(request, 'buy-ticket-step-1.html',
 			{'ticket_form': ticket_form,
@@ -171,7 +171,7 @@ def pay(request, event_id):
 	if request.user.is_authenticated():
 		member = Member.objects.get(user=request.user)
 		if request.method == "GET":
-			payment_form = BankPaymentForm(request.GET)
+			payment_form = forms.BankPaymentForm(request.GET)
 			
 			ticket_id = request.GET['tid']
 			num = request.GET['n']
@@ -190,16 +190,8 @@ def pay(request, event_id):
 					'event_id': event.id,
 					'num': num,
 					'ticket_id': ticket.id,})
-				# for order:
-				# member = models.ForeignKey(Member)##
-				# ticket = models.ForeignKey(Ticket)##
-				# event = models.ForeignKey(Event, null=True)##
-				# num_purchased = models.PositiveSmallIntegerField(blank=False)##
-				# total_price = models.PositiveIntegerField(blank=False)##
-				# order_date = models.DateTimeField(default=datetime.now, blank=False)
-				# purchase_code = models.PositiveIntegerField(blank=False)
 		elif request.method == "POST":
-			payment_form = BankPaymentForm(request.POST)
+			payment_form = forms.BankPaymentForm(request.POST)
 			
 			ticket_id = request.POST['ticket_id']
 			event_id = request.POST['event_id']
@@ -238,10 +230,9 @@ def pay(request, event_id):
 					'most_populars': layout['most_populars'],
 					'paid': True,
 					'order': order,
-					'chairs': chairs,
-					})
+					'chairs': chairs,})
 
-			payment_form = BankPaymentForm(event_id)
+			payment_form = forms.BankPaymentForm(event_id)
 			return render(request, 'buy-ticket-step-3.html',
 				{'member': member,
 				'categories': layout['categories'],
@@ -351,7 +342,7 @@ def subcategory(request, category, subcategory):
 
 class AddEventView(CreateView):
 	template_name = 'submit-new-event.html'
-	form_class = EventModelFormOrganizer
+	form_class = forms.EventModelFormOrganizer
 	layout = get_layout()
 	
 	def get_context_data(self, **kwargs):
@@ -395,8 +386,8 @@ class AddEventView(CreateView):
 
 def submit_category(request):
 	layout = get_layout()
-	category_submit_form = CategoryModelForm()
-	subcategory_submit_form = SubCategoryModelForm()
+	category_submit_form = forms.CategoryModelForm()
+	subcategory_submit_form = forms.SubCategoryModelForm()
 	return render(request, 'submit-new-category.html',
 		{'organizer': True,
 		'permitted': True,
