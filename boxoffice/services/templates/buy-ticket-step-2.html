@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% load staticfiles %}
+{% load farsinum %}
 
 {% block style %}
 <link rel="stylesheet" href="{% static "styles/pcustom.css" %}" />
@@ -76,23 +77,29 @@
               <td>{{ ticket.ticket_type }}</td>
               <td>{{ ticket.event.event_place }}</td>
               <td>{{ ticket.event.event_date }}</td>
-              <td>{{ ticket.event.event_time }}</td>
-              <td>{{ ticket.ticket_price }}</td>
-              <td>{{ num }}</td>
+              <td>{{ ticket.event.event_time|farsi_num }}</td>
+              <td>{{ ticket.ticket_price|farsi_num }}</td>
+              <td>{{ num|farsi_num }}</td>
             </tr>
             
             <tr>
-              <td colspan="20" style="text-align: left">مبلغ کل : <span id="totalPrice">{{ total_price }}</span> تومان
+              <td colspan="20" style="text-align: left">مبلغ کل : <span id="totalPrice">{{ total_price|farsi_num }}</span> تومان
               </td>
             </tr>
           </tbody>
 
         </table>
         <!-- END OF SOORAT HESAB -->
-        <!-- <form class="form-horizontal center"> -->
-          <a href="/events/{{ ticket.event.id }}/pay/?ticket_id={{ ticket.id }}&num={{ num }}" id="activate-step-3" class="btn btn-success btn-md">تایید</a>
-          <input type="submit" class="btn btn-default btn-md edit-step-1" value="ویرایش خرید" />
-        <!-- </form> -->
+        <form class="form-horizontal center" method="GET" action="/events/{{ ticket.event.id }}/pay/">
+          {% csrf_token %}
+          <input type="hidden" value="{{ ticket.id }}" name="tid" />
+          <input type="hidden" value="{{ num }}" name="n" />
+          {% csrf_token %}
+          <script>
+            document.write('<a class="btn btn-default btn-md" href="' + document.referrer + '">ویرایش خرید</a>');
+          </script>
+          <button type="submit" class="btn btn-success btn-md">تایید</button>
+        </form>
       </div>
     </div>
   </div>

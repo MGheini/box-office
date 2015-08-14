@@ -50,7 +50,7 @@
 	</nav>
 	<aside id="sidebar-1" class="col-md-2 col-md-offset-1 hidden-print">
 		{% if visitor %}
-		<div class="row">
+		<div class="row" style="border-radius: 4px">
 			<div class="col-md-12 well" style="margin: 0px;">
 				<p style="font-size: 28px;">ورود</p>
 				<form action="/" method="post">
@@ -104,7 +104,7 @@
 			});
 		</script> -->
 		{% elif member %}
-		<div class="row">
+		<div class="row" style="border-radius: 4px">
 			<div class="col-md-12 well" style="margin: 0px;">
 				<p style="font-size: 28px;">کاربر عزیز، خوش آمدید</p>
 				<ul class="list-group" style="margin: 0;">
@@ -122,7 +122,7 @@
 			</div>
 		</div>
 		{% elif organizer %}
-		<div class="row">
+		<div class="row" style="border-radius: 4px">
 			<div class="col-md-12 well" style="margin: 0px;">
 				<p style="font-size: 28px;">برگزارکننده عزیز، خوش آمدید</p>
 				<ul class="list-group" style="margin: 0;">
@@ -146,7 +146,7 @@
 			</div>
 		</div>
 		{% endif %}
-		<div class="row">
+		<div class="row" style="border-radius: 4px">
 			<div id="sidebar" class="well" style="margin: 0px;">
 				<p style="font-size: 28px;">رویدادها</p>
 				{% for category in categories %}
@@ -172,7 +172,7 @@
 		{% endblock %}
 	</section>
 	<aside id="sidebar-2" class="col-md-2 hidden-print">
-		<div class="row">
+		<div class="row" style="border-radius: 4px">
 			<div class="col-md-12 well" style="margin: 0px;">
 				<p style="font-size: 28px;">جدیدترین ها</p>
 				<ul class="list-group" style="margin: 0;">
@@ -186,7 +186,7 @@
 				</ul>
 			</div>
 		</div>
-		<div class="row">
+		<div class="row" style="border-radius: 4px">
 			<div class="col-md-12 well" style="margin: 0px;">
 				<p style="font-size: 28px;">پرطرفدارترین ها</p>
 				<ul class="list-group" style="margin: 0;">

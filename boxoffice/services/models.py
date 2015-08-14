@@ -1,4 +1,4 @@
-import random
+
 import datetime
 
 from django.db import models
@@ -35,20 +35,21 @@ class Event(models.Model):
 		chained_field="category",
 		chained_model_field="category",
 		show_all=False,
-        auto_choose=True,
-        null=True)
+        auto_choose=True)
 
-	event_title = models.CharField(max_length=255, blank=False)
+	event_title = models.CharField(max_length=255)
 	event_image = models.ImageField(upload_to='media/', blank=True, default="media/noimage.png")
-	event_place = models.CharField(max_length=255, blank=False)
+	event_place = models.CharField(max_length=255)
 	event_description = models.TextField(blank=True)
-	event_date = models.DateField(blank=False)
-	event_time = models.TimeField(blank=False)
-	event_deadline_date = models.DateField(blank=False)
-	event_deadline_time = models.TimeField(blank=False)
-	submit_date = models.DateTimeField(default=datetime.now, blank=False)
+	event_date = models.DateField()
+	event_time = models.TimeField()
+	event_deadline_date = models.DateField()
+	event_deadline_time = models.TimeField()
+	submit_date = models.DateTimeField(default=datetime.now)
 	organizer = models.ForeignKey(Organizer)
 	event_avg_rate = models.FloatField(default=0.0)
+
+	empty_chair_offset = models.PositiveIntegerField(default=1)
 
 	class Meta:
 		verbose_name_plural = "رویدادها"
@@ -59,9 +60,9 @@ class Event(models.Model):
 
 class Ticket(models.Model):
 	event = models.ForeignKey(Event)
-	ticket_type = models.CharField(verbose_name='نوع بلیت', max_length=255, help_text='نوع بلیت')
-	ticket_price = models.PositiveIntegerField(verbose_name='قیمت بلیت', help_text='قیمت بلیت')
-	total_capacity = models.PositiveSmallIntegerField(verbose_name='ظرفیت', help_text='ظرفیت بلیت')
+	ticket_type = models.CharField(max_length=20)
+	ticket_price = models.PositiveIntegerField()
+	total_capacity = models.PositiveSmallIntegerField()
 	purchased_num = models.PositiveSmallIntegerField(default=0)
 
 	class Meta:
@@ -76,8 +77,8 @@ class Comment(models.Model):
 	member = models.ForeignKey(Member)
 	event = models.ForeignKey(Event)
 	comment_text = models.CharField(max_length=200)
-	datetime = models.DateTimeField(blank=True, null=False)
-	like_num = models.PositiveIntegerField(default=0)
+	datetime = models.DateTimeField(default=datetime.now)
+	like_num = models.IntegerField(default=0)
 
 	class Meta:
 		verbose_name_plural = "نظرها"
@@ -90,8 +91,8 @@ class LikeComment(models.Model):
 	member = models.ForeignKey(Member)
 	comment = models.ForeignKey(Comment)
 
-	# def __str__(self):
-	# 	return member.user.username + ' (' + comment.comment_text + ')'
+	def __str__(self):
+		return member.user.username + ' (' + comment.comment_text + ')'
 
 class Rate(models.Model):
 	member = models.ForeignKey(Member)
@@ -109,22 +110,16 @@ class Rate(models.Model):
 class Order(models.Model):
 	member = models.ForeignKey(Member)
 	ticket = models.ForeignKey(Ticket)
-	event = models.ForeignKey(Event, null=True)
-	num_purchased = models.PositiveSmallIntegerField(blank=False)
-	total_price = models.PositiveIntegerField(blank=False)
-	order_date = models.DateTimeField(default=datetime.now, blank=False)
-	purchase_code = models.PositiveIntegerField(blank=False)
-	
+	event = models.ForeignKey(Event)
+	num_purchased = models.PositiveSmallIntegerField()
+	total_price = models.PositiveIntegerField()
+	order_date = models.DateTimeField(default=datetime.now)
+	purchase_code = models.PositiveIntegerField()
+	first_chair_offset = models.IntegerField(default=0)
+
 	class Meta:
 		verbose_name_plural = "سفارش‌ها"
 		verbose_name = "سفارش"
 
 	def __str__(self):
-		return self.member.user.username + " (" + self.ticket.event.event_title + ")"
-
-
-class TempOrder(models.Model):
-	event = models.ForeignKey(Event, null=True)
-	ticket = models.ForeignKey(Ticket, null=True)
-	num_purchased = models.PositiveSmallIntegerField(blank=False, default=0)
-	purchase_code = models.PositiveIntegerField(blank=False, default=0)
+		return self.member.user.username + ' (' + self.ticket.event.event_title + ')'
