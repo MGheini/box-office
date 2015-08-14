@@ -32,6 +32,9 @@
 			<!-- Tab panes -->
 			<div class="tab-content">
 				<div role="tabpanel" class="tab-pane active" id="category">
+					{% if category_success %}
+					<p style="margin-top: 15px;">دسته با موفقیت افزوده شد.</p>
+					{% else %}
 					<div>
 						<form action="" method="post">
 							{% csrf_token %}
@@ -45,10 +48,14 @@
 							<button name="category-submit-btn" value="category-submit-btn" class="btn btn-primary btn-block" type="submit" style="width: 200px;">ثبت</button>
 						</form>
 					</div>
+					{% endif %}
 				</div>
 				<div role="tabpanel" class="tab-pane" id="subcategory">
+					{% if subcategory_success %}
+					<p style="margin-top: 15px;">زیردسته با موفقیت افزوده شد.</p>
+					{% else %}
 					<div>
-						<form action="" method="post">
+						<form action="/submitcategory/#subcategory" method="post">
 							{% csrf_token %}
 							{% for field in subcategory_submit_form %}
 							<div class="row" style="background-color: #ecf0f1; margin: 0px;">
@@ -60,8 +67,24 @@
 							<button name="subcategory-submit-btn" value="subcategory-submit-btn" class="btn btn-primary btn-block" type="submit" style="width: 200px;">ثبت</button>
 						</form>
 					</div>
+					{% endif %}
 				</div>
 			</div>
 		</div>
 	</div>
+{% endblock %}
+
+{% block script %}
+<!-- <3 -->
+<script type="text/javascript">
+	var url = document.location.toString();
+	if (url.match('#')) {
+	    $('.nav-tabs a[href=#'+url.split('#')[1]+']').tab('show') ;
+	} 
+
+	// Change hash for page-reload
+	$('.nav-tabs a').on('shown.bs.tab', function (e) {
+	    window.location.hash = e.target.hash;
+	})
+</script>
 {% endblock %}
