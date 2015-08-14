@@ -81,9 +81,12 @@
 
           <div class="form-group">
             <script>
-              document.write('<a class="btn btn-default btn-md col-md-3 col-md-offset-1" style="margin-left: 5px" href="' + document.referrer + '">ویرایش خرید</a>');
+              document.write('<a class="btn btn-default btn-md col-md-2 col-md-offset-1" style="margin-right: 5px" href="' + document.referrer + '">ویرایش خرید</a>');
             </script>
-            <button type="submit" class="btn btn-success btn-md col-md-6" role="button">پرداخت<span id="acceptedTotalPrice" class="badge" style="margin-right: 6px;">{{ total_price|farsi_num }}</span> تومان </button>
+            
+            <a class="btn btn-md btn-danger col-md-1" style="margin-right: 5px" href="/events/{{ event_id }}/">لغو</a>
+
+            <a type="submit" class="btn btn-success btn-md col-md-5" style="margin-right: 5px" role="button">پرداخت<span id="acceptedTotalPrice" class="badge" style="margin-right: 6px;">{{ total_price|farsi_num }}</span> تومان </a>
           </div>
 
           <input type="hidden" name="ticket_id" value="{{ ticket_id }}" />
