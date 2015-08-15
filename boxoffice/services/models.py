@@ -76,7 +76,7 @@ class Ticket(models.Model):
 		verbose_name = "بلیت"
 
 	def __str__(self):
-		return self.ticket_type + ' (' + str(self.ticket_price) + ' تومان)'
+		return self.ticket_type + ' { ' + str(self.ticket_price) + ' تومان }'
 
 class Comment(models.Model):
 	member = models.ForeignKey(Member)
