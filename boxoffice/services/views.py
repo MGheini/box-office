@@ -132,6 +132,12 @@ def event_details(request, event_id):
 
 	like_comments = models.LikeComment.objects.filter(comment__event__id=event_id)
 
+	is_available = False
+	for t in event.ticket_set.all():
+		if t.total_capacity > t.purchased_num:
+			is_available = True
+			break
+
 	return render(request, 'view-event-details.html',
 		{'form': form,
 		'visitor': visitor,
@@ -145,7 +151,8 @@ def event_details(request, event_id):
 		'rate': rate,
 		'tickets': tickets,
 		'like_comments': like_comments,
-		'avg_rate': event.event_avg_rate,})
+		'avg_rate': event.event_avg_rate,
+		'is_available': is_available,})
 
 def purchase(request, event_id):
 	event = models.Event.objects.get(id=event_id)

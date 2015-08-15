@@ -80,7 +80,7 @@
                 <tr>
                   <td>{{ ticket.ticket.ticket_type }}</td>
                   <td>{{ ticket.ticket.ticket_price|farsi_num }} تومان</td>
-                  <td>{{ ticket.ticket_available_capacity|farsi_num }} نفر</td>
+                  <td>{% if ticket.ticket_available_capacity > 0 %}{{ ticket.ticket_available_capacity|farsi_num }} نفر{% else %}به اتمام رسیده است.{% endif %}</td>
                 </tr>
                 {% endfor %}
               </tbody>
@@ -91,7 +91,14 @@
       
       <div class="row" style="background-color: transparent;">
         <div class="col-md-10 col-md-offset-1" style="margin-top: 0px;">
-          {% if member %}<a href="/events/{{ event.id }}/purchase/" class="btn btn-success btn-lg btn-block">می‌خواهم بخرم!</a>
+          {% if member %}
+
+          {% if is_available %}
+          <a href="/events/{{ event.id }}/purchase/" class="btn btn-success btn-lg btn-block">می‌خواهم بخرم!</a>
+          {% else %}
+          <a href="#" class="btn btn-warning btn-lg btn-block" disabled="disabled" style="padding-right: 9px">متاسفانه بلیتی برای خرید باقی نمانده است!</a>
+          {% endif %}
+
           {% else %}<a href="#" disabled="disabled" title="برای خریدن بلیت، ابتدا وارد شوید." class="btn btn-success btn-lg btn-block">می‌خواهم بخرم!</a>{% endif %}
         </div>
       </div>
