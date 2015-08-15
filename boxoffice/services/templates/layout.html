@@ -37,14 +37,14 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="/"><span class="glyphicon glyphicon-home" style="margin-left: 10px;"></span>گیشه</a>
+			<a class="navbar-brand" href="/" tabindex="-1"><span class="glyphicon glyphicon-home" style="margin-left: 10px;"></span>گیشه</a>
 		</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
-				<li><a href="/FAQ/">سؤالات متداول</a></li>
-				<li><a href="/Gisheh/">درباره ما</a></li>
+				<li><a href="/FAQ/" tabindex="-1">سؤالات متداول</a></li>
+				<li><a href="/Gisheh/" tabindex="-1">درباره ما</a></li>
 			</ul>
 		</div><!-- /.navbar-collapse -->
 	</nav>
@@ -67,7 +67,7 @@
 					<button id="login-btn" class="btn btn-primary btn-block" type="submit" style="width: 200px; margin-bottom: 10px;">ورود</button>
 					{% endif %}
 				</form>
-				<a href="/register">عضو نیستید؟ ثبت نام کنید!</a>
+				<a href="/register/" tabindex="-1">عضو نیستید؟ ثبت نام کنید!</a>
 
 				<script type="text/javascript">
 					setTimeout(function f() {
@@ -108,12 +108,12 @@
 			<div class="col-md-12 well" style="margin: 0px;">
 				<p style="font-size: 28px;">کاربر عزیز، خوش آمدید</p>
 				<ul class="list-group" style="margin: 0;">
-					<a href="/history/"><li class="list-group-item">
+					<a href="/history/" tabindex="-1"><li class="list-group-item">
 						<span class="glyphicon glyphicon-hourglass"></span>
 						تاریخچه خرید
 					</li></a>
 					<li class="list-group-item">
-						<a href="/logout/">
+						<a href="/logout/" tabindex="-1">
 							<span class="glyphicon glyphicon-log-out"></span>
 							خروج
 						</a>
@@ -126,18 +126,18 @@
 			<div class="col-md-12 well" style="margin: 0px;">
 				<p style="font-size: 28px;">برگزارکننده عزیز، خوش آمدید</p>
 				<ul class="list-group" style="margin: 0;">
-					<a href="/submit/"><li class="list-group-item">
+					<a href="/submit/" tabindex="-1"><li class="list-group-item">
 						<span class="glyphicon glyphicon-plus"></span>
 						افزودن رویداد جدید
 					</li></a>
 					{% if permitted %}
-					<a href="/submitcategory/"><li class="list-group-item">
+					<a href="/submitcategory/" tabindex="-1"><li class="list-group-item">
 						<span class="glyphicon glyphicon-plus"></span>
 						افزودن دسته و یا زیر دسته جدید
 					</li></a>
 					{% endif %}
 					<li class="list-group-item">
-						<a href="/logout/">
+						<a href="/logout/" tabindex="-1">
 							<span class="glyphicon glyphicon-log-out"></span>
 							خروج
 						</a>
@@ -153,12 +153,12 @@
 				<details>
 					<summary>
 						<i style="margin-left: 5px; margin-right: 3px" class="glyphicon glyphicon-{{ category.category_glyphicon }}"></i>
-						<b><a class="clicked" href="/events/{{ category.category_name }}/">{{ category.category_name }}</a></b>
+						<b><a class="clicked" href="/events/{{ category.category_name }}/" tabindex="-1">{{ category.category_name }}</a></b>
 					</summary>
 					<ul class="nav nav-pills nav-stacked">
 						{% for subcategory in category.subcategory_set.all %}
 						<li>
-							<a href="/events/{{ category.category_name }}/{{ subcategory.subcategory_name }}/">{{ subcategory.subcategory_name }}</a>
+							<a href="/events/{{ category.category_name }}/{{ subcategory.subcategory_name }}/" tabindex="-1">{{ subcategory.subcategory_name }}</a>
 						</li>
 						{% endfor %}
 					</ul>
@@ -178,7 +178,7 @@
 				<ul class="list-group" style="margin: 0;">
 					{% for event in newest %}
 					<li class="list-group-item">
-						<a class="airview" data-content="{{ event.event_image.url }}" href="/events/{{ event.id }}/">
+						<a class="airview" data-content="{{ event.event_image.url }}" href="/events/{{ event.id }}/" tabindex="-1">
 							<p style="margin-bottom: 0px; font-size: 14px;">{{ event.event_title }}</p>
 						</a>
 					</li>
@@ -192,7 +192,7 @@
 				<ul class="list-group" style="margin: 0;">
 					{% for event in most_populars %}
 					<li class="list-group-item">
-						<a class="airview" data-content="{{ event.event_image.url }}" href="/events/{{ event.id }}/">
+						<a class="airview" data-content="{{ event.event_image.url }}" href="/events/{{ event.id }}/" tabindex="-1">
 							<p style="margin-bottom: 0px; font-size: 14px;">{{ event.event_title }}</p>
 						</a>
 					</li>

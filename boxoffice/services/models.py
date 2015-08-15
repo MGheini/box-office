@@ -49,7 +49,12 @@ class Event(models.Model):
 	organizer = models.ForeignKey(Organizer)
 	event_avg_rate = models.FloatField(default=0.0)
 
-	empty_chair_offset = models.PositiveIntegerField(default=1)
+	# empty_chair_offset = models.PositiveIntegerField(default=1)
+	def empty_chair_offset(self):
+		num = 1;
+		for t in self.ticket_set.all():
+			num += t.purchased_num
+		return num
 
 	class Meta:
 		verbose_name_plural = "رویدادها"

@@ -226,13 +226,11 @@ def pay(request, event_id):
 				# order.order_date = datetime.datetime.now() --> DEFAULT WILL SET IT
 				order.purchase_code = int(order.member.id + (order.order_date - datetime.datetime(1970, 1, 1)).total_seconds())
 
-				order.ticket.purchased_num += 1
-				order.ticket.save()
-
-				order.first_chair_offset = order.event.empty_chair_offset
-
-				order.event.empty_chair_offset += order.num_purchased
+				order.first_chair_offset = order.event.empty_chair_offset()
 				order.event.save()
+
+				order.ticket.purchased_num += int(num)
+				order.ticket.save()
 
 				order.save()
 
