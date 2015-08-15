@@ -4,6 +4,8 @@
 تاریخچه خرید
 {% endblock %}
 
+{% load farsinum %}
+
 {% block content %}
 <div id="history">
 	<div class="well" style="margin: 0px;">
@@ -33,7 +35,7 @@
 						<tr>
 							<td>{{ forloop.counter }}</td>
 							<td><a href="/events/{{ order.event.id }}/" style="text-decoration: none;">{{ order.event.event_title }}</a></td>
-							<th>{{ order.order_date }}</th>
+							<th>{{ order.order_date|date:"j M Y"|farsi_num }}</th>
 							<td><a href="/orders/{{ order.id }}/receipt"><span class="glyphicon glyphicon-list-alt"></span></a></td>
 						</tr>
 						{% endfor %}

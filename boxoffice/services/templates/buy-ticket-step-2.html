@@ -76,8 +76,8 @@
             <tr>
               <td>{{ ticket.ticket_type }}</td>
               <td>{{ ticket.event.event_place }}</td>
-              <td>{{ ticket.event.event_date }}</td>
-              <td>{{ ticket.event.event_time|farsi_num }}</td>
+              <td>{{ ticket.event.event_date|date:"j M Y"|farsi_num }}</td>
+              <td>{{ ticket.event.event_time|date:"H:i"|farsi_num }}</td>
               <td>{{ ticket.ticket_price|farsi_num }}</td>
               <td>{{ num|farsi_num }}</td>
             </tr>
