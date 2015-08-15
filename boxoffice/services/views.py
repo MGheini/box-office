@@ -369,7 +369,7 @@ def category(request, category):
 	layout = get_layout()
 	form = LoginForm()
 	
-	events = models.Event.objects.filter(category__category_name=category)
+	events = models.Event.objects.filter(category__category_name=category).exclude(event_deadline_date__lt=datetime.datetime.now().date(), event_deadline_time__lt=datetime.datetime.now().time())
 	template_events = []
 	for event in events:
 		template_events += [TemplateEvent(event)]
@@ -387,7 +387,7 @@ def subcategory(request, category, subcategory):
 	layout = get_layout()
 	form = LoginForm()
 
-	events = models.Event.objects.filter(subcategory__subcategory_name=subcategory)
+	events = models.Event.objects.filter(subcategory__subcategory_name=subcategory).exclude(event_deadline_date__lt=datetime.datetime.now().date(), event_deadline_time__lt=datetime.datetime.now().time())
 	template_events = []
 	for event in events:
 		template_events += [TemplateEvent(event)]
