@@ -72,7 +72,7 @@
                 <tr>
                   <th>نوع بلیت</th>
                   <th>قیمت</th>
-                  <th>ظرفیت</th>
+                  <th>تعداد باقیمانده</th>
                 </tr>
               </thead>
               <tbody>
@@ -91,15 +91,15 @@
       
       <div class="row" style="background-color: transparent;">
         <div class="col-md-10 col-md-offset-1" style="margin-top: 0px;">
-          {% if member %}
 
-          {% if is_available %}
-          <a href="/events/{{ event.id }}/purchase/" class="btn btn-success btn-lg btn-block">می‌خواهم بخرم!</a>
-          {% else %}
-          <a href="#" class="btn btn-warning btn-lg btn-block" disabled="disabled" style="padding-right: 9px">متاسفانه بلیتی برای خرید باقی نمانده است!</a>
+          {% if is_available and not event_deadline_has_passed %}
+            <a href="{% if member %}/events/{{ event.id }}/purchase/{% else %}#{% endif %}" class="btn btn-success btn-lg btn-block" {% if not member %}disabled="disabled" title="برای خریدن بلیت، ابتدا وارد شوید."{% endif %} >می‌خواهم بخرم!</a>
+          {% elif event_deadline_has_passed %}
+            <a href="#" class="btn btn-default btn-lg btn-block" disabled="disabled" style="padding-right: 9px">مهلت خرید به پایان رسیده است.</a>
+          {% elif not is_available %}
+            <a href="#" class="btn btn-warning btn-lg btn-block" disabled="disabled" style="padding-right: 9px">متاسفانه بلیتی برای خرید باقی نمانده است!</a>
           {% endif %}
 
-          {% else %}<a href="#" disabled="disabled" title="برای خریدن بلیت، ابتدا وارد شوید." class="btn btn-success btn-lg btn-block">می‌خواهم بخرم!</a>{% endif %}
         </div>
       </div>
     </div>

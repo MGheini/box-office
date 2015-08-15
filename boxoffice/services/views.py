@@ -138,6 +138,16 @@ def event_details(request, event_id):
 			is_available = True
 			break
 
+	# event_deadline_date = models.DateField()
+	# event_deadline_time = models.TimeField()
+	event_deadline_has_passed = False
+	if event.event_deadline_date < datetime.datetime.now().date():
+		if event.event_deadline_time < datetime.datetime.now().time():
+			event_deadline_has_passed = True
+	print('================')
+	print(event.id)
+	print(event_deadline_has_passed)
+
 	return render(request, 'view-event-details.html',
 		{'form': form,
 		'visitor': visitor,
@@ -152,7 +162,8 @@ def event_details(request, event_id):
 		'tickets': tickets,
 		'like_comments': like_comments,
 		'avg_rate': event.event_avg_rate,
-		'is_available': is_available,})
+		'is_available': is_available,
+		'event_deadline_has_passed': event_deadline_has_passed,})
 
 def purchase(request, event_id):
 	event = models.Event.objects.get(id=event_id)
