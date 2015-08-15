@@ -1,4 +1,6 @@
- 
+
+import datetime
+
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
@@ -10,8 +12,8 @@ from .forms import MemberRegModelForm, OrganizerRegModelForm, LoginForm
 
 def get_layout():
 	categories = Category.objects.all()
-	most_populars = Event.objects.order_by('-event_avg_rate')[:4]
-	newest = Event.objects.order_by('-submit_date')[:4]
+	most_populars = Event.objects.exclude(event_deadline_date__lt=datetime.datetime.now().date(), event_deadline_time__lt=datetime.datetime.now().time()).order_by('-event_avg_rate')[:5]
+	newest = Event.objects.exclude(event_deadline_date__lt=datetime.datetime.now().date(), event_deadline_time__lt=datetime.datetime.now().time()).order_by('-submit_date')[:5]
 
 	return {'categories': categories, 'newest': newest, 'most_populars': most_populars}
 
@@ -20,6 +22,8 @@ def our_login(request):
 	available_events = Event.objects.all()
 
 	form = LoginForm(request.POST)
+
+	next = request.POST['next']
 
 	if form.is_valid():
 		username = form.cleaned_data['username']
@@ -35,7 +39,7 @@ def our_login(request):
 			else:
 				request.session['user_type'] = 'admin'
 			request.method = 'GET'
-			return HttpResponseRedirect('/')
+			return HttpResponseRedirect(next)
 		return render(request, 'home.html', {'form': form,
 											'home': True,
 											'visitor': True,
