@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+
+{% block title %}
+خرید بلیت
+{% endblock %}
+
+{% load staticfiles %}
+{% load farsinum %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static "styles/pcustom.css" %}" />
+{% endblock %}
+
+{% block content %}
+<div class="panel panel-default" style="background-color: #F2F6F7">
+  <div class="panel-body">
+    <!-- start of buy-ticket -->
+    <div class="row form-group hidden-print" style="background-color: transparent">
+      <div class="col-md-12">
+
+        <ul class="nav nav-pills nav-justified thumbnail setup-panel">
+
+          <li class="disabled" style="float: none;" tabindex="-1">
+            <a href="#step-1" tabindex="-1">
+              <span class="badge" style="margin: 3px; position: relative; top: -1px;">گام ۱</span>
+              <span class="list-group-item-heading">
+               انتخاب بلیت
+             </span>
+
+           </a>
+         </li>
+
+         <li class="disabled" style="float: none;" tabindex="-1">
+          <a href="#step-2" tabindex="-1">
+            <span class="badge" style="margin: 3px; position: relative; top: -1px;">گام ۲</span>
+            <span class="list-group-item-heading">
+              مرور خرید
+            </span>
+          </a>
+        </li>
+
+        <li class="active" style="float: none;" tabindex="-1">
+          <a href="#step-3" tabindex="-1">
+            <span class="badge" style="margin: 3px; position: relative; top: -1px;">گام ۳</span>
+            <span class="list-group-item-heading">
+              پرداخت
+            </span>
+          </a>
+        </li>
+
+      </ul>
+
+    </div>
+  </div>
+
+  <div class="row setup-content" id="step-3" style="background-color: transparent">
+    <div class="col-md-12">
+      <div class="col-md-12 well text-center" style="background-color: #F2F6F7">
+        <p class="text-danger">ضمن عرض پوزش، خرید شما موفقیت آمیز نبود.</p>
+        <p><a href="/events/{{ ticket.event.id }}/">خواهشمندیم بلیت دیگری را انتخاب بفرمایید.</a></p>
+      </div>
+    </div>
+  </div>
+  <!-- End of buy-ticket -->
+</div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="{% static "scripts/pcustom.js" %}"></script>
+{% endblock %}

@@ -222,37 +222,49 @@ def pay(request, event_id):
 			num = request.POST['num']
 			total_price = int(num) * models.Ticket.objects.get(id=ticket_id).ticket_price
 
+			event = models.Event.objects.get(id=event_id)
+			ticket = models.Ticket.objects.get(id=ticket_id)
+
 			if payment_form.is_valid():
-				# save the order...
-				order = models.Order()
-				order.member = member
-				order.ticket = models.Ticket.objects.get(id=ticket_id)
-				order.event = models.Event.objects.get(id=event_id)
-				order.num_purchased = int(num)
-				order.total_price = order.num_purchased * order.ticket.ticket_price
-				# order.order_date = datetime.datetime.now() --> DEFAULT WILL SET IT
-				order.purchase_code = int(order.member.id + (order.order_date - datetime.datetime(1970, 1, 1)).total_seconds())
+				
+				if ticket.total_capacity - ticket.purchased_num >= int(num):
+					# save the order...
+					order = models.Order()
+					order.member = member
+					order.ticket = ticket
+					order.event = event
+					order.num_purchased = int(num)
+					order.total_price = order.num_purchased * order.ticket.ticket_price
+					# order.order_date = datetime.datetime.now() --> DEFAULT WILL SET IT
+					order.purchase_code = int(order.member.id + (order.order_date - datetime.datetime(1970, 1, 1)).total_seconds())
 
-				order.first_chair_offset = order.event.empty_chair_offset()
-				order.event.save()
+					order.first_chair_offset = order.event.empty_chair_offset()
+					order.event.save()
 
-				order.ticket.purchased_num += int(num)
-				order.ticket.save()
+					order.ticket.purchased_num += int(num)
+					order.ticket.save()
 
-				order.save()
+					order.save()
 
-				chairs = []
-				for i in range(order.num_purchased):
-					chairs += [i+order.first_chair_offset]
+					chairs = []
+					for i in range(order.num_purchased):
+						chairs += [i+order.first_chair_offset]
 
-				return render(request, 'buy-ticket-step-3.html',
-					{'member': member,
-					'categories': layout['categories'],
-					'newest': layout['newest'],
-					'most_populars': layout['most_populars'],
-					'paid': True,
-					'order': order,
-					'chairs': chairs,})
+					return render(request, 'buy-ticket-step-3.html',
+						{'member': member,
+						'categories': layout['categories'],
+						'newest': layout['newest'],
+						'most_populars': layout['most_populars'],
+						'paid': True,
+						'order': order,
+						'chairs': chairs,})
+				else:
+					return render(request, 'buy-ticket-failed.html',
+						{'member': member,
+						'categories': layout['categories'],
+						'newest': layout['newest'],
+						'most_populars': layout['most_populars'],
+						'ticket': ticket,})
 
 			payment_form = forms.BankPaymentForm(event_id)
 			return render(request, 'buy-ticket-step-3.html',
