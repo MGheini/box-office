@@ -421,16 +421,76 @@ class AddEventView(CreateView):
 
 def submit_category(request):
 	layout = get_layout()
-	category_submit_form = forms.CategoryModelForm()
-	subcategory_submit_form = forms.SubCategoryModelForm()
-	return render(request, 'submit-new-category.html',
-		{'organizer': True,
-		'permitted': True,
-		'category_submit_form': category_submit_form,
-		'subcategory_submit_form': subcategory_submit_form,
-		'categories': layout['categories'],
-		'newest': layout['newest'],
-		'most_populars': layout['most_populars']})
+
+	if request.user.is_authenticated() and request.session['user_type'] == 'organizer':
+		permitted = models.Organizer.objects.get(user=request.user).has_permission_to_create_category
+		if permitted:
+			if request.method == 'POST':
+				if 'category-submit-btn' in request.POST:
+					form = forms.CategoryModelForm(request.POST)
+
+					if form.is_valid():
+						form.save()
+
+						subcategory_submit_form = forms.SubCategoryModelForm
+						return render(request, 'submit-new-category.html',
+							{'organizer': True,
+							'permitted': True,
+							'category_success': True,
+							'subcategory_submit_form': subcategory_submit_form,
+							'categories': layout['categories'],
+							'newest': layout['newest'],
+							'most_populars': layout['most_populars']})
+					else:
+						subcategory_submit_form = forms.SubCategoryModelForm
+						return render(request, 'submit-new-category.html',
+							{'organizer': True,
+							'permitted': True,
+							'category_submit_form': form,
+							'subcategory_submit_form': subcategory_submit_form,
+							'categories': layout['categories'],
+							'newest': layout['newest'],
+							'most_populars': layout['most_populars']})
+				else:
+					form = forms.SubCategoryModelForm(request.POST)
+
+					if form.is_valid():
+						form.save()
+
+						category_submit_form = forms.CategoryModelForm
+						return render(request, 'submit-new-category.html',
+							{'organizer': True,
+							'permitted': True,
+							'subcategory_success': True,
+							'category_submit_form': category_submit_form,
+							'categories': layout['categories'],
+							'newest': layout['newest'],
+							'most_populars': layout['most_populars']})
+					else:
+						category_submit_form = forms.CategoryModelForm
+						return render(request, 'submit-new-category.html',
+							{'organizer': True,
+							'permitted': True,
+							'category_submit_form': category_submit_form,
+							'subcategory_submit_form': form,
+							'categories': layout['categories'],
+							'newest': layout['newest'],
+							'most_populars': layout['most_populars']})
+			else:
+				category_submit_form = forms.CategoryModelForm()
+				subcategory_submit_form = forms.SubCategoryModelForm()
+				return render(request, 'submit-new-category.html',
+					{'organizer': True,
+					'permitted': True,
+					'category_submit_form': category_submit_form,
+					'subcategory_submit_form': subcategory_submit_form,
+					'categories': layout['categories'],
+					'newest': layout['newest'],
+					'most_populars': layout['most_populars']})
+		else:
+			return HttpResponseRedirect('/')
+	else:
+		return HttpResponseRedirect('/')
 
 def receipt(request, order_id):
 	layout = get_layout()
@@ -447,7 +507,7 @@ def receipt(request, order_id):
 		'newest': layout['newest'],
 		'most_populars': layout['most_populars'],
 		'order': order,
-		'chairs': chairs,})
+		'chairs': chairs})
 
 def history(request):
 	layout = get_layout()
