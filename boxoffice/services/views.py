@@ -13,8 +13,8 @@ from users.models import Member, Organizer
 
 def get_layout():
 	categories = models.Category.objects.all()
-	most_populars = models.Event.objects.exclude(event_deadline_date__lt=datetime.datetime.now().date(), event_deadline_time__lt=datetime.datetime.now().time()).order_by('-event_avg_rate')[:4]
-	newest = models.Event.objects.exclude(event_deadline_date__lt=datetime.datetime.now().date(), event_deadline_time__lt=datetime.datetime.now().time()).order_by('-submit_date')[:4]
+	most_populars = models.Event.objects.exclude(event_deadline_date__lt=datetime.datetime.now().date()).exclude(event_deadline_date=datetime.datetime.now().date(), event_deadline_time__lt=datetime.datetime.now().time()).order_by('-event_avg_rate')[:4]
+	newest = models.Event.objects.exclude(event_deadline_date__lt=datetime.datetime.now().date()).exclude(event_deadline_date=datetime.datetime.now().date(), event_deadline_time__lt=datetime.datetime.now().time()).order_by('-submit_date')[:4]
 
 	return {'categories': categories, 'newest': newest, 'most_populars': most_populars}
 
@@ -42,7 +42,7 @@ def home(request):
 	layout = get_layout()
 
 	# az unaaE ke mohlate kharid daaran, random chantaa ro bede!
-	available_events = models.Event.objects.exclude(event_deadline_date__lt=datetime.datetime.now().date(), event_deadline_time__lt=datetime.datetime.now().time()).order_by('?')[:5]
+	available_events = models.Event.objects.exclude(event_deadline_date__lt=datetime.datetime.now().date()).exclude(event_deadline_date=datetime.datetime.now().date(), event_deadline_time__lt=datetime.datetime.now().time()).order_by('?')[:5]
 
 	if request.method == 'POST':
 		return our_login(request) # don't forget to return!
@@ -152,8 +152,7 @@ def event_details(request, event_id):
 	# event_deadline_date = models.DateField()
 	# event_deadline_time = models.TimeField()
 	event_deadline_has_passed = False
-	if event.event_deadline_date < datetime.datetime.now().date():
-		if event.event_deadline_time < datetime.datetime.now().time():
+	if event.event_deadline_date < datetime.datetime.now().date() or (event.event_deadline_date == datetime.datetime.now().date() and event.event_deadline_time < datetime.datetime.now().time()):
 			event_deadline_has_passed = True
 
 	return render(request, 'view-event-details.html',
@@ -390,7 +389,7 @@ def category(request, category):
 		template_events = None
 	else:
 		bishoor_user = False
-		events = models.Event.objects.filter(category__category_name=category).exclude(event_deadline_date__lt=datetime.datetime.now().date(), event_deadline_time__lt=datetime.datetime.now().time())
+		events = models.Event.objects.filter(category__category_name=category).exclude(event_deadline_date__lt=datetime.datetime.now().date()).exclude(event_deadline_date=datetime.datetime.now().date(), event_deadline_time__lt=datetime.datetime.now().time())
 		template_events = []
 		for event in events:
 			template_events += [TemplateEvent(event)]
@@ -419,7 +418,7 @@ def subcategory(request, category, subcategory):
 		template_events = None
 	else:
 		bishoor_user = False
-		events = models.Event.objects.filter(subcategory__subcategory_name=subcategory).exclude(event_deadline_date__lt=datetime.datetime.now().date(), event_deadline_time__lt=datetime.datetime.now().time())
+		events = models.Event.objects.filter(subcategory__subcategory_name=subcategory).exclude(event_deadline_date__lt=datetime.datetime.now().date()).exclude(event_deadline_date=datetime.datetime.now().date(), event_deadline_time__lt=datetime.datetime.now().time())
 		template_events = []
 		for event in events:
 			template_events += [TemplateEvent(event)]

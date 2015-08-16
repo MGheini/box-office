@@ -54,7 +54,7 @@
 							<tbody>
 								{% for order in value%}
 								<tr>
-									<td>{{ forloop.counter }}</td>
+									<td>{{ forloop.counter|farsi_num }}</td>
 									<td><a href="/events/{{ order.event.id }}/" style="text-decoration: none;">{{ order.event.event_title }}</a></td>
 									<th>{{ order.order_date|date:"j M Y"|farsi_num }}</th>
 									<td><a href="/orders/{{ order.id }}/receipt"><span class="glyphicon glyphicon-list-alt"></span></a></td>

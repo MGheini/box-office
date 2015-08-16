@@ -128,6 +128,8 @@ TicketFormSet = inlineformset_factory(
 	Event,
 	Ticket,
 	fields=('ticket_type','ticket_price', 'total_capacity'),
+	min_num=1,
+	validate_min=True,
 	extra=1,
 	widgets={'ticket_type': forms.TextInput(attrs={'placeholder': 'نوع'}),
 		'ticket_price': forms.TextInput(attrs={'placeholder': 'قیمت'}),
