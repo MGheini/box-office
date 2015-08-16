@@ -1,4 +1,3 @@
-
 import datetime
 
 from django.shortcuts import render
@@ -18,6 +17,26 @@ def get_layout():
 	newest = models.Event.objects.exclude(event_deadline_date__lt=datetime.datetime.now().date(), event_deadline_time__lt=datetime.datetime.now().time()).order_by('-submit_date')[:5]
 
 	return {'categories': categories, 'newest': newest, 'most_populars': most_populars}
+
+def get_users_template_variables(request):
+	if request.user.is_authenticated():
+		if request.session['user_type'] == 'member':
+			member = Member.objects.get(user=request.user)
+			organizer = None
+			permitted = False
+			visitor = False
+		else:
+			organizer = True
+			permitted = Organizer.objects.get(user=request.user).has_permission_to_create_category
+			member = None
+			visitor = False
+	else:
+		member = None
+		organizer = None
+		permitted = False
+		visitor = True
+
+	return {'member': member, 'organizer': organizer, 'permitted': permitted, visitor: 'visitor'}
 
 def home(request):
 	layout = get_layout()
@@ -65,9 +84,15 @@ def home(request):
 def answer(request):
 	layout = get_layout()
 	form = LoginForm()
+
+	users_template_variables = get_users_template_variables(request)
+
 	return render(request, 'FAQ.html',
 		{'form': form,
-		'visitor': True,
+		'visitor': users_template_variables['visitor'],
+		'member': users_template_variables['member'],
+		'organizer': users_template_variables['organizer'],
+		'permitted': users_template_variables['permitted'],
 		'categories': layout['categories'],
 		'newest': layout['newest'],
 		'most_populars': layout['most_populars']})
@@ -75,9 +100,15 @@ def answer(request):
 def about_us(request):
 	layout = get_layout()
 	form = LoginForm()
-	return render(request, 'Gisheh.html',
+
+	users_template_variables = get_users_template_variables(request)
+
+	return render(request, 'FAQ.html',
 		{'form': form,
-		'visitor': True,
+		'visitor': users_template_variables['visitor'],
+		'member': users_template_variables['member'],
+		'organizer': users_template_variables['organizer'],
+		'permitted': users_template_variables['permitted'],
 		'categories': layout['categories'],
 		'newest': layout['newest'],
 		'most_populars': layout['most_populars']})

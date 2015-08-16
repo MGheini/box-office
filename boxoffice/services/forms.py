@@ -51,11 +51,12 @@ class EventModelFormAdmin(forms.ModelForm):
 		event_time = cleaned_data.get('event_time')
 		event_deadline_date = cleaned_data.get('event_deadline_date')
 		event_deadline_time = cleaned_data.get('event_deadline_time')
-		if event_deadline_date > event_date:
-			self.add_error('event_deadline_date', forms.ValidationError('مهلت خرید بلیت باید قبل از برگزاری رویداد به پایان برسد.'))
-		elif event_deadline_date == event_date:
-			if event_deadline_time >= event_time:
-				self.add_error('event_deadline_time', forms.ValidationError('مهلت خرید بلیت باید قبل از برگزاری رویداد به پایان برسد.'))
+		if event_deadline_date and event_date and event_deadline_time and event_time:
+			if event_deadline_date > event_date:
+				self.add_error('event_deadline_date', forms.ValidationError('مهلت خرید بلیت باید قبل از برگزاری رویداد به پایان برسد.'))
+			elif event_deadline_date == event_date:
+				if event_deadline_time >= event_time:
+					self.add_error('event_deadline_time', forms.ValidationError('مهلت خرید بلیت باید قبل از برگزاری رویداد به پایان برسد.'))
 
 class EventModelFormOrganizer(forms.ModelForm):
 	class Meta:
@@ -91,11 +92,12 @@ class EventModelFormOrganizer(forms.ModelForm):
 		event_time = cleaned_data.get('event_time')
 		event_deadline_date = cleaned_data.get('event_deadline_date')
 		event_deadline_time = cleaned_data.get('event_deadline_time')
-		if event_deadline_date > event_date:
-			self.add_error('event_deadline_date', forms.ValidationError('مهلت خرید بلیت باید قبل از برگزاری رویداد به پایان برسد.'))
-		elif event_deadline_date == event_date:
-			if event_deadline_time >= event_time:
-				self.add_error('event_deadline_time', forms.ValidationError('مهلت خرید بلیت باید قبل از برگزاری رویداد به پایان برسد.'))
+		if event_deadline_date and event_date and event_deadline_time and event_time:
+			if event_deadline_date > event_date:
+				self.add_error('event_deadline_date', forms.ValidationError('مهلت خرید بلیت باید قبل از برگزاری رویداد به پایان برسد.'))
+			elif event_deadline_date == event_date:
+				if event_deadline_time >= event_time:
+					self.add_error('event_deadline_time', forms.ValidationError('مهلت خرید بلیت باید قبل از برگزاری رویداد به پایان برسد.'))
 
 class CategoryModelForm(forms.ModelForm):
 	class Meta:
