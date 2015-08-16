@@ -110,7 +110,7 @@
 		{% elif member %}
 		<div class="row" style="border-radius: 4px">
 			<div class="col-md-12 well" style="margin: 0px;">
-				<p style="font-size: 28px;">کاربر عزیز، خوش آمدید</p>
+				<p style="font-size: 28px;">کاربر عزیز، {{ member.user.first_name }} {{ member.user.last_name }}، خوش آمدید</p>
 				<ul class="list-group" style="margin: 0;">
 					<a href="/history/" tabindex="-1"><li class="list-group-item">
 						<span class="glyphicon glyphicon-hourglass"></span>
@@ -128,7 +128,7 @@
 		{% elif organizer %}
 		<div class="row" style="border-radius: 4px">
 			<div class="col-md-12 well" style="margin: 0px;">
-				<p style="font-size: 28px;">برگزارکننده عزیز، خوش آمدید</p>
+				<p style="font-size: 28px;">برگزارکننده عزیز، {{ organizer.user.first_name }} {{ organizer.user.last_name }}، خوش آمدید</p>
 				<ul class="list-group" style="margin: 0;">
 					<a href="/submit/" tabindex="-1"><li class="list-group-item">
 						<span class="glyphicon glyphicon-plus"></span>

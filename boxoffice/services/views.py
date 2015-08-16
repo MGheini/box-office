@@ -13,8 +13,8 @@ from users.models import Member, Organizer
 
 def get_layout():
 	categories = models.Category.objects.all()
-	most_populars = models.Event.objects.exclude(event_deadline_date__lt=datetime.datetime.now().date(), event_deadline_time__lt=datetime.datetime.now().time()).order_by('-event_avg_rate')[:5]
-	newest = models.Event.objects.exclude(event_deadline_date__lt=datetime.datetime.now().date(), event_deadline_time__lt=datetime.datetime.now().time()).order_by('-submit_date')[:5]
+	most_populars = models.Event.objects.exclude(event_deadline_date__lt=datetime.datetime.now().date(), event_deadline_time__lt=datetime.datetime.now().time()).order_by('-event_avg_rate')[:4]
+	newest = models.Event.objects.exclude(event_deadline_date__lt=datetime.datetime.now().date(), event_deadline_time__lt=datetime.datetime.now().time()).order_by('-submit_date')[:4]
 
 	return {'categories': categories, 'newest': newest, 'most_populars': most_populars}
 
@@ -26,7 +26,7 @@ def get_users_template_variables(request):
 			permitted = False
 			visitor = False
 		else:
-			organizer = True
+			organizer = Organizer.objects.get(user=request.user)
 			permitted = Organizer.objects.get(user=request.user).has_permission_to_create_category
 			member = None
 			visitor = False
@@ -51,7 +51,7 @@ def home(request):
 			if request.session['user_type'] == 'member':
 				return render(request, 'home.html',
 					{'home': True,
-					'member': True,
+					'member': Member.objects.get(user=request.user),
 					'categories': layout['categories'],
 					'available_events': available_events,
 					'newest': layout['newest'],
@@ -60,7 +60,7 @@ def home(request):
 				permitted = Organizer.objects.get(user=request.user).has_permission_to_create_category
 				return render(request, 'home.html',
 					{'home': True,
-					'organizer': True,
+					'organizer': Organizer.objects.get(user=request.user),
 					'permitted': permitted,
 					'categories': layout['categories'],
 					'available_events': available_events,
@@ -122,30 +122,20 @@ class TicketWithAvailableCapacity():
 def event_details(request, event_id):
 	layout = get_layout()
 	form = LoginForm()
-	event = models.Event.objects.get(id=event_id)		
+	event = models.Event.objects.get(id=event_id)	
+
+	users_template_variables = get_users_template_variables(request)	
 
 	if request.user.is_authenticated():
 		if request.session['user_type'] == 'member':
-			member = Member.objects.get(user=request.user)
-			if models.Rate.objects.filter(member=member, event=event).count() > 0:
-				rate = models.Rate.objects.get(member=member, event=event).rate
+			if models.Rate.objects.filter(member=users_template_variables['member'], event=event).count() > 0:
+				rate = models.Rate.objects.get(member=users_template_variables['member'], event=event).rate
 			else:
 				rate = None
-			organizer = None
-			permitted = False
-			visitor = False
 		else:
-			organizer = True
-			permitted = Organizer.objects.get(user=request.user).has_permission_to_create_category
-			member = None
 			rate = None
-			visitor = False
 	else:
-		member = None
 		rate = None
-		organizer = None
-		permitted = False
-		visitor = True
 
 	tickets = []
 	for ticket in event.ticket_set.all():
@@ -168,14 +158,14 @@ def event_details(request, event_id):
 
 	return render(request, 'view-event-details.html',
 		{'form': form,
-		'visitor': visitor,
+		'visitor': users_template_variables['visitor'],
 		'categories': layout['categories'],
 		'newest': layout['newest'],
 		'most_populars': layout['most_populars'],
 		'event': event,
-		'member': member,
-		'organizer': organizer,
-		'permitted': permitted,
+		'member': users_template_variables['member'],
+		'organizer': users_template_variables['organizer'],
+		'permitted': users_template_variables['permitted'],
 		'rate': rate,
 		'tickets': tickets,
 		'like_comments': like_comments,
@@ -184,11 +174,12 @@ def event_details(request, event_id):
 		'event_deadline_has_passed': event_deadline_has_passed,})
 
 def purchase(request, event_id):
-	event = models.Event.objects.get(id=event_id)
 	layout = get_layout()
-	form = LoginForm()
+	event = models.Event.objects.get(id=event_id)
 
-	if request.user.is_authenticated():
+	users_template_variables = get_users_template_variables(request)
+
+	if users_template_variables['member']:
 		if request.method == 'POST':
 			ticket_form = forms.PurchaseChooseForm(event_id, request.POST)
 			if ticket_form.is_valid():
@@ -197,10 +188,10 @@ def purchase(request, event_id):
 				total_price = int(num) * ticket.ticket_price
 
 				return render(request, 'buy-ticket-step-2.html',
-					{'form': form,
-					'categories': layout['categories'],
+					{'categories': layout['categories'],
 					'newest': layout['newest'],
 					'most_populars': layout['most_populars'],
+					'member': users_template_variables['member'],
 					'num': num,
 					'ticket': ticket,
 					'total_price': total_price,})
@@ -208,21 +199,23 @@ def purchase(request, event_id):
 			ticket_form = forms.PurchaseChooseForm(event_id)
 
 		return render(request, 'buy-ticket-step-1.html',
-			{'ticket_form': ticket_form,
-			'categories': layout['categories'],
+			{'categories': layout['categories'],
 			'newest': layout['newest'],
 			'most_populars': layout['most_populars'],
+			'member': users_template_variables['member'],
 			'ticket_form': ticket_form,
-			'event': event,
-			})
+			'event': event,})
+	else:
+		return HttpResponseRedirect('/')
 
 def pay(request, event_id):
-	event = models.Event.objects.get(id=event_id)
 	layout = get_layout()
-	form = LoginForm()
+	event = models.Event.objects.get(id=event_id)
 
-	if request.user.is_authenticated():
-		member = Member.objects.get(user=request.user)
+	users_template_variables = get_users_template_variables(request)
+
+	if users_template_variables['member']:
+		member = users_template_variables['member']
 		if request.method == "GET":
 			payment_form = forms.BankPaymentForm(request.GET)
 			
@@ -389,18 +382,29 @@ class TemplateEvent():
 def category(request, category):
 	layout = get_layout()
 	form = LoginForm()
-	
-	events = models.Event.objects.filter(category__category_name=category).exclude(event_deadline_date__lt=datetime.datetime.now().date(), event_deadline_time__lt=datetime.datetime.now().time())
-	template_events = []
-	for event in events:
-		template_events += [TemplateEvent(event)]
+
+	users_template_variables = get_users_template_variables(request)
+
+	if models.Category.objects.filter(category_name=category).count() == 0:
+		bishoor_user = True
+		template_events = None
+	else:
+		bishoor_user = False
+		events = models.Event.objects.filter(category__category_name=category).exclude(event_deadline_date__lt=datetime.datetime.now().date(), event_deadline_time__lt=datetime.datetime.now().time())
+		template_events = []
+		for event in events:
+			template_events += [TemplateEvent(event)]
 
 	return render(request, 'view-category-events.html',
 		{'form': form,
-		'visitor': True,
+		'bishoor_user': bishoor_user,
+		'visitor': users_template_variables['visitor'],
 		'categories': layout['categories'],
 		'newest': layout['newest'],
 		'most_populars': layout['most_populars'],
+		'member': users_template_variables['member'],
+		'organizer': users_template_variables['organizer'],
+		'permitted': users_template_variables['permitted'],
 		'events': template_events,
 		'category': category})
 
@@ -408,17 +412,28 @@ def subcategory(request, category, subcategory):
 	layout = get_layout()
 	form = LoginForm()
 
-	events = models.Event.objects.filter(subcategory__subcategory_name=subcategory).exclude(event_deadline_date__lt=datetime.datetime.now().date(), event_deadline_time__lt=datetime.datetime.now().time())
-	template_events = []
-	for event in events:
-		template_events += [TemplateEvent(event)]
+	users_template_variables = get_users_template_variables(request)
+
+	if models.Category.objects.filter(category_name=category).count() == 0 or models.SubCategory.objects.filter(subcategory_name=subcategory).count() == 0:
+		bishoor_user = True
+		template_events = None
+	else:
+		bishoor_user = False
+		events = models.Event.objects.filter(subcategory__subcategory_name=subcategory).exclude(event_deadline_date__lt=datetime.datetime.now().date(), event_deadline_time__lt=datetime.datetime.now().time())
+		template_events = []
+		for event in events:
+			template_events += [TemplateEvent(event)]
 
 	return render(request, 'view-sub-category-events.html',
 		{'form': form,
-		'visitor': True,
+		'bishoor_user': bishoor_user,
+		'visitor': users_template_variables['visitor'],
 		'categories': layout['categories'],
 		'newest': layout['newest'],
 		'most_populars': layout['most_populars'],
+		'member': users_template_variables['member'],
+		'organizer': users_template_variables['organizer'],
+		'permitted': users_template_variables['permitted'],
 		'events': template_events,
 		'category': category,
 		'subcategory': subcategory})
@@ -426,25 +441,34 @@ def subcategory(request, category, subcategory):
 class AddEventView(CreateView):
 	template_name = 'submit-new-event.html'
 	form_class = forms.EventModelFormOrganizer
-	layout = get_layout()
 	
 	def get_context_data(self, **kwargs):
 		context = super(AddEventView, self).get_context_data(**kwargs)
 		layout = get_layout()
+		users_template_variables = get_users_template_variables(self.request)
 		if self.request.POST:
 			context['formset'] = forms.TicketFormSet(self.request.POST)
 		else:
 			context['formset'] = forms.TicketFormSet()
-		context['organizer'] = True
+		context['organizer'] = users_template_variables['organizer']
+		context['permitted'] = users_template_variables['permitted']
 		context['categories'] = layout['categories']
 		context['newest'] = layout['newest']
 		context['most_populars'] = layout['most_populars']
 		return context
 
+	def get(self, request, *args, **kwargs):
+		self.object = None
+		context = self.get_context_data()
+		if context['organizer'] is None:
+			return HttpResponseRedirect('/')
+		form = self.get_form(self.form_class)
+		context.update({'form': form})
+		return self.render_to_response(context)
+
 	def form_valid(self, form):
 		context = self.get_context_data()
 		formset = context['formset']
-		layout = get_layout()
 
 		if formset.is_valid():
 			self.object = form.save(commit=False)
@@ -452,20 +476,13 @@ class AddEventView(CreateView):
 			self.object.save()
 			formset.instance = self.object
 			formset.save()
-			success = True
-			return render(self.request, 'submit-new-event.html',
-				{'success': success,
-				'organizer': True,
-				'categories': layout['categories'],
-				'newest': layout['newest'],
-				'most_populars': layout['most_populars']})
+			context.update({'success': True})
+			del context['formset']
+			return render(self.request, 'submit-new-event.html', context)
 		else:
-			return render(self.request, 'submit-new-event.html',
-				{'form': form,
-				'organizer': True,
-				'categories': layout['categories'],
-				'newest': layout['newest'],
-				'most_populars': layout['most_populars']})
+			context.update({'form': form})
+			del context['formset']
+			return render(self.request, 'submit-new-event.html', context)
 
 def submit_category(request):
 	layout = get_layout()
@@ -482,7 +499,7 @@ def submit_category(request):
 
 						subcategory_submit_form = forms.SubCategoryModelForm
 						return render(request, 'submit-new-category.html',
-							{'organizer': True,
+							{'organizer': models.Organizer.objects.get(user=request.user),
 							'permitted': True,
 							'category_success': True,
 							'subcategory_submit_form': subcategory_submit_form,
@@ -492,7 +509,7 @@ def submit_category(request):
 					else:
 						subcategory_submit_form = forms.SubCategoryModelForm
 						return render(request, 'submit-new-category.html',
-							{'organizer': True,
+							{'organizer': models.Organizer.objects.get(user=request.user),
 							'permitted': True,
 							'category_submit_form': form,
 							'subcategory_submit_form': subcategory_submit_form,
@@ -507,7 +524,7 @@ def submit_category(request):
 
 						category_submit_form = forms.CategoryModelForm
 						return render(request, 'submit-new-category.html',
-							{'organizer': True,
+							{'organizer': models.Organizer.objects.get(user=request.user),
 							'permitted': True,
 							'subcategory_success': True,
 							'category_submit_form': category_submit_form,
@@ -517,7 +534,7 @@ def submit_category(request):
 					else:
 						category_submit_form = forms.CategoryModelForm
 						return render(request, 'submit-new-category.html',
-							{'organizer': True,
+							{'organizer': models.Organizer.objects.get(user=request.user),
 							'permitted': True,
 							'category_submit_form': category_submit_form,
 							'subcategory_submit_form': form,
@@ -528,7 +545,7 @@ def submit_category(request):
 				category_submit_form = forms.CategoryModelForm()
 				subcategory_submit_form = forms.SubCategoryModelForm()
 				return render(request, 'submit-new-category.html',
-					{'organizer': True,
+					{'organizer': models.Organizer.objects.get(user=request.user),
 					'permitted': True,
 					'category_submit_form': category_submit_form,
 					'subcategory_submit_form': subcategory_submit_form,
@@ -543,19 +560,23 @@ def submit_category(request):
 def receipt(request, order_id):
 	layout = get_layout()
 	order = models.Order.objects.get(id=order_id)
-	member = Member.objects.get(user=request.user)
-	
-	chairs = []
-	for i in range(order.num_purchased):
-		chairs += [i + order.first_chair_offset]
 
-	return render(request, 'view-receipt.html',
-		{'member': member,
-		'categories': layout['categories'],
-		'newest': layout['newest'],
-		'most_populars': layout['most_populars'],
-		'order': order,
-		'chairs': chairs})
+	users_template_variables = get_users_template_variables
+	
+	if users_template_variables['member']:
+		member = users_template_variables['member']
+		
+		chairs = []
+		for i in range(order.num_purchased):
+			chairs += [i + order.first_chair_offset]
+
+		return render(request, 'view-receipt.html',
+			{'member': member,
+			'categories': layout['categories'],
+			'newest': layout['newest'],
+			'most_populars': layout['most_populars'],
+			'order': order,
+			'chairs': chairs})
 
 def history(request):
 	layout = get_layout()
@@ -568,7 +589,7 @@ def history(request):
 			orders[category.category_name] = list(models.Order.objects.filter(member__user=request.user, event__category__category_name=category.category_name))
 
 		return render(request, 'purchase-history.html',
-			{'member': True,
+			{'member': Member.objects.get(user=request.user),
 			 'orders': orders,
 			'categories': layout['categories'],
 			'newest': layout['newest'],
@@ -578,6 +599,7 @@ def history(request):
 
 def search_by_code(request):
 	layout = get_layout()
+	
 	if request.user.is_authenticated() and request.session['user_type'] == 'member':
 		if request.method == 'GET':
 			purchase_code = request.GET['code']
@@ -599,12 +621,11 @@ def search_by_code(request):
 				error = 'شما خریدی با کد رهگیری وارد شده نداشته‌اید.'
 
 				return render(request, 'purchase-history.html',
-					{'member': True,
+					{'member': Member.objects.get(user=request.user),
 					 'orders': orders,
 					'categories': layout['categories'],
 					'newest': layout['newest'],
 					'most_populars': layout['most_populars'],
 					'error': error})
-
 	else:
 		return HttpResponseRedirect('/')

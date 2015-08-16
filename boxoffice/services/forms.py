@@ -158,10 +158,10 @@ class PurchaseChooseForm(forms.Form):
 		return self.cleaned_data
 
 class BankPaymentForm(forms.Form):
-	card_number_1 = forms.IntegerField(widget=forms.TextInput(attrs={'placeholder': 'xxxx', 'maxlength': '4', 'style': 'width: 80px', 'tabindex': '1003'}),)
-	card_number_2 = forms.IntegerField(widget=forms.TextInput(attrs={'placeholder': 'xxxx', 'maxlength': '4', 'style': 'width: 80px', 'tabindex': '1002'}),)
-	card_number_3 = forms.IntegerField(widget=forms.TextInput(attrs={'placeholder': 'xxxx', 'maxlength': '4', 'style': 'width: 80px', 'tabindex': '1001'}),)
-	card_number_4 = forms.IntegerField(widget=forms.TextInput(attrs={'placeholder': 'xxxx', 'maxlength': '4', 'style': 'width: 80px', 'tabindex': '1000'}),)
+	card_number_1 = forms.IntegerField(widget=forms.TextInput(attrs={'placeholder': 'xxxx', 'maxlength': '4', 'tabindex': '1003'}),)
+	card_number_2 = forms.IntegerField(widget=forms.TextInput(attrs={'placeholder': 'xxxx', 'maxlength': '4', 'tabindex': '1002'}),)
+	card_number_3 = forms.IntegerField(widget=forms.TextInput(attrs={'placeholder': 'xxxx', 'maxlength': '4', 'tabindex': '1001'}),)
+	card_number_4 = forms.IntegerField(widget=forms.TextInput(attrs={'placeholder': 'xxxx', 'maxlength': '4', 'tabindex': '1000'}),)
 	cvv2 = forms.IntegerField(widget=forms.TextInput(attrs={'placeholder': 'xxx', 'maxlength': '3', 'tabindex': '1004'}),)
 	password = forms.IntegerField(widget=forms.TextInput(attrs={'placeholder': '****', 'type': 'password', 'maxlength': '6', 'tabindex': '1005'}),)
 
