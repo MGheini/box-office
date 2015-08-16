@@ -561,7 +561,7 @@ def receipt(request, order_id):
 	layout = get_layout()
 	order = models.Order.objects.get(id=order_id)
 
-	users_template_variables = get_users_template_variables
+	users_template_variables = get_users_template_variables(request)
 	
 	if users_template_variables['member']:
 		member = users_template_variables['member']
