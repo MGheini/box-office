@@ -36,7 +36,7 @@ def get_users_template_variables(request):
 		permitted = False
 		visitor = True
 
-	return {'member': member, 'organizer': organizer, 'permitted': permitted, visitor: 'visitor'}
+	return {'member': member, 'organizer': organizer, 'permitted': permitted, 'visitor': visitor}
 
 def home(request):
 	layout = get_layout()
@@ -103,7 +103,7 @@ def about_us(request):
 
 	users_template_variables = get_users_template_variables(request)
 
-	return render(request, 'FAQ.html',
+	return render(request, 'Gisheh.html',
 		{'form': form,
 		'visitor': users_template_variables['visitor'],
 		'member': users_template_variables['member'],
