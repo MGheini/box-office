@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^submit/$', AddEventViewByOrganizer.as_view()),
     url(r'^submitcategory/$', 'services.views.submit_category'),
     url(r'^orders/(?P<order_id>[\d]+)/receipt/$', 'services.views.receipt'),
+    url(r'^orders/search/$', 'services.views.search_by_code'),
     url(r'^history/$', 'services.views.history'),
     url(r'^logout/$', 'users.views.our_logout'),
     url(r'^admin/', include(admin.site.urls)),
