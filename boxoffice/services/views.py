@@ -88,16 +88,6 @@ class TicketWithAvailableCapacity():
 		self.ticket = ticket
 		self.ticket_available_capacity = ticket.total_capacity - ticket.purchased_num
 
-class EnhancedComment():
-
-	def __init__(self, comment, member):
-		self.comment = comment
-
-		if models.LikeComment.objects.filter(comment=comment, member=member) > 0:
-			self.do_i_like = True
-		else:
-			self.do_i_like = False
-
 def event_details(request, event_id):
 	layout = get_layout()
 	form = LoginForm()
