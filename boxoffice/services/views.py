@@ -511,15 +511,15 @@ def submit_category(request):
 
 def receipt(request, order_id):
 	layout = get_layout()
-
 	order = models.Order.objects.get(id=order_id)
-
+	member = Member.objects.get(user=request.user)
+	
 	chairs = []
 	for i in range(order.num_purchased):
 		chairs += [i + order.first_chair_offset]
 
 	return render(request, 'view-receipt.html',
-		{'member': True,
+		{'member': member,
 		'categories': layout['categories'],
 		'newest': layout['newest'],
 		'most_populars': layout['most_populars'],
@@ -542,5 +542,38 @@ def history(request):
 			'categories': layout['categories'],
 			'newest': layout['newest'],
 			'most_populars': layout['most_populars']})
+	else:
+		return HttpResponseRedirect('/')
+
+def search_by_code(request):
+	layout = get_layout()
+	if request.user.is_authenticated() and request.session['user_type'] == 'member':
+		if request.method == 'GET':
+			purchase_code = request.GET['code']
+
+			try:
+			    order = models.Order.objects.get(purchase_code=purchase_code)
+			except models.Order.DoesNotExist:
+			    order = None
+
+			if order and (order in member.order_set.all()):
+				return receipt(request, order.id)
+			else:
+				orders = {}
+				categories = models.Category.objects.all()
+				
+				for category in categories:
+					orders[category.category_name] = list(models.Order.objects.filter(member__user=request.user, event__category__category_name=category.category_name))
+
+				error = 'شما خریدی با کد رهگیری وارد شده نداشته‌اید.'
+
+				return render(request, 'purchase-history.html',
+					{'member': True,
+					 'orders': orders,
+					'categories': layout['categories'],
+					'newest': layout['newest'],
+					'most_populars': layout['most_populars'],
+					'error': error})
+
 	else:
 		return HttpResponseRedirect('/')

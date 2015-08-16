@@ -26,7 +26,8 @@
     <div class="row" style="background-color: transparent">
       <div class="col-md-10 col-md-offset-1">
         <h3>کد رهگیری شما: <span>{{ order.purchase_code|farsi_num }}</span></h3>
-      </div>        
+        <h3 class="visible-print">نام خریدار: <span>{{ member.user.first_name }} {{ member.user.last_name }}</span></h3>
+      </div>     
     </div>
 
     <!-- START OF SOORAT HESAB -->
@@ -59,8 +60,8 @@
           </tr>
 
           <tr>
-            <th>قیمت واحد</th>
-            <td>{{ order.ticket.ticket_price|farsi_num }}</td>
+            <th>قیمت واحد بلیت</th>
+            <td>{{ order.ticket.ticket_price|farsi_num }} تومان</td>
           </tr>
 
           <tr>
@@ -74,7 +75,7 @@
           </tr>
 
           <tr>
-            <th>شماره صندلی‌ها</th>
+            <th>شماره جایگاه‌ها</th>
             <td>/{% for chair in chairs %}{{ chair|farsi_num }}/{% endfor %}</td>
           </tr>
 
