@@ -256,7 +256,7 @@ class AddEventView(CreateView):
             success = True
             return render(self.request, 'add-new-event.html', {'success': success})
         else:
-            return render(self.request, 'add-new-event.html', {'form': form})
+            return render(self.request, 'add-new-event.html', {'form': form, 'formset': formset})
 
 
 def delete_multiple_categories(request):
