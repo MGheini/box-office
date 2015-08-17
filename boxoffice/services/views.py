@@ -480,7 +480,6 @@ class AddEventView(CreateView):
 			return render(self.request, 'submit-new-event.html', context)
 		else:
 			context.update({'form': form})
-			del context['formset']
 			return render(self.request, 'submit-new-event.html', context)
 
 def submit_category(request):
