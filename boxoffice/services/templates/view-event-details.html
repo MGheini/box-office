@@ -153,10 +153,12 @@
                       <small class="btn-group btn-group-xs" style="top: 2px;">
                         <a id="{{ comment.id }}" href="/events/{{ event.id }}/comment/like/?comment_id={{ comment.id }}" class="like btn btn-danger btn-xs" {% if not member %}title="برای ابراز علاقمندی به این نظر، وارد شوید."{% endif %} {% if not member %}disabled="disabled"{% endif %}>
                           {% for lc in comment.likecomment_set.all %}
-                          {% if lc.member.id == member.id and lc.comment.id == comment.id %}
+                          {% if lc.member.id == member.id %}
                           <i class="glyphicon glyphicon-heart"></i>
                           {% else %}
+                          {% if forloop.last %}
                           <i class="glyphicon glyphicon-heart-empty"></i>
+                          {% endif %}
                           {% endif %}
                           {% endfor %}
                           {% if not comment.likecomment_set.all %}
@@ -315,5 +317,13 @@ else {
       };
     });
 }
+</script>
+
+<script type="text/javascript">
+  //no template tag worked, so ...
+  //really tricky!! enjoyed it! :D
+  // for(var i = 0; i < $(' .like ').length; i++)
+  //   (' .like ')[i]?!.children()[1].remove()
+  $(' i:nth-of-type(2) ').remove()
 </script>
 {% endblock %}

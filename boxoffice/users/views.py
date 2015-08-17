@@ -11,14 +11,14 @@ from .forms import MemberRegModelForm, OrganizerRegModelForm, LoginForm
 
 def get_layout():
 	categories = Category.objects.all()
-	most_populars = Event.objects.exclude(event_deadline_date__lt=datetime.datetime.now().date(), event_deadline_time__lt=datetime.datetime.now().time()).order_by('-event_avg_rate')[:5]
-	newest = Event.objects.exclude(event_deadline_date__lt=datetime.datetime.now().date(), event_deadline_time__lt=datetime.datetime.now().time()).order_by('-submit_date')[:5]
+	most_populars = Event.objects.exclude(event_deadline_date__lt=datetime.datetime.now().date()).exclude(event_deadline_date=datetime.datetime.now().date(), event_deadline_time__lt=datetime.datetime.now().time()).order_by('-event_avg_rate')[:4]
+	newest = Event.objects.exclude(event_deadline_date__lt=datetime.datetime.now().date()).exclude(event_deadline_date=datetime.datetime.now().date(), event_deadline_time__lt=datetime.datetime.now().time()).order_by('-submit_date')[:4]
 
 	return {'categories': categories, 'newest': newest, 'most_populars': most_populars}
 
 def our_login(request):
 	layout = get_layout()
-	available_events = Event.objects.all()
+	available_events = Event.objects.exclude(event_deadline_date__lt=datetime.datetime.now().date()).exclude(event_deadline_date=datetime.datetime.now().date(), event_deadline_time__lt=datetime.datetime.now().time()).order_by('?')[:5]
 
 	form = LoginForm(request.POST)
 

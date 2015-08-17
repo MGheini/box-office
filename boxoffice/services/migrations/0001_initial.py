@@ -2,8 +2,8 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import smart_selects.db_fields
 import datetime
+import smart_selects.db_fields
 
 
 class Migration(migrations.Migration):
@@ -16,9 +16,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Category',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
+                ('id', models.AutoField(serialize=False, auto_created=True, primary_key=True, verbose_name='ID')),
                 ('category_name', models.CharField(max_length=100)),
-                ('category_glyphicon', models.CharField(blank=True, max_length=30, null=True)),
+                ('category_glyphicon', models.CharField(max_length=30, blank=True, null=True)),
             ],
             options={
                 'verbose_name': 'دسته',
@@ -28,8 +28,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Comment',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
+                ('id', models.AutoField(serialize=False, auto_created=True, primary_key=True, verbose_name='ID')),
                 ('comment_text', models.CharField(max_length=200)),
+                ('datetime', models.DateTimeField(default=datetime.datetime.now)),
+                ('like_num', models.IntegerField(default=0)),
             ],
             options={
                 'verbose_name': 'نظر',
@@ -39,7 +41,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Event',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
+                ('id', models.AutoField(serialize=False, auto_created=True, primary_key=True, verbose_name='ID')),
                 ('event_title', models.CharField(max_length=255)),
                 ('event_image', models.ImageField(upload_to='media/', blank=True, default='media/noimage.png')),
                 ('event_place', models.CharField(max_length=255)),
@@ -59,14 +61,23 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
+            name='LikeComment',
+            fields=[
+                ('id', models.AutoField(serialize=False, auto_created=True, primary_key=True, verbose_name='ID')),
+                ('comment', models.ForeignKey(to='services.Comment')),
+                ('member', models.ForeignKey(to='users.Member')),
+            ],
+        ),
+        migrations.CreateModel(
             name='Order',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
+                ('id', models.AutoField(serialize=False, auto_created=True, primary_key=True, verbose_name='ID')),
                 ('num_purchased', models.PositiveSmallIntegerField()),
                 ('total_price', models.PositiveIntegerField()),
-                ('order_date', models.DateTimeField(default=datetime.datetime(2015, 8, 4, 0, 26, 55, 377699))),
-                ('purchase_code', models.PositiveIntegerField(default=5842669)),
-                ('event', models.ForeignKey(to='services.Event', null=True)),
+                ('order_date', models.DateTimeField(default=datetime.datetime.now)),
+                ('purchase_code', models.PositiveIntegerField()),
+                ('first_chair_offset', models.IntegerField(default=0)),
+                ('event', models.ForeignKey(to='services.Event')),
                 ('member', models.ForeignKey(to='users.Member')),
             ],
             options={
@@ -77,7 +88,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Rate',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
+                ('id', models.AutoField(serialize=False, auto_created=True, primary_key=True, verbose_name='ID')),
                 ('rate', models.PositiveSmallIntegerField()),
                 ('event', models.ForeignKey(to='services.Event')),
                 ('member', models.ForeignKey(to='users.Member')),
@@ -90,7 +101,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SubCategory',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
+                ('id', models.AutoField(serialize=False, auto_created=True, primary_key=True, verbose_name='ID')),
                 ('subcategory_name', models.CharField(max_length=100)),
                 ('category', models.ForeignKey(to='services.Category')),
             ],
@@ -102,10 +113,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Ticket',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
-                ('ticket_type', models.CharField(verbose_name='نوع بلیت', max_length=255, help_text='نوع بلیت')),
-                ('ticket_price', models.PositiveIntegerField(verbose_name='قیمت بلیت', help_text='قیمت بلیت')),
-                ('total_capacity', models.PositiveSmallIntegerField(verbose_name='ظرفیت', help_text='ظرفیت بلیت')),
+                ('id', models.AutoField(serialize=False, auto_created=True, primary_key=True, verbose_name='ID')),
+                ('ticket_type', models.CharField(max_length=20)),
+                ('ticket_price', models.PositiveIntegerField()),
+                ('total_capacity', models.PositiveSmallIntegerField()),
                 ('purchased_num', models.PositiveSmallIntegerField(default=0)),
                 ('event', models.ForeignKey(to='services.Event')),
             ],
@@ -122,7 +133,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='event',
             name='subcategory',
-            field=smart_selects.db_fields.ChainedForeignKey(chained_model_field='category', chained_field='category', to='services.SubCategory', auto_choose=True, null=True),
+            field=smart_selects.db_fields.ChainedForeignKey(chained_model_field='category', to='services.SubCategory', auto_choose=True, chained_field='category'),
         ),
         migrations.AddField(
             model_name='comment',

@@ -96,7 +96,7 @@ class LikeComment(models.Model):
 	comment = models.ForeignKey(Comment)
 
 	def __str__(self):
-		return member.user.username + ' (' + comment.comment_text + ')'
+		return self.member.user.username + ' (' + self.comment.comment_text + ')'
 
 class Rate(models.Model):
 	member = models.ForeignKey(Member)
