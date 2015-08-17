@@ -15,7 +15,7 @@
 <div class="panel panel-default" style="background-color: #F2F6F7">
   <div class="panel-body">
     <!-- start of buy-ticket -->
-    <div class="row-ticket form-group">
+    <div class="row-ticket form-group hidden-print">
       <div class="col-md-12">
 
         <ul class="nav nav-pills nav-justified thumbnail setup-panel" style="padding: 4px;">
@@ -106,6 +106,7 @@
         <div class="row" style="background-color: transparent">
           <div class="col-md-10 col-md-offset-1">
             <h3>کد رهگیری شما: <span>{{ order.purchase_code|farsi_num }}</span></h3>
+            <h3 class="visible-print">نام خریدار: <span>{{ member.user.first_name }} {{ member.user.last_name }}</span></h3>
           </div>        
         </div>
         <hr />
